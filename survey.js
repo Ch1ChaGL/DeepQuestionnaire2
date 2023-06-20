@@ -76,7 +76,7 @@ const survey = {
           {
             "id": 5,
             "text": "Вопрос 1 в блоке 3",
-            "type": "multipleChoice",
+            "type": "singleChoice",
             "options": ["Ответ 1", "Ответ 2", "Ответ 3"],
             "hasOtherOption": true
           },

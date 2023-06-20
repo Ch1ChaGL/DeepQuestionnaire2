@@ -3,11 +3,24 @@ const { readLine, rl } = require('./readLine');
 
 class Questionnaire {
   constructor(blocks) {
+    /**
+     * Все блоки вопросов
+     */
     this.blocks = blocks;
+    /**
+     * Текущий блок вопросов
+     */
     this.currentBlock = null;
+    /**
+     * Map с ключем - Id вопроса / Значение - Ответ
+     */
     this.answerQuestion = new Map();
   }
 
+  /**
+   * 
+   * @param {block} block - блок вопросов
+   */
   async processBlock(block) {
     console.log(`--${block['title']}--`);
     for (const question of block['questions']) {
@@ -25,6 +38,8 @@ class Questionnaire {
         });
 
         answer = await readLine('Введите номер вашего ответа: ');
+        const answerId = parseInt(answer);
+        answer = question['options'][answerId - 1];
       } else if (question['type'] === 'text') {
         answer = await readLine('Введите текст ответа: ');
       }
@@ -32,9 +47,7 @@ class Questionnaire {
       this.answerQuestion.set(question['id'], answer);
     }
 
-    console.log("block['id']" + block['id']);
-    const nextBlock = this.blocks.find(b => b['parentBlock'] === block['id']);
-    console.log('nextBlock ', nextBlock);
+    const nextBlock = this.getNextBlock(block, this.answerQuestion);
 
     if (nextBlock) {
       await this.processBlock(nextBlock);
@@ -43,6 +56,27 @@ class Questionnaire {
       rl.close();
     }
   }
+
+  /**
+   * @param {PreviousBlock} PreviousBlock - предыдущий блок
+   * @param {answerQuestion} answerQuestion - Вопрос-Ответ
+   */
+  getNextBlock(PreviousBlock, answerQuestion){
+    console.log('Предыдущий блок:', PreviousBlock);
+    console.log('Вопрос-Ответ:', answerQuestion);
+    const conditions = PreviousBlock['nextBlock']?.['condition'];
+    if(!conditions) return null;
+    for (const condition of conditions) {
+      const questionId = condition['questionId'];
+      const answer = condition['answer'];
+      if(answerQuestion.get(questionId) !== answer) {
+        return null;
+      }
+    }
+    const nextBlockId = PreviousBlock['nextBlock']['blockId'];
+    return this.blocks.find(block=> block['id'] === nextBlockId)
+  }
+
 }
 
 module.exports = Questionnaire;
