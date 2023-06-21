@@ -18,7 +18,10 @@ class Questionnaire {
     this.currentQuestion = 1;
   }
 
-  /** 
+  /**
+   * !(DELETE) Вот это вроде можно удалить (DELETE)
+   */
+  /**
    * @param {block} block - блок вопросов
    */
   async processBlock(block) {
@@ -62,21 +65,21 @@ class Questionnaire {
    * @param {PreviousBlock} PreviousBlock - предыдущий блок
    * @param {answerQuestion} answerQuestion - Вопрос-Ответ
    */
-  getNextBlock(PreviousBlock, answerQuestion){
+  getNextBlock(PreviousBlock, answerQuestion) {
     // console.log('Предыдущий блок:', PreviousBlock);
     // console.log('Вопрос-Ответ:', answerQuestion);
 
     const conditions = PreviousBlock['nextBlock']?.['condition'];
-    if(!conditions) return null;
+    if (!conditions) return null;
 
     let nextBlockId = null;
 
     for (const condition of conditions) {
       nextBlockId = this._CheckConditional(condition, answerQuestion);
-      if(nextBlockId) break;
+      if (nextBlockId) break;
     }
 
-    return this.blocks.find(block => block['id'] === nextBlockId)
+    return this.blocks.find(block => block['id'] === nextBlockId);
   }
 
   /**
@@ -85,61 +88,56 @@ class Questionnaire {
    * @param {answerQuestion} answerQuestion - Вопрос-Ответ
    */
   //Нужно просмотреть предложенный блок, его условие, и если оно верное, то вернуть следующий блок иначе вернуть null
-  _CheckConditional(conditions, answerQuestion){
-    const {Operator, blockId} = conditions[0];
+  _CheckConditional(conditions, answerQuestion) {
+    const { Operator, blockId } = conditions[0];
 
-    if(Operator === 'and'){
-      
+    if (Operator === 'and') {
       for (let i = 1; i < conditions.length; i++) {
-
         const questionId = conditions[i]['questionId'];
         const answer = conditions[i]['answer'];
 
-        if(answerQuestion.get(questionId) !== answer) {
+        if (answerQuestion.get(questionId) !== answer) {
           return null;
         }
       }
 
       return blockId;
-    }
-    else if(Operator === 'or'){
+    } else if (Operator === 'or') {
       let orCondition = false;
+
       for (let i = 1; i < conditions.length; i++) {
         const questionId = conditions[i]['questionId'];
         const answer = conditions[i]['answer'];
 
-        if(answerQuestion.get(questionId) === answer) {
+        if (answerQuestion.get(questionId) === answer) {
           orCondition = true;
         }
       }
 
-      if(orCondition) return blockId;
-    }
-    else return null;
-    
+      if (orCondition) return blockId;
+    } else return null;
   }
-
 
   /**
-   * 
+   *
    * @returns Текущий вопрос с овтетами и типом ответов
    */
-  getQuestion(){
-    return this.currentBlock['questions'][this.currentQuestion-1];
+  getQuestion() {
+    return this.currentBlock['questions'][this.currentQuestion - 1];
   }
 
-
-
-  /** 
+  /**
    * @param {object} question - вопрос полученный из метода getQuestion
    * @param {Int} answerNumber - порядковый номер ответа
    */
-  AnswerTheQuestion(question, answerNumber){
-    const countOptions = question['hasOtherOption'] === true ? 
-        question['options'].length + 1 : 
-        question['options'].length;
-    
-    if(answerNumber > countOptions) throw new Error('Вопрос не содержит такого варианта ответа');
+  AnswerTheQuestion(question, answerNumber) {
+    const countOptions =
+      question['hasOtherOption'] === true
+        ? question['options'].length + 1
+        : question['options'].length;
+
+    if (answerNumber > countOptions)
+      throw new Error('Вопрос не содержит такого варианта ответа');
 
     const answer = question['options'][answerNumber - 1];
     const questionId = question['id'];
@@ -147,29 +145,34 @@ class Questionnaire {
     this.answerQuestion.set(questionId, answer);
     this.currentQuestion++;
 
-    if(this._isLastQuestionInBlock(this.currentBlock, question))
-    {
-      this.currentBlock = this.getNextBlock(this.currentBlock, this.answerQuestion);
+    if (this._isLastQuestionInBlock(this.currentBlock, question)) {
+      this.currentBlock = this.getNextBlock(
+        this.currentBlock,
+        this.answerQuestion,
+      );
+
       this.currentQuestion = 1;
     }
-    if(!this.currentBlock){
+    if (!this.currentBlock) {
       this.endQuestionnaire();
     }
   }
 
   /**
-   * 
-   * @param {object} block - блок вопросов 
+   * @param {object} block - блок вопросов
    * @param {object} question - вопрос
    */
-  _isLastQuestionInBlock(block, question){
+  _isLastQuestionInBlock(block, question) {
     return block['questions'].at(-1) === question;
   }
 
-
-  endQuestionnaire(){
+  /**
+   * Заканчивает опрос
+   * @returns {Map<int, string>} объект с ответами
+   */
+  endQuestionnaire() {
     console.log('Опрос завершен!');
-    console.log(this.answerQuestion);
+    return (this.answerQuestion);
   }
 }
 
