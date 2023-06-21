@@ -1,6 +1,10 @@
 'use strict';
 const { readLine, rl } = require('./readLine');
 
+const SINGLE_CHOISE_TYPE = 'singleChoice';
+const MULTIPLE_CHOISE_TYPE = 'multipleChoice';
+
+
 class Questionnaire {
   constructor(blocks) {
     /**
@@ -127,24 +131,41 @@ class Questionnaire {
   }
 
   /**
-   * @param {object} question - вопрос полученный из метода getQuestion
-   * @param {Int} answerNumber - порядковый номер ответа
+   * @param {object} question - Объект вопроса
+   * @param {Int|Array<Int>} answer - Порядковый номер/номера ответа в зависимости от типа вопроса 
    */
-  AnswerTheQuestion(question, answerNumber) {
-    const countOptions =
-      question['hasOtherOption'] === true
-        ? question['options'].length + 1
-        : question['options'].length;
+  _checkCountOptions(question, answer) {
+    if(question['type'] === SINGLE_CHOISE_TYPE){
+      const countOptions =
+        question['hasOtherOption'] === true
+          ? question['options'].length + 1
+          : question['options'].length;
 
-    if (answerNumber > countOptions)
-      throw new Error('Вопрос не содержит такого варианта ответа');
+      if (answer > countOptions)
+        throw new Error('Вопрос не содержит такого варианта ответа');
+    }
+    if(question['type'] === MULTIPLE_CHOISE_TYPE){
+      const countOptions =
+        question['hasOtherOption'] === true
+          ? question['options'].length + 1
+          : question['options'].length;
+        answer.forEach(answerNum => 
+          {
+            if(answerNum > countOptions){
+              throw new Error('Один из ответов не содержится в возможных вариантах ответов');
+            }
+          }
+        )
+    }
+  }
 
-    const answer = question['options'][answerNumber - 1];
-    const questionId = question['id'];
 
-    this.answerQuestion.set(questionId, answer);
-    this.currentQuestion++;
-
+  /**
+   * Установка текущего блока вопроса, если это последний вопрос и заверешение опроса если следующего блока нет, в остальных случаях ничего не происходит
+   * @param {object} question 
+   * @returns {Map<Int, string| Array<string> >} - Если это последний вопрос, вернется Map с ответами
+   */
+  _setCurrentBlockOrEndQuestionnaire(question){
     if (this._isLastQuestionInBlock(this.currentBlock, question)) {
       this.currentBlock = this.getNextBlock(
         this.currentBlock,
@@ -154,7 +175,44 @@ class Questionnaire {
       this.currentQuestion = 1;
     }
     if (!this.currentBlock) {
-      this.endQuestionnaire();
+      return this.endQuestionnaire();
+    }
+  }
+
+  /**
+   * @param {object} question - вопрос полученный из метода getQuestion
+   * @param {Int} answerNumber - порядковый номер ответа
+   */
+  AnswerTheQuestion(question, answerNumber) {
+    if(question['type'] === SINGLE_CHOISE_TYPE){
+      this._checkCountOptions(question, answerNumber);
+
+      const answer = question['options'][answerNumber - 1];
+      const questionId = question['id'];
+
+      this.answerQuestion.set(questionId, answer);
+      this.currentQuestion++;
+
+      const resultAnswer = this._setCurrentBlockOrEndQuestionnaire(question);
+       if(resultAnswer){
+        return resultAnswer
+       }
+      
+    }
+    if(question['type'] === MULTIPLE_CHOISE_TYPE){
+      this._checkCountOptions(question, answerNumber);
+      const questionId = question['id'];
+      let answer = [];
+      for (const answerNum of answerNumber) {
+        answer.push(question['options'][answerNum - 1]);
+      }
+      this.answerQuestion.set(questionId, answer);
+      this.currentQuestion++;
+
+       const resultAnswer = this._setCurrentBlockOrEndQuestionnaire(question);
+       if(resultAnswer){
+        return resultAnswer
+       }
     }
   }
 

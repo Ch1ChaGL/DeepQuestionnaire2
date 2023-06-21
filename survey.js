@@ -19,6 +19,13 @@ const survey = {
           options: ['Ответ 1', 'Ответ 2', 'Ответ 3'],
           hasOtherOption: true,
         },
+        {
+          id: 3,
+          text: 'Вопрос 3 в блоке 1',
+          type: 'multipleChoice',
+          options: ['Ответ 1', 'Ответ 2', 'Ответ 3'],
+          hasOtherOption: true,
+        },
       ],
       nextBlock: {
         condition: [
@@ -59,14 +66,14 @@ const survey = {
       parentBlock: 1,
       questions: [
         {
-          id: 3,
+          id: 4,
           text: 'Вопрос 1 в блоке 2',
           type: 'singleChoice',
           options: ['Ответ 1', 'Ответ 2', 'Ответ 3'],
           hasOtherOption: true,
         },
         {
-          id: 4,
+          id: 5,
           text: 'Вопрос 2 в блоке 2',
           type: 'singleChoice',
           options: ['Ответ 1', 'Ответ 2', 'Ответ 3'],
@@ -98,14 +105,14 @@ const survey = {
       parentBlock: 2,
       questions: [
         {
-          id: 5,
+          id:6,
           text: 'Вопрос 1 в блоке 3',
           type: 'singleChoice',
           options: ['Ответ 1', 'Ответ 2', 'Ответ 3'],
           hasOtherOption: true,
         },
         {
-          id: 6,
+          id: 7,
           text: 'Вопрос 2 в блоке 3',
           type: 'singleChoice',
           options: ['Ответ 1', 'Ответ 2', 'Ответ 3'],
@@ -137,14 +144,14 @@ const survey = {
       parentBlock: 3,
       questions: [
         {
-          id: 7,
+          id: 8,
           text: 'Вопрос 1 в блоке 4',
           type: 'singleChoice',
           options: ['Ответ 1', 'Ответ 2', 'Ответ 3'],
           hasOtherOption: true,
         },
         {
-          id: 8,
+          id: 9,
           text: 'Вопрос 2 в блоке 4',
           type: 'singleChoice',
           options: ['Ответ 1', 'Ответ 2', 'Ответ 3'],

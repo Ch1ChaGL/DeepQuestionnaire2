@@ -13,9 +13,12 @@ const main = async () => {
   quest.AnswerTheQuestion(question, 3);
   question = quest.getQuestion();
   console.log(question);
-  quest.AnswerTheQuestion(question, 1);
+  quest.AnswerTheQuestion(question, [1,2]);
   question = quest.getQuestion();
   console.log(question);
   quest.AnswerTheQuestion(question, 1);
+  question = quest.getQuestion();
+  console.log(question);
+  console.log(quest.AnswerTheQuestion(question, 1));
 };
 main();
