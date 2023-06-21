@@ -10,11 +10,12 @@ class Questionnaire {
     /**
      * Текущий блок вопросов
      */
-    this.currentBlock = null;
+    this.currentBlock = blocks[0];
     /**
      * Map с ключем - Id вопроса / Значение - Ответ
      */
     this.answerQuestion = new Map();
+    this.currentQuestion = 1;
   }
 
   /** 
@@ -62,8 +63,8 @@ class Questionnaire {
    * @param {answerQuestion} answerQuestion - Вопрос-Ответ
    */
   getNextBlock(PreviousBlock, answerQuestion){
-    console.log('Предыдущий блок:', PreviousBlock);
-    console.log('Вопрос-Ответ:', answerQuestion);
+    // console.log('Предыдущий блок:', PreviousBlock);
+    // console.log('Вопрос-Ответ:', answerQuestion);
 
     const conditions = PreviousBlock['nextBlock']?.['condition'];
     if(!conditions) return null;
@@ -71,7 +72,6 @@ class Questionnaire {
     let nextBlockId = null;
 
     for (const condition of conditions) {
-      console.log('я тут');
       nextBlockId = this._CheckConditional(condition, answerQuestion);
       if(nextBlockId) break;
     }
@@ -86,22 +86,14 @@ class Questionnaire {
    */
   //Нужно просмотреть предложенный блок, его условие, и если оно верное, то вернуть следующий блок иначе вернуть null
   _CheckConditional(conditions, answerQuestion){
-    console.log('Я тут');
     const {Operator, blockId} = conditions[0];
-    console.log('conditions',conditions);
-    console.log('answerQuestion',answerQuestion);
-    console.log('Operator',Operator);
-    console.log('blockId',blockId);
-    console.log("Operator === 'and'", Operator === 'and');
+
     if(Operator === 'and'){
-      console.log('Я в and');
-      console.log('conditions', conditions.length);
+      
       for (let i = 1; i < conditions.length; i++) {
-        console.log('-------------');
+
         const questionId = conditions[i]['questionId'];
-        console.log('questionId',questionId);
         const answer = conditions[i]['answer'];
-        console.log('answer',answer);
 
         if(answerQuestion.get(questionId) !== answer) {
           return null;
@@ -125,6 +117,59 @@ class Questionnaire {
     }
     else return null;
     
+  }
+
+
+  /**
+   * 
+   * @returns Текущий вопрос с овтетами и типом ответов
+   */
+  getQuestion(){
+    return this.currentBlock['questions'][this.currentQuestion-1];
+  }
+
+
+
+  /** 
+   * @param {object} question - вопрос полученный из метода getQuestion
+   * @param {Int} answerNumber - порядковый номер ответа
+   */
+  AnswerTheQuestion(question, answerNumber){
+    const countOptions = question['hasOtherOption'] === true ? 
+        question['options'].length + 1 : 
+        question['options'].length;
+    
+    if(answerNumber > countOptions) throw new Error('Вопрос не содержит такого варианта ответа');
+
+    const answer = question['options'][answerNumber - 1];
+    const questionId = question['id'];
+
+    this.answerQuestion.set(questionId, answer);
+    this.currentQuestion++;
+
+    if(this._isLastQuestionInBlock(this.currentBlock, question))
+    {
+      this.currentBlock = this.getNextBlock(this.currentBlock, this.answerQuestion);
+      this.currentQuestion = 1;
+    }
+    if(!this.currentBlock){
+      this.endQuestionnaire();
+    }
+  }
+
+  /**
+   * 
+   * @param {object} block - блок вопросов 
+   * @param {object} question - вопрос
+   */
+  _isLastQuestionInBlock(block, question){
+    return block['questions'].at(-1) === question;
+  }
+
+
+  endQuestionnaire(){
+    console.log('Опрос завершен!');
+    console.log(this.answerQuestion);
   }
 }
 
