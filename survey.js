@@ -45,6 +45,16 @@ const survey = {
           ],
           [
             {
+              Operator: 'and',
+              blockId: 3,
+            },
+            {
+              questionId: 3,
+              answer: ['Ответ 1', 'Ответ 2'],
+            },
+          ],
+          [
+            {
               Operator: 'or',
               blockId: 4,
             },
@@ -105,7 +115,7 @@ const survey = {
       parentBlock: 2,
       questions: [
         {
-          id:6,
+          id: 6,
           text: 'Вопрос 1 в блоке 3',
           type: 'singleChoice',
           options: ['Ответ 1', 'Ответ 2', 'Ответ 3'],

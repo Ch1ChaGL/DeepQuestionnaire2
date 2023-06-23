@@ -4,7 +4,6 @@ const { readLine, rl } = require('./readLine');
 const SINGLE_CHOISE_TYPE = 'singleChoice';
 const MULTIPLE_CHOISE_TYPE = 'multipleChoice';
 
-
 class Questionnaire {
   constructor(blocks) {
     /**
@@ -20,48 +19,6 @@ class Questionnaire {
      */
     this.answerQuestion = new Map();
     this.currentQuestion = 1;
-  }
-
-  /**
-   * !(DELETE) Вот это вроде можно удалить (DELETE)
-   */
-  /**
-   * @param {block} block - блок вопросов
-   */
-  async processBlock(block) {
-    console.log(`--${block['title']}--`);
-    for (const question of block['questions']) {
-      console.log('Внимание вопрос:', question['text']);
-      let answer;
-
-      if (question['type'] === 'singleChoice') {
-        console.log('Варианты ответов:');
-
-        console.log('question["options"] ', question['options']);
-
-        question['options'].forEach((option, index) => {
-          // console.log(`${index + 1}. ${option['text']}`);
-          console.log(`${index + 1}. ${option}`);
-        });
-
-        answer = await readLine('Введите номер вашего ответа: ');
-        const answerId = parseInt(answer);
-        answer = question['options'][answerId - 1];
-      } else if (question['type'] === 'text') {
-        answer = await readLine('Введите текст ответа: ');
-      }
-
-      this.answerQuestion.set(question['id'], answer);
-    }
-
-    const nextBlock = this.getNextBlock(block, this.answerQuestion);
-
-    if (nextBlock) {
-      await this.processBlock(nextBlock);
-    } else {
-      console.log('Опрос завершен!');
-      rl.close();
-    }
   }
 
   /**
@@ -98,9 +55,13 @@ class Questionnaire {
     if (Operator === 'and') {
       for (let i = 1; i < conditions.length; i++) {
         const questionId = conditions[i]['questionId'];
-        const answer = conditions[i]['answer'];
-
-        if (answerQuestion.get(questionId) !== answer) {
+        const answerInCondition = conditions[i]['answer'];
+        const getedAnswer = answerQuestion.get(questionId);
+        if (getedAnswer === undefined) {
+          return null;
+        }
+        const answer = getedAnswer.answer;
+        if (answerInCondition.toString() !== answer.toString()) {
           return null;
         }
       }
@@ -111,9 +72,13 @@ class Questionnaire {
 
       for (let i = 1; i < conditions.length; i++) {
         const questionId = conditions[i]['questionId'];
-        const answer = conditions[i]['answer'];
-
-        if (answerQuestion.get(questionId) === answer) {
+        const answerInCondition = conditions[i]['answer'];
+        const getedAnswer = answerQuestion.get(questionId);
+        if (getedAnswer === undefined) {
+          return null;
+        }
+        const answer = getedAnswer.answer;
+        if (answerInCondition.toString() === answer.toString()) {
           orCondition = true;
         }
       }
@@ -132,10 +97,10 @@ class Questionnaire {
 
   /**
    * @param {object} question - Объект вопроса
-   * @param {Int|Array<Int>} answer - Порядковый номер/номера ответа в зависимости от типа вопроса 
+   * @param {Int|Array<Int>} answer - Порядковый номер/номера ответа в зависимости от типа вопроса
    */
   _checkCountOptions(question, answer) {
-    if(question['type'] === SINGLE_CHOISE_TYPE){
+    if (question['type'] === SINGLE_CHOISE_TYPE) {
       const countOptions =
         question['hasOtherOption'] === true
           ? question['options'].length + 1
@@ -144,28 +109,27 @@ class Questionnaire {
       if (answer > countOptions)
         throw new Error('Вопрос не содержит такого варианта ответа');
     }
-    if(question['type'] === MULTIPLE_CHOISE_TYPE){
+    if (question['type'] === MULTIPLE_CHOISE_TYPE) {
       const countOptions =
         question['hasOtherOption'] === true
           ? question['options'].length + 1
           : question['options'].length;
-        answer.forEach(answerNum => 
-          {
-            if(answerNum > countOptions){
-              throw new Error('Один из ответов не содержится в возможных вариантах ответов');
-            }
-          }
-        )
+      answer.forEach(answerNum => {
+        if (answerNum > countOptions) {
+          throw new Error(
+            'Один из ответов не содержится в возможных вариантах ответов',
+          );
+        }
+      });
     }
   }
 
-
   /**
    * Установка текущего блока вопроса, если это последний вопрос и заверешение опроса если следующего блока нет, в остальных случаях ничего не происходит
-   * @param {object} question 
+   * @param {object} question
    * @returns {Map<Int, string| Array<string> >} - Если это последний вопрос, вернется Map с ответами
    */
-  _setCurrentBlockOrEndQuestionnaire(question){
+  _setCurrentBlockOrEndQuestionnaire(question) {
     if (this._isLastQuestionInBlock(this.currentBlock, question)) {
       this.currentBlock = this.getNextBlock(
         this.currentBlock,
@@ -175,6 +139,7 @@ class Questionnaire {
       this.currentQuestion = 1;
     }
     if (!this.currentBlock) {
+      console.log('No current');
       return this.endQuestionnaire();
     }
   }
@@ -184,35 +149,39 @@ class Questionnaire {
    * @param {Int} answerNumber - порядковый номер ответа
    */
   AnswerTheQuestion(question, answerNumber) {
-    if(question['type'] === SINGLE_CHOISE_TYPE){
+    if (question['type'] === SINGLE_CHOISE_TYPE) {
       this._checkCountOptions(question, answerNumber);
 
       const answer = question['options'][answerNumber - 1];
       const questionId = question['id'];
 
-      this.answerQuestion.set(questionId, answer);
+      const block = this.currentBlock;
+      this.answerQuestion.set(questionId, { block, answer });
+
       this.currentQuestion++;
 
       const resultAnswer = this._setCurrentBlockOrEndQuestionnaire(question);
-       if(resultAnswer){
-        return resultAnswer
-       }
-      
+      if (resultAnswer) {
+        return resultAnswer;
+      }
     }
-    if(question['type'] === MULTIPLE_CHOISE_TYPE){
+    if (question['type'] === MULTIPLE_CHOISE_TYPE) {
       this._checkCountOptions(question, answerNumber);
       const questionId = question['id'];
       let answer = [];
       for (const answerNum of answerNumber) {
         answer.push(question['options'][answerNum - 1]);
       }
-      this.answerQuestion.set(questionId, answer);
+
+      const block = this.currentBlock;
+      this.answerQuestion.set(questionId, { block, answer });
+
       this.currentQuestion++;
 
-       const resultAnswer = this._setCurrentBlockOrEndQuestionnaire(question);
-       if(resultAnswer){
-        return resultAnswer
-       }
+      const resultAnswer = this._setCurrentBlockOrEndQuestionnaire(question);
+      if (resultAnswer) {
+        return resultAnswer;
+      }
     }
   }
 
@@ -230,7 +199,7 @@ class Questionnaire {
    */
   endQuestionnaire() {
     console.log('Опрос завершен!');
-    return (this.answerQuestion);
+    return this.answerQuestion;
   }
 }
 
