@@ -4,6 +4,30 @@ const { readLine, rl } = require('./readLine');
 const SINGLE_CHOISE_TYPE = 'singleChoice';
 const MULTIPLE_CHOISE_TYPE = 'multipleChoice';
 
+function binarySearch(blocks, blockId) {
+  let low = 0;
+  let high = blocks.length - 1;
+  while (low <= high) {
+    const mid = Math.floor((low + high) / 2);
+    const guess = blocks[mid].id;
+    if (guess === blockId) return mid;
+    if (guess > blockId) high = mid - 1;
+    else {
+      low = mid + 1;
+    }
+  }
+  return false;
+}
+function quicksort(blocks) {
+  if (blocks.length < 2) return blocks;
+  else {
+    const pivot = blocks[0];
+    const less = blocks.filter(elem => elem.id < pivot.id);
+    const greater = blocks.filter(elem => elem.id > pivot.id);
+    return [...quicksort(less), pivot, ...quicksort(greater)];
+  }
+}
+
 class Questionnaire {
   constructor(blocks) {
     /**
@@ -19,6 +43,28 @@ class Questionnaire {
      */
     this.answerQuestion = new Map();
     this.currentQuestion = 1;
+  }
+
+  static createReport(interviewee, blocks, answerQuestion) {
+    const { CompanyName, FullName, JobTitle } = interviewee;
+    const report = { CompanyName, FullName, JobTitle };
+    const sortedBlocks = quicksort(blocks);
+
+    for (let question of answerQuestion) {
+      const [idQuestion, answerBlock] = question;
+      const { block, answer } = answerBlock;
+      const blockId = block.id;
+
+      const blockInBlocks = sortedBlocks[binarySearch(blocks, blockId)];
+      const questions = blockInBlocks.questions;
+      const questionInQuestions = questions[binarySearch(questions,idQuestion)];
+      
+      const questionText = questionInQuestions.text;
+      
+      report[questionText] = answer;
+    }
+
+    return report;
   }
 
   /**
@@ -106,7 +152,7 @@ class Questionnaire {
           ? question['options'].length + 1
           : question['options'].length;
 
-      if (answer > countOptions)
+      if (answer[0] > countOptions)
         throw new Error('Вопрос не содержит такого варианта ответа');
     }
     if (question['type'] === MULTIPLE_CHOISE_TYPE) {
@@ -114,6 +160,8 @@ class Questionnaire {
         question['hasOtherOption'] === true
           ? question['options'].length + 1
           : question['options'].length;
+
+      console.log('answer', answer);
       answer.forEach(answerNum => {
         if (answerNum > countOptions) {
           throw new Error(

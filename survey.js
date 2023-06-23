@@ -98,11 +98,11 @@ const survey = {
               blockId: 3,
             },
             {
-              questionId: 3,
+              questionId: 4,
               answer: 'Ответ 2',
             },
             {
-              questionId: 4,
+              questionId: 5,
               answer: 'Ответ 3',
             },
           ],
@@ -137,11 +137,11 @@ const survey = {
               blockId: 4,
             },
             {
-              questionId: 5,
+              questionId: 6,
               answer: 'Ответ 2',
             },
             {
-              questionId: 6,
+              questionId: 7,
               answer: 'Ответ 3',
             },
           ],
