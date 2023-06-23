@@ -57,10 +57,11 @@ class Questionnaire {
 
       const blockInBlocks = sortedBlocks[binarySearch(blocks, blockId)];
       const questions = blockInBlocks.questions;
-      const questionInQuestions = questions[binarySearch(questions,idQuestion)];
-      
+      const questionInQuestions =
+        questions[binarySearch(questions, idQuestion)];
+
       const questionText = questionInQuestions.text;
-      
+
       report[questionText] = answer;
     }
 
@@ -103,10 +104,13 @@ class Questionnaire {
         const questionId = conditions[i]['questionId'];
         const answerInCondition = conditions[i]['answer'];
         const getedAnswer = answerQuestion.get(questionId);
+
         if (getedAnswer === undefined) {
           return null;
         }
+
         const answer = getedAnswer.answer;
+
         if (answerInCondition.toString() !== answer.toString()) {
           return null;
         }
@@ -120,10 +124,12 @@ class Questionnaire {
         const questionId = conditions[i]['questionId'];
         const answerInCondition = conditions[i]['answer'];
         const getedAnswer = answerQuestion.get(questionId);
+
         if (getedAnswer === undefined) {
           return null;
         }
         const answer = getedAnswer.answer;
+
         if (answerInCondition.toString() === answer.toString()) {
           orCondition = true;
         }
@@ -192,15 +198,40 @@ class Questionnaire {
     }
   }
 
+  _AnswerTheQuestionWithOtherOption(question, answer) {
+    if (question.hasOtherOption === false)
+      throw new Error('Вопрос не поддерживает другие ответы');
+
+    const questionId = question['id'];
+
+    const block = this.currentBlock;
+    this.answerQuestion.set(questionId, { block, answer });
+
+    this.currentQuestion++;
+
+    const resultAnswer = this._setCurrentBlockOrEndQuestionnaire(question);
+    return resultAnswer;
+  }
   /**
    * @param {object} question - вопрос полученный из метода getQuestion
-   * @param {Int} answerNumber - порядковый номер ответа
+   * @param {Int | Array<Int> | string} Answer - порядковый номер ответа | массив ответов | строка с ответом
+   * @param {Boolean} isOtherQuestion - флаг указывающий на то, является ли ответ одним из выбранных, или этот ответ, содержит иной текст ответа
    */
-  AnswerTheQuestion(question, answerNumber) {
+  AnswerTheQuestion(question, Answer, isOtherOption = false) {
+    if (isOtherOption) {
+      const resultAnswer = this._AnswerTheQuestionWithOtherOption(
+        question,
+        Answer,
+      );
+      if (resultAnswer) {
+        return resultAnswer;
+      }
+      return;
+    }
     if (question['type'] === SINGLE_CHOISE_TYPE) {
-      this._checkCountOptions(question, answerNumber);
+      this._checkCountOptions(question, Answer);
 
-      const answer = question['options'][answerNumber - 1];
+      const answer = question['options'][Answer - 1];
       const questionId = question['id'];
 
       const block = this.currentBlock;
@@ -214,10 +245,10 @@ class Questionnaire {
       }
     }
     if (question['type'] === MULTIPLE_CHOISE_TYPE) {
-      this._checkCountOptions(question, answerNumber);
+      this._checkCountOptions(question, Answer);
       const questionId = question['id'];
       let answer = [];
-      for (const answerNum of answerNumber) {
+      for (const answerNum of Answer) {
         answer.push(question['options'][answerNum - 1]);
       }
 
