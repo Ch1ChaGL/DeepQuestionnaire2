@@ -32,6 +32,20 @@ const survey = {
           [
             {
               Operator: 'and',
+              blockId: 4,
+            },
+            {
+              questionId: 1,
+              answer: {isOtherOption: true}, 
+            },
+            {
+              questionId: 2,
+              answer: {isOtherOption: true}, 
+            }
+          ],
+          [
+            {
+              Operator: 'and',
               blockId: 2,
             },
             {

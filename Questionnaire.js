@@ -105,6 +105,10 @@ class Questionnaire {
         const answerInCondition = conditions[i]['answer'];
         const getedAnswer = answerQuestion.get(questionId);
 
+        if(answerInCondition.isOtherOption && getedAnswer.isOtherOption) {
+          console.log('Если видишь это, то работает');
+          continue; 
+        }
         if (getedAnswer === undefined) {
           return null;
         }
@@ -198,6 +202,12 @@ class Questionnaire {
     }
   }
 
+  /**
+   * Метод для поддержки ответа на вопрос текстом, которого нет в вариантах ответа, если это возможно
+   * @param {object} question - вопрос полученный из метода getQuestion 
+   * @param {string} answer - Ответ в качестве строки
+   * @returns в случае окончания вопросов, возвращает Map с ответами пользователя за весь опрос
+   */
   _AnswerTheQuestionWithOtherOption(question, answer) {
     if (question.hasOtherOption === false)
       throw new Error('Вопрос не поддерживает другие ответы');
@@ -205,8 +215,8 @@ class Questionnaire {
     const questionId = question['id'];
 
     const block = this.currentBlock;
-    this.answerQuestion.set(questionId, { block, answer });
-
+    this.answerQuestion.set(questionId, { block, answer, isOtherOption: true });
+    console.log(this.answerQuestion);
     this.currentQuestion++;
 
     const resultAnswer = this._setCurrentBlockOrEndQuestionnaire(question);
