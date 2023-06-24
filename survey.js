@@ -87,7 +87,6 @@ const survey = {
     {
       id: 2,
       title: 'Блок 2',
-      parentBlock: 1,
       questions: [
         {
           id: 4,
@@ -126,7 +125,6 @@ const survey = {
     {
       id: 3,
       title: 'Блок 3',
-      parentBlock: 2,
       questions: [
         {
           id: 6,
@@ -165,7 +163,6 @@ const survey = {
     {
       id: 4,
       title: 'Блок 4',
-      parentBlock: 3,
       questions: [
         {
           id: 8,

@@ -49,7 +49,7 @@ class Questionnaire {
    * !Сделать время отчета
    * @param {object} interviewee -  объект опрашиваемого
    * @param {object} blocks - блоки вопросов
-   * @param {Map<int,string>} answerQuestion - ответы 
+   * @param {Map<int,string>} answerQuestion - ответы
    * @returns объект отчета
    */
   static createReport(interviewee, blocks, answerQuestion) {
@@ -112,16 +112,15 @@ class Questionnaire {
         const answerInCondition = conditions[i]['answer'];
         const getedAnswer = answerQuestion.get(questionId);
 
-        if(answerInCondition.isOtherOption && getedAnswer.isOtherOption) {
-          console.log('Если видишь это, то работает');
-          continue; 
+        if (answerInCondition.isOtherOption && getedAnswer.isOtherOption) {
+          continue;
         }
         if (getedAnswer === undefined) {
           return null;
         }
 
         const answer = getedAnswer.answer;
-
+        console.log('answer', answer);
         if (answerInCondition.toString() !== answer.toString()) {
           return null;
         }
@@ -195,13 +194,16 @@ class Questionnaire {
    * @returns {Map<Int, string| Array<string> >} - Если это последний вопрос, вернется Map с ответами
    */
   _setCurrentBlockOrEndQuestionnaire(question) {
+    const PreviousBlockId = this.currentBlock.id;
     if (this._isLastQuestionInBlock(this.currentBlock, question)) {
       this.currentBlock = this.getNextBlock(
         this.currentBlock,
         this.answerQuestion,
       );
-
       this.currentQuestion = 1;
+      if (this.currentBlock) {
+        this.currentBlock.parentBlock = PreviousBlockId;
+      }
     }
     if (!this.currentBlock) {
       console.log('No current');
@@ -211,7 +213,7 @@ class Questionnaire {
 
   /**
    * Метод для поддержки ответа на вопрос текстом, которого нет в вариантах ответа, если это возможно
-   * @param {object} question - вопрос полученный из метода getQuestion 
+   * @param {object} question - вопрос полученный из метода getQuestion
    * @param {string} answer - Ответ в качестве строки
    * @returns в случае окончания вопросов, возвращает Map с ответами пользователя за весь опрос
    */
@@ -296,6 +298,23 @@ class Questionnaire {
   endQuestionnaire() {
     console.log('Опрос завершен!');
     return this.answerQuestion;
+  }
+
+  goBack() {
+    const keysArray = Array.from(this.answerQuestion.keys());
+    const lastKey = keysArray[keysArray.length - 1];
+
+    const valuesArray = Array.from(this.answerQuestion.values());
+    const lastValue = valuesArray[valuesArray.length - 1];
+
+    if (this.currentQuestion === 1) {
+      const prevQuestionPosition = lastValue.block.questions.length;
+      this.currentQuestion = prevQuestionPosition;
+    }else{
+      this.currentQuestion--;
+    }
+    this.currentBlock = lastValue.block;
+    this.answerQuestion.delete(lastKey);
   }
 }
 

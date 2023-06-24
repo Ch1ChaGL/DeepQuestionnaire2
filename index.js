@@ -24,6 +24,7 @@ async function quize() {
     }
 
     console.log('Для ответа на вопрос текстом нажмите кнопку 9');
+    console.log('Для того, чтобы вернуться назад нажмите 0');
     let myAnswer = await readLine('Введите номер(а) вашего ответа: ');
     if (parseInt(myAnswer) === 9) {
       let answerText = await readLine('Введите текст ответа: ');
@@ -33,7 +34,11 @@ async function quize() {
         console.log(res);
         return res;
       }
-    } else {
+    }else if(parseInt(myAnswer) === 0){
+        quest.goBack();
+        continue;
+    } 
+    else {
       myAnswer = myAnswer.split(',');
       myAnswer = myAnswer.map(num => parseInt(num));
       const res = quest.AnswerTheQuestion(question, myAnswer);
