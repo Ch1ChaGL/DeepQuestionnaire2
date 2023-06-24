@@ -45,6 +45,13 @@ class Questionnaire {
     this.currentQuestion = 1;
   }
 
+  /**
+   * !Сделать время отчета
+   * @param {object} interviewee -  объект опрашиваемого
+   * @param {object} blocks - блоки вопросов
+   * @param {Map<int,string>} answerQuestion - ответы 
+   * @returns объект отчета
+   */
   static createReport(interviewee, blocks, answerQuestion) {
     const { CompanyName, FullName, JobTitle } = interviewee;
     const report = { CompanyName, FullName, JobTitle };
