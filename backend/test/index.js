@@ -51,11 +51,14 @@ async function quize() {
 }
 const interviewee = {
   CompanyName: 'ИСПО',
-  FullName: 'Марков Данил Петрович',
+  RespondentName: 'Марков Данил Петрович',
   JobTitle: 'Студент',
-  Time: new Date(),
+  PhoneNumber: '+7-(952)-203-33-46',
+  Email: 'markov.danil.04@mail.ru',
+  QuizTime: new Date(),
 };
 const main = async () => {
+  console.log('Время сейчас', new Date());
   const res = await quize();
   const rep = Questionnaire.createReport(interviewee, surveys.blocks, res);
   console.log(quest.getJSON(rep));

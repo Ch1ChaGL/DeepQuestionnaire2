@@ -53,10 +53,10 @@ class Questionnaire {
    * @returns объект отчета
    */
   static createReport(interviewee, blocks, answerQuestion) {
-    const { CompanyName, FullName, JobTitle, Time } = interviewee;
-    const report = { CompanyName, FullName, JobTitle, Time };
+    const { CompanyName, RespondentName, JobTitle, QuizTime, PhoneNumber, Email } = interviewee;
+    const report = { CompanyName, RespondentName, JobTitle, QuizTime, PhoneNumber, Email };
     const sortedBlocks = quicksort(blocks);
-
+    report['Survey'] = {};
     for (let question of answerQuestion) {
       const [idQuestion, answerBlock] = question;
       const { block, answer } = answerBlock;
@@ -69,7 +69,7 @@ class Questionnaire {
 
       const questionText = questionInQuestions.text;
 
-      report[questionText] = answer;
+      report['Survey'][questionText] = answer;
     }
 
     return report;
