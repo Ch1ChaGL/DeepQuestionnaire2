@@ -1,7 +1,7 @@
 'use strict';
 
 const surveys = require('./survey.js');
-const Questionnaire = require('./Questionnaire.js');
+const Questionnaire = require('../Questionnaire.js');
 const { readLine, rl } = require('./readLine.js');
 const quest = new Questionnaire(surveys.blocks);
 
@@ -34,11 +34,10 @@ async function quize() {
         console.log(res);
         return res;
       }
-    }else if(parseInt(myAnswer) === 0){
-        quest.goBack();
-        continue;
-    } 
-    else {
+    } else if (parseInt(myAnswer) === 0) {
+      quest.goBack();
+      continue;
+    } else {
       myAnswer = myAnswer.split(',');
       myAnswer = myAnswer.map(num => parseInt(num));
       const res = quest.AnswerTheQuestion(question, myAnswer);
@@ -54,11 +53,12 @@ const interviewee = {
   CompanyName: 'ИСПО',
   FullName: 'Марков Данил Петрович',
   JobTitle: 'Студент',
+  Time: new Date(),
 };
 const main = async () => {
   const res = await quize();
   const rep = Questionnaire.createReport(interviewee, surveys.blocks, res);
-  console.log(rep);
+  console.log(quest.getJSON(rep));
   // console.log(quest.getQuestion());
 
   // quest.AnswerTheQuestion(question, 2);

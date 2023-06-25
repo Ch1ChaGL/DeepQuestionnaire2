@@ -1,5 +1,5 @@
 'use strict';
-const { readLine, rl } = require('./readLine');
+const { readLine, rl } = require('./test/readLine');
 
 const SINGLE_CHOISE_TYPE = 'singleChoice';
 const MULTIPLE_CHOISE_TYPE = 'multipleChoice';
@@ -53,8 +53,8 @@ class Questionnaire {
    * @returns объект отчета
    */
   static createReport(interviewee, blocks, answerQuestion) {
-    const { CompanyName, FullName, JobTitle } = interviewee;
-    const report = { CompanyName, FullName, JobTitle };
+    const { CompanyName, FullName, JobTitle, Time } = interviewee;
+    const report = { CompanyName, FullName, JobTitle, Time };
     const sortedBlocks = quicksort(blocks);
 
     for (let question of answerQuestion) {
@@ -310,11 +310,15 @@ class Questionnaire {
     if (this.currentQuestion === 1) {
       const prevQuestionPosition = lastValue.block.questions.length;
       this.currentQuestion = prevQuestionPosition;
-    }else{
+    } else {
       this.currentQuestion--;
     }
     this.currentBlock = lastValue.block;
     this.answerQuestion.delete(lastKey);
+  }
+
+  getJSON(report){
+    return JSON.stringify(report);
   }
 }
 
