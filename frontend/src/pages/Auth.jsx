@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useContext } from "react";
 import {
   Container,
   Row,
@@ -8,9 +8,26 @@ import {
   FloatingLabel,
   Button,
 } from "react-bootstrap";
-import { NavLink } from "react-router-dom";
 
-function Auth() {
+import { login } from "../API/userApi";
+import { Context } from "..";
+import { useNavigate } from "react-router-dom";
+import { SURVEY_ROUTE } from "../utils/consts";
+import { observer } from "mobx-react-lite";
+const Auth = observer(() => {
+  console.log('rendering Auth');
+  const { user } = useContext(Context);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const navigate = useNavigate();
+  const click = async (e) => {
+    const data = await login(email, password);
+    console.log(data);
+    user.setUser(data);
+    user.setIsAuth(true);
+    console.log(user.isAuth);
+    navigate(SURVEY_ROUTE);
+  };
   return (
     <Container
       className="d-flex justify-content-center align-items-center"
@@ -24,22 +41,34 @@ function Auth() {
             label="Email address"
             className="mb-3"
           >
-            <Form.Control type="email" placeholder="name@example.com" />
+            <Form.Control
+              type="email"
+              placeholder="name@example.com"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
           </FloatingLabel>
           <FloatingLabel controlId="floatingPassword" label="Password">
-            <Form.Control type="password" placeholder="Password" />
+            <Form.Control
+              type="password"
+              placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
           </FloatingLabel>
 
           <Row className="d-flex justify-content-between mt-3">
-            <Col sm={9}>Нет аккаунта? Тогда иди на хуй</Col>
-            <Col sm={3} className="text-end">
-              <Button variant="outline-success">Войти</Button>
+            <Col>Нет аккаунта? Тогда иди на хуй</Col>
+            <Col className="text-end">
+              <Button variant="outline-success" onClick={click}>
+                Войти
+              </Button>
             </Col>
           </Row>
         </Form>
       </Card>
     </Container>
   );
-}
+});
 
 export default Auth;
