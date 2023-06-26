@@ -18,7 +18,27 @@ const Report = sequelize.define('Report', {
   Survey: { type: DataTypes.TEXT },
 });
 
+const User = sequelize.define('User', {
+  UserId: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
+  FullName: { type: DataTypes.STRING },
+  Email: { type: DataTypes.STRING, unique: true },
+  Password: { type: DataTypes.STRING },
+  RoleId: { type: DataTypes.INTEGER},
+});
+
+const Role = sequelize.define('Role', {
+  RoleId: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
+  Name: { type: DataTypes.STRING, unique: true },
+  Description: { type: DataTypes.STRING },
+});
+
+//Установка связи между таблицами Role и User
+Role.hasMany(User, { foreignKey: 'RoleId' });
+User.belongsTo(Role, { foreignKey: 'RoleId' });
+
 module.exports = {
   Quiz,
   Report,
+  Role,
+  User,
 };
