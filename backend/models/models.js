@@ -16,6 +16,7 @@ const Report = sequelize.define('Report', {
   PhoneNumber: { type: DataTypes.STRING },
   QuizTime: { type: DataTypes.DATE },
   Survey: { type: DataTypes.TEXT },
+  UserId: { type: DataTypes.INTEGER },
 });
 
 const User = sequelize.define('User', {
@@ -23,7 +24,7 @@ const User = sequelize.define('User', {
   FullName: { type: DataTypes.STRING },
   Email: { type: DataTypes.STRING, unique: true },
   Password: { type: DataTypes.STRING },
-  RoleId: { type: DataTypes.INTEGER},
+  RoleId: { type: DataTypes.INTEGER },
 });
 
 const Role = sequelize.define('Role', {
@@ -35,6 +36,10 @@ const Role = sequelize.define('Role', {
 //Установка связи между таблицами Role и User
 Role.hasMany(User, { foreignKey: 'RoleId' });
 User.belongsTo(Role, { foreignKey: 'RoleId' });
+
+//Установка связи между таблицами Report и User
+Report.hasMany(User, { foreignKey: 'UserId' });
+User.belongsTo(Report, { foreignKey: 'UserId' });
 
 module.exports = {
   Quiz,

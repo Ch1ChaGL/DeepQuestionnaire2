@@ -1,9 +1,8 @@
-import React from 'react'
+import React from "react";
+import { Container } from "react-bootstrap";
 
 function Survey() {
-  return (
-    <div>Survey</div>
-  )
+  return <Container style={{ paddingTop:78 }}>Survey</Container>;
 }
 
-export default Survey
+export default Survey;
