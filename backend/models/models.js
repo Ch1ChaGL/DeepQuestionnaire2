@@ -3,7 +3,7 @@ const { DataTypes } = require('sequelize');
 
 const Quiz = sequelize.define('Quiz', {
   QuizId: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
-  Name: { type: DataTypes.STRING, primaryKey: true },
+  Name: { type: DataTypes.STRING, primaryKey: true, unique: true },
   Survey: { type: DataTypes.TEXT, primaryKey: true },
 });
 
