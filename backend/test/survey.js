@@ -89,14 +89,14 @@ const survey = {
       title: 'Блок 2',
       questions: [
         {
-          id: 4,
+          id: 1,
           text: 'Вопрос 1 в блоке 2',
           type: 'singleChoice',
           options: ['Ответ 1', 'Ответ 2', 'Ответ 3'],
           hasOtherOption: true,
         },
         {
-          id: 5,
+          id: 2,
           text: 'Вопрос 2 в блоке 2',
           type: 'singleChoice',
           options: ['Ответ 1', 'Ответ 2', 'Ответ 3'],
@@ -111,11 +111,11 @@ const survey = {
               blockId: 3,
             },
             {
-              questionId: 4,
+              questionId: 1,
               answer: 'Ответ 2',
             },
             {
-              questionId: 5,
+              questionId: 2,
               answer: 'Ответ 3',
             },
           ],

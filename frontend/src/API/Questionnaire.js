@@ -1,5 +1,4 @@
 'use strict';
-const { readLine, rl } = require('./test/readLine');
 
 const SINGLE_CHOISE_TYPE = 'singleChoice';
 const MULTIPLE_CHOISE_TYPE = 'multipleChoice';
