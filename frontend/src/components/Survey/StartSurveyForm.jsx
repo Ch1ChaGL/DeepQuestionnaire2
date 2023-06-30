@@ -5,11 +5,11 @@ import { useSurveyUpdater, useSurveyInformation } from './SurveyProvider';
 import { useNavigate } from 'react-router-dom';
 import { SURVEY_ROUTE } from '../../utils/consts';
 import DangerAlert from '../UI/DangerAlert';
+import { observer } from 'mobx-react-lite';
+const ALERT_TITTLE = 'При начале опроса произошла ошибка';
+const ALERT_MESSAGE = 'Пожалуйста, убедитесь, что все важные поля заполнены';
 
-const ALERT_TITTLE='При начале опроса произошла ошибка';
-const ALERT_MESSAGE='Пожалуйста, убедитесь, что все важные поля заполнены'
-
-function StartSurveyForm({ setIsStarted }) {
+const StartSurveyForm = observer(({ setIsStarted }) => {
   const [selectedSurveyId, setSelectedSurveyId] = useState(0);
   const [survey, setSurvey] = useState([]);
   const [isValid, setIsValid] = useState(false);
@@ -46,8 +46,8 @@ function StartSurveyForm({ setIsStarted }) {
     const selectedSurvey = survey.find(
       survey => survey.QuizId === selectedSurveyId,
     );
-    console.log('selectedSurvey', selectedSurvey);
-    updateSurveyData(selectedSurvey);
+    console.log('selectedSurvey', selectedSurvey.Survey);
+    updateSurveyData(JSON.parse(selectedSurvey.Survey).blocks);
 
     //Добавляем в стор данные о опросе
     updateSurveyInformation.setInformation({
@@ -59,6 +59,10 @@ function StartSurveyForm({ setIsStarted }) {
       QuizTime: new Date(),
     });
 
+    console.log(
+      'я в стартовой форме',
+      updateSurveyInformation.getInformation(),
+    );
     setIsStarted(true);
   };
 
@@ -79,11 +83,17 @@ function StartSurveyForm({ setIsStarted }) {
       className='d-flex justify-content-center align-items-center'
     >
       {showAlert && (
-        <DangerAlert show={showAlert} onHide={() => setShowAlert(false)} title={ALERT_TITTLE} message={ALERT_MESSAGE}/>
+        <DangerAlert
+          show={showAlert}
+          onHide={() => setShowAlert(false)}
+          title={ALERT_TITTLE}
+          message={ALERT_MESSAGE}
+        />
       )}
       <Card className='p-4' style={{ width: '700px' }}>
+        <h1 className='text-center'>Старт опроса</h1>
         <Form noValidate>
-          <InputGroup className='mb-3'>
+          <InputGroup className='mb-3 mt-3'>
             <InputGroup.Text id='FullName'>ФИО</InputGroup.Text>
             <Form.Control
               placeholder='Введите ФИО'
@@ -163,6 +173,6 @@ function StartSurveyForm({ setIsStarted }) {
       </Card>
     </Container>
   );
-}
+});
 
 export default StartSurveyForm;

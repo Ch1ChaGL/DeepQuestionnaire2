@@ -2,7 +2,7 @@ import { makeAutoObservable } from 'mobx';
 
 export default class SurveyInformationStore {
   constructor() {
-    // makeAutoObservable(this);
+    makeAutoObservable(this);
     this.CompanyName = '';
     this.RespondentName = '';
     this.JobTitle = '';

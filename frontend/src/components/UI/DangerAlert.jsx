@@ -3,7 +3,6 @@ import { Button, Modal } from 'react-bootstrap';
 import s from './DangerAlert.module.css';
 
 function DangerAlert(props) {
-  console.log('Я то тут ?');
   return (
     <Modal
       {...props}
@@ -11,15 +10,19 @@ function DangerAlert(props) {
       aria-labelledby='contained-modal-title-vcenter'
       centered
     >
-      <Modal.Header closeButton>
-        <Modal.Title id='contained-modal-title-vcenter'>ОШИБКА</Modal.Title>
+      <Modal.Header closeButton className={s['error-modal']}>
+        <Modal.Title id='contained-modal-title-vcenter'>
+          <span style={{ color: '#ea868f' }}>ОШИБКА</span>
+        </Modal.Title>
       </Modal.Header>
-      <Modal.Body>
-        <h4>{props.title}</h4>
-        <p>{props.message}</p>
+      <Modal.Body className={s['error-modal']}>
+        <h4 className={s['error-text']}>{props.title}</h4>
+        <p className={s['error-text']}>{props.message}</p>
       </Modal.Body>
-      <Modal.Footer>
-        <Button onClick={props.onHide}>Закрыть</Button>
+      <Modal.Footer className={s['error-modal']} style={{ backgroundColor:"#2c0b0e" }}>
+        <Button onClick={props.onHide} variant='danger'>
+          Закрыть
+        </Button>
       </Modal.Footer>
     </Modal>
   );

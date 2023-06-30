@@ -51,17 +51,34 @@ class Questionnaire {
    * @param {Map<int,string>} answerQuestion - ответы
    * @returns объект отчета
    */
-  static createReport(interviewee, blocks, answerQuestion) {
-    const { CompanyName, RespondentName, JobTitle, QuizTime, PhoneNumber, Email } = interviewee;
-    const report = { CompanyName, RespondentName, JobTitle, QuizTime, PhoneNumber, Email };
-    const sortedBlocks = quicksort(blocks);
+  //static createReport(interviewee, blocks, answerQuestion)
+  createReport(interviewee, answerQuestion) {
+    const {
+      CompanyName,
+      RespondentName,
+      JobTitle,
+      QuizTime,
+      PhoneNumber,
+      Email,
+    } = interviewee;
+    console.log('interviewee', interviewee);
+    const report = {
+      CompanyName,
+      RespondentName,
+      JobTitle,
+      QuizTime,
+      PhoneNumber,
+      Email,
+
+    };
+    const sortedBlocks = quicksort(this.blocks);
     report['Survey'] = {};
     for (let question of answerQuestion) {
       const [idQuestion, answerBlock] = question;
       const { block, answer } = answerBlock;
       const blockId = block.id;
 
-      const blockInBlocks = sortedBlocks[binarySearch(blocks, blockId)];
+      const blockInBlocks = sortedBlocks[binarySearch(this.blocks, blockId)];
       const questions = blockInBlocks.questions;
       const questionInQuestions =
         questions[binarySearch(questions, idQuestion)];
@@ -153,7 +170,7 @@ class Questionnaire {
    * @returns Текущий вопрос с овтетами и типом ответов
    */
   getQuestion() {
-    return this.currentBlock['questions'][this.currentQuestion - 1];
+    return this.currentBlock?.questions[this.currentQuestion - 1];
   }
 
   /**
@@ -306,6 +323,10 @@ class Questionnaire {
     const valuesArray = Array.from(this.answerQuestion.values());
     const lastValue = valuesArray[valuesArray.length - 1];
 
+    if (lastValue === undefined) {
+      return 0;
+    }
+
     if (this.currentQuestion === 1) {
       const prevQuestionPosition = lastValue.block.questions.length;
       this.currentQuestion = prevQuestionPosition;
@@ -316,7 +337,7 @@ class Questionnaire {
     this.answerQuestion.delete(lastKey);
   }
 
-  getJSON(report){
+  getJSON(report) {
     return JSON.stringify(report);
   }
 }

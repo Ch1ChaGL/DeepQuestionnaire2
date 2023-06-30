@@ -1,21 +1,23 @@
-import React, { createContext, useContext, useState } from "react";
-import Questionnaire from "../../API/Questionnaire";
-import SurveyInformationStore from "../../store/SurveyInformationStore";
+import React, { createContext, useContext, useState, useMemo } from 'react';
+import Questionnaire from '../../API/Questionnaire';
+import SurveyInformationStore from '../../store/SurveyInformationStore';
 const SurveyContext = createContext();
 function SurveyProvider({ children }) {
   const [surveyService, setSurveyService] = useState(null);
 
-  const updateSurveyData = (newData) => {
+  const updateSurveyData = newData => {
     const newSurveyService = new Questionnaire(newData);
+    console.log('newSurveyService', newSurveyService);
     setSurveyService(newSurveyService);
   };
-
+  const information = useMemo(() => new SurveyInformationStore(), []);
+  console.log('Рендеринг');
   return (
     <SurveyContext.Provider
       value={{
         surveyService,
         updateSurveyData,
-        information: new SurveyInformationStore(),
+        information,
       }}
     >
       {children}
@@ -34,4 +36,10 @@ const useSurveyUpdater = () => {
 const useSurveyInformation = () => {
   return useContext(SurveyContext).information;
 };
-export { SurveyProvider, useSurveyService, useSurveyUpdater, useSurveyInformation };
+
+export {
+  SurveyProvider,
+  useSurveyService,
+  useSurveyUpdater,
+  useSurveyInformation,
+};
