@@ -12,19 +12,14 @@ import {
 import Question from './Question';
 import EndSurveyForm from './EndSurveyForm';
 
-
-
-function Questions() {
+function Questions({ setIsStarted }) {
   const survey = useSurveyService();
   const [question, setQuestion] = useState(survey.getQuestion());
   const [isFinally, setIsFinally] = useState(false);
   const [report, setReport] = useState({});
 
-
   const interviewer = useSurveyInformation();
-  console.log('interviewer.getInformation()', interviewer.getInformation());
   const answerTheQuestion = (answerText, isOtherOptions) => {
-
     const res = survey.AnswerTheQuestion(question, answerText, isOtherOptions);
     if (res) {
       setIsFinally(true);
@@ -39,18 +34,18 @@ function Questions() {
   };
 
   const goBack = () => {
-    survey.goBack();
+    const res = survey.goBack();
+    if (res === 0) setIsStarted(false);
     setQuestion(survey.getQuestion());
   };
 
-
   return (
-    <Container
-      style={{ height: '100vh' }}
+    <div
       className='d-flex justify-content-center align-items-center'
+      style={{ minHeight: 'calc(100vh - 55px)' }}
     >
       {isFinally ? (
-        <EndSurveyForm report={report}/>
+        <EndSurveyForm report={report} />
       ) : (
         <Question
           question={question}
@@ -58,7 +53,7 @@ function Questions() {
           goBack={goBack}
         />
       )}
-    </Container>
+    </div>
   );
 }
 

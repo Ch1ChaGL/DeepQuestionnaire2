@@ -241,7 +241,6 @@ class Questionnaire {
 
     const block = this.currentBlock;
     this.answerQuestion.set(questionId, { block, answer, isOtherOption: true });
-    console.log(this.answerQuestion);
     this.currentQuestion++;
 
     const resultAnswer = this._setCurrentBlockOrEndQuestionnaire(question);

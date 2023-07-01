@@ -1,9 +1,30 @@
 #basic-nav-dropdown {
   color: white;
 }
-html, body {
+html,
+body {
   height: 100%;
 }
 #root {
   height: 100%;
+}
+
+body {
+  scrollbar-width: thin;
+  scrollbar-color: #888888 #f0f0f0;
+}
+
+/* Стили полосы прокрутки */
+body::-webkit-scrollbar {
+  width: 6px;
+}
+
+body::-webkit-scrollbar-track {
+  background-color: #f0f0f0;
+
+}
+
+body::-webkit-scrollbar-thumb {
+  background-color: #888888;
+  border-radius: 30px;
 }

@@ -1,5 +1,14 @@
 import React from 'react';
-import { Container, Form, Button, Card, InputGroup } from 'react-bootstrap';
+import {
+  Container,
+  Form,
+  Button,
+  Card,
+  InputGroup,
+  Row,
+  Col,
+} from 'react-bootstrap';
+import EditSurveyForm from './EditSurveyForm';
 
 function EndSurveyForm({ report }) {
   const {
@@ -16,26 +25,10 @@ function EndSurveyForm({ report }) {
 
   return (
     <Container
-      style={{ height: '100vh' }}
-      className='d-flex justify-content-center align-items-center'
+      className='d-flex justify-content-center'
+      style={{ paddingTop: '10vh' }}
     >
-      <div>
-        <h2>Отчет</h2>
-        <p>Название компании: {CompanyName}</p>
-        <p>Email: {Email}</p>
-        <p>Должность: {JobTitle}</p>
-        <p>Номер телефона: {PhoneNumber}</p>
-        <p>Время опроса: {formattedQuizTime}</p>
-        <p>ФИО респондента: {RespondentName}</p>
-        <h3>Результаты опроса</h3>
-        {Object.entries(Survey).map(([question, answer], index) => (
-          <div key={index}>
-            <p>
-              {question}: {Array.isArray(answer) ? answer.join(', ') : answer}
-            </p>
-          </div>
-        ))}
-      </div>
+      <EditSurveyForm report={report} />
     </Container>
   );
 }
