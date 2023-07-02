@@ -1,14 +1,15 @@
 const Router = require('express');
 const reportController = require('../controller/reportController');
+const authMiddleware = require('../middleware/authMiddleware');
 const router = new Router();
 
-router.post('/',reportController.addReport);
+router.post('/', authMiddleware, reportController.addReport);
 
-router.get('/',reportController.getAllReport);
-router.get('/:id',reportController.getOneReport);
+router.get('/', authMiddleware, reportController.getAllReport);
+router.get('/:id', authMiddleware, reportController.getOneReport);
 
-router.put('/', reportController.updateReport);
+router.put('/',authMiddleware, reportController.updateReport);
 
-router.delete('/:id',reportController.deleteReport);
+router.delete('/:id', authMiddleware, reportController.deleteReport);
 
 module.exports = router;
