@@ -1,4 +1,5 @@
 const reportService = require('../services/reportServices');
+const userService = require('../services/userServices');
 const ApiError = require('../error/ApiError');
 class ReportController {
   /**
@@ -25,7 +26,9 @@ class ReportController {
 
     const isAlive = await reportService.getReportById(ReportId);
     if (!isAlive) {
-      return next(ApiError.badRequest(`Не существует отчета по такому id = ${ReportId}`));
+      return next(
+        ApiError.badRequest(`Не существует отчета по такому id = ${ReportId}`),
+      );
     }
 
     const stringSurvey = JSON.stringify(Survey);
@@ -42,7 +45,17 @@ class ReportController {
   }
 
   async getAllReport(req, res, next) {
-    const getedReports = await reportService.getAllReports();
+    if (req.user.RoleId === 2) {
+      const getedReports = await reportService.getAllReports();
+      if (!getedReports)
+        return next(
+          ApiError.badRequest('При получении всех отчетов произошла ошибка'),
+        );
+      return res.json(getedReports);
+    }
+
+    const userId = req.user.UserId;
+    const getedReports = await reportService.getAllReportsByUserId(userId);
     if (!getedReports)
       return next(
         ApiError.badRequest('При получении всех отчетов произошла ошибка'),

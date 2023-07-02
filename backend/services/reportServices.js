@@ -13,12 +13,18 @@ class ReportService {
     const allReports = await Report.findAll();
     return allReports;
   }
+  async getAllReportsByUserId(UserId) {
+    const allReports = await Report.findAll({ where: { UserId } });
+    return allReports;
+  }
   async deleteReport(id) {
     const deletedReport = await Report.destroy({ where: { ReportId: id } });
     return deletedReport;
   }
   async updateReport(report) {
-    const updatedReport = await Report.update(report,{ where: { ReportId: report['ReportId']} });
+    const updatedReport = await Report.update(report, {
+      where: { ReportId: report['ReportId'] },
+    });
     return updatedReport;
   }
 }
