@@ -1,0 +1,21 @@
+/* NavigationPrompt.module.css */
+
+.prompt-modal {
+  background-color: #2c0b0e;
+}
+
+.prompt-title {
+  color: #ea868f;
+}
+
+.prompt-text {
+  color: #ea868f;
+}
+
+.prompt-footer {
+  background-color: #2c0b0e;
+}
+
+.prompt-footer button {
+  margin-right: 10px;
+}

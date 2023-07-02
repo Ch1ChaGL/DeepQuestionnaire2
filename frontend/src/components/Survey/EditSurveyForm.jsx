@@ -1,12 +1,28 @@
-import React, { useState } from 'react';
-import { Form, Card } from 'react-bootstrap';
+import React, { useState, useContext } from 'react';
+import { Form, Card, Button, Row, Col } from 'react-bootstrap';
 import MyDateTimePicker from '../UI/MyDateTimePicker';
 import ScrollButton from '../UI/ScrollButton';
-
-function EditSurveyForm({ report }) {
+import { createReport } from '../../API/reportApi.js';
+import { Context } from '../../index';
+import NavigationPrompt from '../UI/NavigationPrompt';
+function EditSurveyForm({ report, setIsStarted }) {
   const [editedReport, setEditedReport] = useState(report);
   const { QuizTime } = report;
   const formattedQuizTime = QuizTime.toLocaleString();
+  const { user } = useContext(Context);
+  const [showPromt, setShowPromt] = useState(false);
+
+  const pushReportOnServer = async () => {
+    const reportSent = editedReport;
+    reportSent.UserId = user.user.UserId;
+    await createReport(editedReport);
+
+    /*Да вот это я прям плохо сделал, тянул колбек через несколько компонентов, надо было делать изначально
+     стор для всего опроса, но я подумал, что логику в ней писать не стоит и сделал контекст, с сервисом для управления, 
+     но в сторе можно было бы как раз хранить состояния опроса и информацию о опросе, у меня как раз такой стор есть, 
+     но я не добавил туда состояние опроса (идет или не идет) по хорошему это надо переписать*/
+    setIsStarted(false);
+  };
 
   const handleInputChange = e => {
     const { name, value } = e.target;
@@ -42,9 +58,28 @@ function EditSurveyForm({ report }) {
     // Perform any necessary actions, such as updating the report on the server
   };
 
+  const goOut = () => {
+    setShowPromt(true);
+  };
+
   //Тут можно было спокойно пройтись map по editedReport
   return (
     <>
+      {showPromt ? (
+        <NavigationPrompt
+          title={'Переход на главную страницу'}
+          message={
+            'При переходе весь опрос будет сброшен, вы уверены что хотите продолжить?'
+          }
+          onCancel={() => setShowPromt(false)}
+          onConfirm={() => setIsStarted(false)}
+          canselText={'Остаться'}
+          confirmText={'Выйти в главное меню '}
+        />
+      ) : (
+        <></>
+      )}
+
       <ScrollButton />
       <Card className='p-5 mb-5' style={{ width: '700px' }}>
         <Form onSubmit={handleSubmit}>
@@ -117,11 +152,18 @@ function EditSurveyForm({ report }) {
               />
             </Form.Group>
           ))}
-          <button
-            onClick={() => console.log('МОЕ ВРЕМЯ', editedReport.QuizTime)}
-          >
-            Сохранить
-          </button>
+          <Row className='d-flex justify-content-between'>
+            <Col>
+              <Button variant='outline-danger' onClick={goOut}>
+                Выйти в главное меню
+              </Button>
+            </Col>
+            <Col className='text-end'>
+              <Button variant='outline-success' onClick={pushReportOnServer}>
+                Сохранить
+              </Button>
+            </Col>
+          </Row>
         </Form>
       </Card>
     </>

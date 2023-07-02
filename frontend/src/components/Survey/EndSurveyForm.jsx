@@ -10,7 +10,7 @@ import {
 } from 'react-bootstrap';
 import EditSurveyForm from './EditSurveyForm';
 
-function EndSurveyForm({ report }) {
+function EndSurveyForm({ report, setIsStarted }) {
   const {
     CompanyName,
     Email,
@@ -28,7 +28,7 @@ function EndSurveyForm({ report }) {
       className='d-flex justify-content-center'
       style={{ paddingTop: '10vh' }}
     >
-      <EditSurveyForm report={report} />
+      <EditSurveyForm report={report} setIsStarted={setIsStarted} />
     </Container>
   );
 }

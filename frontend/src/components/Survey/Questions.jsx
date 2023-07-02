@@ -18,6 +18,8 @@ function Questions({ setIsStarted }) {
   const [isFinally, setIsFinally] = useState(false);
   const [report, setReport] = useState({});
 
+
+
   const interviewer = useSurveyInformation();
   const answerTheQuestion = (answerText, isOtherOptions) => {
     const res = survey.AnswerTheQuestion(question, answerText, isOtherOptions);
@@ -45,7 +47,7 @@ function Questions({ setIsStarted }) {
       style={{ minHeight: 'calc(100vh - 55px)' }}
     >
       {isFinally ? (
-        <EndSurveyForm report={report} />
+        <EndSurveyForm report={report} setIsStarted={setIsStarted} />
       ) : (
         <Question
           question={question}
