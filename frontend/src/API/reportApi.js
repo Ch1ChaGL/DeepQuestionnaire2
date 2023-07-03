@@ -6,6 +6,6 @@ export const createReport = async (report) => {
 };
 
 export const getReports = async () => {
-  const getedReports = await $authHost.get("api/reports");
-  return getedReports;
+  const getedReports = await $authHost.get("api/report");
+  return getedReports.data;
 }

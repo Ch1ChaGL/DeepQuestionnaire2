@@ -2,7 +2,7 @@ import Questions from '../components/Survey/Questions';
 import Admin from '../pages/Admin';
 import Auth from '../pages/Auth';
 import Survey from '../pages/Survey';
-import SurveyHistory from '../pages/SurveyHistory';
+import SurveyHistory from '../pages/SurveyHistory/SurveyHistory';
 
 import {
   LOGIN_ROUTE,
