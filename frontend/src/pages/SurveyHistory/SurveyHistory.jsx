@@ -7,12 +7,13 @@ import SurveyCard from '../../components/Survey/SurveyCard';
 import s from './SurveyHistory.module.css';
 import { getReports } from '../../API/reportApi';
 import ScrollButton from '../../components/UI/ScrollButton';
-
+import { useReports } from '../../hooks/useReports';
 function SurveyHistory() {
-  const [sort, setSort] = useState(sortListInSurveyHistory[0]);
+  const [sort, setSort] = useState(sortListInSurveyHistory[0].value);
   const [searchQuery, setSearchQuery] = useState('');
   const [reports, setReports] = useState([]);
 
+  const sortedReports = useReports(reports, sort, searchQuery);
   useEffect(() => {
     fetchReports();
   }, []);
@@ -35,12 +36,23 @@ function SurveyHistory() {
             />
           </Col>
         </Row>
+        <Col>
+          <Form.Select
+            size='lg'
+            className='mb-3'
+            onChange={e => setSort(e.target.value)}
+          >
+            {sortListInSurveyHistory.map(item => (
+              <option key={item.value} value={item.value}>
+                {item.text}
+              </option>
+            ))}
+          </Form.Select>
+        </Col>
+
         <Row>
-          <Col sm={3} className='mb-3'>
-            <SideBar items={sortListInSurveyHistory} sortSetters={setSort} />
-          </Col>
-          <Col sm={9} className={s.gridСontainer}>
-            {reports.map(report => (
+          <Col className={s.gridСontainer}>
+            {sortedReports.map(report => (
               <SurveyCard
                 Time={report.QuizTime}
                 Name={report.RespondentName}
