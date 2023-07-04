@@ -21,6 +21,7 @@ export const useSortedReports = (reports, sort) => {
 };
 
 export const useReports = (reports, sort, query) => {
+  console.log('я работаю');
   const sortedReports = useSortedReports(reports, sort);
   const searchQuery = query.toLowerCase();
   const sortedAndFilteredReports = useMemo(() => {

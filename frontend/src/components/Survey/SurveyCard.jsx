@@ -1,9 +1,10 @@
 import React from 'react';
-import { Card } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
 import dayjs from 'dayjs';
 import styles from './SurveyCard.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPenToSquare } from '@fortawesome/free-solid-svg-icons';
+import { SURVEY_HISTORY_ROUTE } from '../../utils/consts';
 const SurveyCard = ({
   Time,
   Name,
@@ -12,10 +13,9 @@ const SurveyCard = ({
   Email,
   Phone,
   Id,
-  setEditedReportsId,
 }) => {
   const formattedDate = dayjs(Time).format('DD-MM-YYYY HH:mm:ss');
-
+  const navigate = useNavigate();
   return (
     <div className={styles.card}>
       <div className={styles.cardHeader}>
@@ -24,8 +24,8 @@ const SurveyCard = ({
           <FontAwesomeIcon
             className={styles.editBtn}
             icon={faPenToSquare}
-            onClick={async () => {
-              setEditedReportsId(Id);
+            onClick={() => {
+              navigate(SURVEY_HISTORY_ROUTE + `/${Id}`);
             }}
           />
         </div>

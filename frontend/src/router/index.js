@@ -1,6 +1,7 @@
 import Questions from '../components/Survey/Questions';
 import Admin from '../pages/Admin';
 import Auth from '../pages/Auth';
+import ReportPage from '../pages/ReportPage';
 import Survey from '../pages/Survey';
 import SurveyHistory from '../pages/SurveyHistory/SurveyHistory';
 
@@ -16,6 +17,7 @@ export const publicRoutes = [{ path: LOGIN_ROUTE, component: <Auth /> }];
 export const authRoutes = [
   { path: SURVEY_ROUTE, component: <Survey /> },
   { path: SURVEY_HISTORY_ROUTE, component: <SurveyHistory /> },
+  { path: SURVEY_HISTORY_ROUTE + '/:id', component: <ReportPage /> },
   {
     path: SURVEY_ROUTE,
     component: <Questions />,

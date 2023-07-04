@@ -26,7 +26,7 @@ const MyNavbar = observer(() => {
     <Navbar expand="lg" className="bg-dark bg-gradient" fixed="top">
       <Container>
         <Navbar.Brand className="text-light">
-          <img src="./img/logo.svg" />
+          <img src="/img/logo.svg" />
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
