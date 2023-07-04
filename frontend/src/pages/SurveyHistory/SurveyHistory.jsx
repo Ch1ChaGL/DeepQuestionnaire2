@@ -12,6 +12,7 @@ function SurveyHistory() {
   const [sort, setSort] = useState(sortListInSurveyHistory[0].value);
   const [searchQuery, setSearchQuery] = useState('');
   const [reports, setReports] = useState([]);
+  const [showEditForm, setShowEditForm] = useState(false);
 
   const sortedReports = useReports(reports, sort, searchQuery);
   useEffect(() => {
@@ -62,6 +63,7 @@ function SurveyHistory() {
                 CompanyName={report.CompanyName}
                 JobTitle={report.JobTitle}
                 key={report.ReportId}
+                setShowEditForm={setShowEditForm}
               />
             ))}
           </Col>

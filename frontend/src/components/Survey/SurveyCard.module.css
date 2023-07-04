@@ -1,0 +1,36 @@
+.card {
+  cursor: pointer;
+  flex-grow: 1;
+  flex-basis: 0;
+  transition: transform 0.3s;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.cardHeader {
+  background-color: #6c757d;
+  color: #fff;
+  padding: 10px;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+}
+
+.cardTitle {
+  margin: 0;
+  font-size: 18px;
+}
+
+.cardBody {
+  background-color: #f8f9fa;
+  padding: 15px;
+}
+
+.cardText {
+  margin-bottom: 10px;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}

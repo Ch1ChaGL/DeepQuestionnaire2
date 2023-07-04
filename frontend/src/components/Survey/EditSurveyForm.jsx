@@ -5,6 +5,9 @@ import ScrollButton from '../UI/ScrollButton';
 import { createReport } from '../../API/reportApi.js';
 import { Context } from '../../index';
 import NavigationPrompt from '../UI/NavigationPrompt';
+
+/*Не продумал, что нужно вынести логику, и сделать его более переиспользуемым, 
+сейчас оказалось что его не внедрить легко в в другой компонент*/
 function EditSurveyForm({ report, setIsStarted }) {
   const [editedReport, setEditedReport] = useState(report);
   const { QuizTime } = report;

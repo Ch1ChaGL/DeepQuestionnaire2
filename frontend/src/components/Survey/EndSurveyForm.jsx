@@ -28,7 +28,7 @@ function EndSurveyForm({ report, setIsStarted }) {
       className='d-flex justify-content-center'
       style={{ paddingTop: '10vh' }}
     >
-      <EditSurveyForm report={report} setIsStarted={setIsStarted} />
+      <EditSurveyForm report={report} setIsStarted={setIsStarted} isPushed={true}/>
     </Container>
   );
 }
