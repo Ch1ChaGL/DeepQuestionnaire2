@@ -2,30 +2,15 @@ import React, { useState, useContext } from 'react';
 import { Form, Card, Button, Row, Col } from 'react-bootstrap';
 import MyDateTimePicker from '../UI/MyDateTimePicker';
 import ScrollButton from '../UI/ScrollButton';
-import { createReport } from '../../API/reportApi.js';
-import { Context } from '../../index';
 import NavigationPrompt from '../UI/NavigationPrompt';
 
-/*Не продумал, что нужно вынести логику, и сделать его более переиспользуемым, 
-сейчас оказалось что его не внедрить легко в в другой компонент*/
-function EditSurveyForm({ report, setIsStarted }) {
+function EditSurveyForm({ report, redBtn, greenBtn }) {
   const [editedReport, setEditedReport] = useState(report);
   const { QuizTime } = report;
   const formattedQuizTime = QuizTime.toLocaleString();
-  const { user } = useContext(Context);
+  console.log('QuizTime', QuizTime);
+  console.log('formattedQuizTime', formattedQuizTime);
   const [showPromt, setShowPromt] = useState(false);
-
-  const pushReportOnServer = async () => {
-    const reportSent = editedReport;
-    reportSent.UserId = user.user.UserId;
-    await createReport(editedReport);
-
-    /*Да вот это я прям плохо сделал, тянул колбек через несколько компонентов, надо было делать изначально
-     стор для всего опроса, но я подумал, что логику в ней писать не стоит и сделал контекст, с сервисом для управления, 
-     но в сторе можно было бы как раз хранить состояния опроса и информацию о опросе, у меня как раз такой стор есть, 
-     но я не добавил туда состояние опроса (идет или не идет) по хорошему это надо переписать*/
-    setIsStarted(false);
-  };
 
   const handleInputChange = e => {
     const { name, value } = e.target;
@@ -54,14 +39,7 @@ function EditSurveyForm({ report, setIsStarted }) {
     }));
   };
 
-  const handleSubmit = e => {
-    e.preventDefault();
-    // Handle the edited report data
-    console.log(editedReport);
-    // Perform any necessary actions, such as updating the report on the server
-  };
-
-  const goOut = () => {
+  const showPromtfn = () => {
     setShowPromt(true);
   };
 
@@ -70,14 +48,12 @@ function EditSurveyForm({ report, setIsStarted }) {
     <>
       {showPromt ? (
         <NavigationPrompt
-          title={'Переход на главную страницу'}
-          message={
-            'При переходе весь опрос будет сброшен, вы уверены что хотите продолжить?'
-          }
+          title={redBtn.promptTitle}
+          message={redBtn.promptMessage}
           onCancel={() => setShowPromt(false)}
-          onConfirm={() => setIsStarted(false)}
-          canselText={'Остаться'}
-          confirmText={'Выйти в главное меню '}
+          onConfirm={() => redBtn.fn(editedReport)}
+          cancelText={redBtn.promptCancelText}
+          confirmText={redBtn.promptConfirmText}
         />
       ) : (
         <></>
@@ -85,7 +61,7 @@ function EditSurveyForm({ report, setIsStarted }) {
 
       <ScrollButton />
       <Card className='p-5 mb-5' style={{ width: '700px' }}>
-        <Form onSubmit={handleSubmit}>
+        <Form>
           <h2>Отчет</h2>
           <Form.Group className='mb-3' controlId='FullName'>
             <Form.Label>ФИО</Form.Label>
@@ -157,13 +133,16 @@ function EditSurveyForm({ report, setIsStarted }) {
           ))}
           <Row className='d-flex justify-content-between'>
             <Col>
-              <Button variant='outline-danger' onClick={goOut}>
-                Выйти в главное меню
+              <Button variant='outline-danger' onClick={showPromtfn}>
+                {redBtn.text}
               </Button>
             </Col>
             <Col className='text-end'>
-              <Button variant='outline-success' onClick={pushReportOnServer}>
-                Сохранить
+              <Button
+                variant='outline-success'
+                onClick={() => greenBtn.fn(editedReport)}
+              >
+                {greenBtn.text}
               </Button>
             </Col>
           </Row>

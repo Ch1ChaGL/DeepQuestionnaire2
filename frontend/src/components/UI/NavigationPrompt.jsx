@@ -8,7 +8,7 @@ function NavigationPrompt({
   onConfirm,
   onCancel,
   confirmText,
-  canselText,
+  cancelText,
 }) {
   return (
     <Modal
@@ -35,7 +35,7 @@ function NavigationPrompt({
           {confirmText}
         </Button>
         <Button onClick={onCancel} variant='secondary'>
-          {canselText}
+          {cancelText}
         </Button>
       </Modal.Footer>
     </Modal>

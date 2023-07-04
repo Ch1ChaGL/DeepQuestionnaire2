@@ -1,7 +1,7 @@
-import { useMemo } from 'react';
-
+import { useMemo, useState, useEffect } from 'react';
+import { getReportById } from '../API/reportApi';
 export const useSortedReports = (reports, sort) => {
-    console.log('Входящие reports', reports);
+  console.log('Входящие reports', reports);
   const sortedReports = useMemo(() => {
     if (sort === 'oldReports') {
       return reports.sort(
@@ -15,7 +15,6 @@ export const useSortedReports = (reports, sort) => {
     }
     return reports;
   }, [reports, sort]);
-
 
   console.log('исходящие', reports);
   return sortedReports;
@@ -45,4 +44,31 @@ export const useReports = (reports, sort, query) => {
   }, [sort, query, sortedReports]);
 
   return sortedAndFilteredReports;
+};
+
+export const useReportsById = id => {
+  const [report, setReport] = useState(null);
+  const [error, setError] = useState(null);
+  const res = useEffect(() => {
+    const fetchData = async () => {
+      try {
+        if (id === 0) return 0;
+        const response = await getReportById(id);
+        console.log('response', response);
+        setReport({
+          ...response,
+          QuizTime: new Date(response.QuizTime),
+          Survey: JSON.parse(response.Survey),
+        });
+      } catch (error) {
+        setError(error);
+      }
+    };
+
+    fetchData();
+  }, [id]);
+
+  if (res === 0) return { report: null, error: null };
+
+  return { report, error };
 };

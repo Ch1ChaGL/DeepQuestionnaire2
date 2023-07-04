@@ -12,42 +12,45 @@ const SurveyCard = ({
   Email,
   Phone,
   Id,
-  setShowEditForm,
+  setEditedReportsId,
 }) => {
   const formattedDate = dayjs(Time).format('DD-MM-YYYY HH:mm:ss');
 
   return (
-    <Card className={styles.card}>
-      <Card.Header className={styles.cardHeader}>
+    <div className={styles.card}>
+      <div className={styles.cardHeader}>
         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
           <h5 className={styles.cardTitle}>Опрос №{Id}</h5>
           <FontAwesomeIcon
+            className={styles.editBtn}
             icon={faPenToSquare}
-            onClick={() => setShowEditForm(true)}
+            onClick={async () => {
+              setEditedReportsId(Id);
+            }}
           />
         </div>
-      </Card.Header>
-      <Card.Body className={styles.cardBody}>
-        <Card.Text className={styles.cardText}>
+      </div>
+      <div className={styles.cardBody}>
+        <div className={styles.cardText}>
           <strong>Время опроса:</strong> {formattedDate}
-        </Card.Text>
-        <Card.Text className={styles.cardText}>
+        </div>
+        <div className={styles.cardText}>
           <strong>ФИО:</strong> {Name}
-        </Card.Text>
-        <Card.Text className={styles.cardText}>
+        </div>
+        <div className={styles.cardText}>
           <strong>Должность:</strong> {JobTitle}
-        </Card.Text>
-        <Card.Text className={styles.cardText}>
+        </div>
+        <div className={styles.cardText}>
           <strong>Название компании:</strong> {CompanyName}
-        </Card.Text>
-        <Card.Text className={styles.cardText}>
+        </div>
+        <div className={styles.cardText}>
           <strong>Email:</strong> {Email}
-        </Card.Text>
-        <Card.Text className={styles.cardText}>
+        </div>
+        <div className={styles.cardText}>
           <strong>Номер телефона:</strong> {Phone}
-        </Card.Text>
-      </Card.Body>
-    </Card>
+        </div>
+      </div>
+    </div>
   );
 };
 

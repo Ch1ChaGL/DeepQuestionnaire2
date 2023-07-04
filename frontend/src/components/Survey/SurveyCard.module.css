@@ -1,19 +1,18 @@
 .card {
+  border-radius: 10px;
   cursor: pointer;
   flex-grow: 1;
   flex-basis: 0;
   transition: transform 0.3s;
-  border: 1px solid #ccc;
-  border-radius: 8px;
+
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .cardHeader {
+  border-radius: 10px 10px 0px 0px;
   background-color: #6c757d;
   color: #fff;
   padding: 10px;
-  border-top-left-radius: 8px;
-  border-top-right-radius: 8px;
 }
 
 .cardTitle {
@@ -22,6 +21,8 @@
 }
 
 .cardBody {
+  border: 1px solid #b9b4b4;
+  border-radius: 0px 0px 10px 10px;
   background-color: #f8f9fa;
   padding: 15px;
 }
@@ -33,4 +34,11 @@
 .card:hover {
   transform: translateY(-5px);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.editBtn {
+  transition: all 0.2s ease;
+}
+.editBtn:hover {
+  color: rgb(157, 34, 34);
 }
