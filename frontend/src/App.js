@@ -13,7 +13,6 @@ const App = observer(() => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    console.log("Проверка идет");
     check()
       .then((data) => {
         user.setUser(data);

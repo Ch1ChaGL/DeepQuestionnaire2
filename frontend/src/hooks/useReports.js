@@ -1,7 +1,6 @@
 import { useMemo, useState, useEffect } from 'react';
 import { getReportById } from '../API/reportApi';
 export const useSortedReports = (reports, sort) => {
-  console.log('Входящие reports', reports);
   const sortedReports = useMemo(() => {
     if (sort === 'oldReports') {
       return reports.sort(
@@ -16,12 +15,10 @@ export const useSortedReports = (reports, sort) => {
     return reports;
   }, [reports, sort]);
 
-  console.log('исходящие', reports);
   return sortedReports;
 };
 
 export const useReports = (reports, sort, query) => {
-  console.log('я работаю');
   const sortedReports = useSortedReports(reports, sort);
   const searchQuery = query.toLowerCase();
   const sortedAndFilteredReports = useMemo(() => {
