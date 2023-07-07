@@ -26,6 +26,7 @@ const SurveyCard = ({
           <h5 className={styles.cardTitle}>Опрос №{Id}</h5>
           <div className='d-flex align-items-center'>
             <Form.Check
+              name='checkbox'
               className='me-2'
               checked={checkedReports[Id]}
               onChange={e =>

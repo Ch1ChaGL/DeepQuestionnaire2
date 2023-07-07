@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { Container, Row, Col, Form } from 'react-bootstrap';
+import { Container, Row, Col, Form, Button } from 'react-bootstrap';
 import {
   SURVEY_HISTORY_ROUTE,
   sortListInSurveyHistory,
@@ -17,57 +17,41 @@ import Pagination from '@mui/material/Pagination';
 function SurveyHistory() {
   const location = useLocation();
   const queryParams = queryString.parse(location.search);
-  console.log('location: ' , location);
   const navigate = useNavigate();
+
+  const [pageQuery, setPageQuery] = useState({
+    sort: 'newReports',
+    searchQuery: '',
+    currentPage: 1,
+  });
   const [checkedReports, setCheckedReports] = useState({});
-  const [sort, setSort] = useState(queryParams.sort);
   const [searchQuery, setSearchQuery] = useState(queryParams.searchQuery);
   const [reports, setReports] = useState([]);
-  const [currentPage, setCurrentPage] = useState(queryParams.page);
   const [totalPages, setTotalPages] = useState(1);
 
+  console.log('pageQuery.currentPage', pageQuery.currentPage);
   useEffect(() => {
-  
+    fetchReports();
   }, []);
 
   useEffect(() => {
-    queryParams.page = currentPage;
-    queryParams.sort = sort;
-    queryParams.searchQuery = searchQuery || '';
+    const queryParams = queryString.parse(location.search);
+    queryParams.page = pageQuery.currentPage;
+    queryParams.sort = pageQuery.sort;
+    queryParams.searchQuery = pageQuery.searchQuery || '';
     const searchString = queryString.stringify(queryParams);
+
+    console.log('searchString', searchString);
     navigate(SURVEY_HISTORY_ROUTE + `?${searchString}`);
-  }, [currentPage]);
+  }, [pageQuery]);
 
   useEffect(() => {
     fetchReports();
-    console.log('Разве ты не должен поменяться ');
-    const queryParams = queryString.parse(location.search);
-    const page = parseInt(queryParams.page) || 1;
-    console.log('queryParams.sort', queryParams.sort);
-    setSort(queryParams.sort || 'newReports');
-    setCurrentPage(page);
   }, [location.search]);
 
-  // const fetchReports = async () => {
-  //   const getedReports = await getReports();
-  //   setReports(getedReports);
-
-  //   const initialState = getedReports.reduce((acc, report) => {
-  //     acc[report.ReportId] = false;
-  //     return acc;
-  //   }, {});
-
-  //   setCheckedReports(initialState);
-  // };
-
   const fetchReports = async () => {
-    const queryParams = queryString.parse(location.search);
-    queryParams.page = currentPage;
-    queryParams.sort = sort;
-    queryParams.searchQuery = searchQuery || '';
     const searchString = queryString.stringify(queryParams);
     const getedReports = await getReports(searchString);
-    console.log('getedReports', getedReports);
     setTotalPages(Math.ceil(getedReports.total / getedReports.pageSize));
     setReports(getedReports.Reports);
   };
@@ -76,17 +60,39 @@ function SurveyHistory() {
     <>
       <ScrollButton />
       <Container style={{ paddingTop: 100 }}>
-        <Row className='mb-3'>
-          <Col>
+        <div className='d-flex mb-3'>
+          <Col ms={10}>
             <SearchInput
+              name='search'
               searchQuery={searchQuery}
               setSearchQuery={setSearchQuery}
             />
           </Col>
-        </Row>
+
+          <Button
+            ms={2}
+            className='ms-2'
+            onClick={() =>
+              setPageQuery({ ...pageQuery, searchQuery: searchQuery.trim() })
+            }
+          >
+            Найти
+          </Button>
+        </div>
         <Row className='align-items-center mb-3 gap-2'>
           <Col sm={3}>
-            <Form.Select size='lg' onChange={e => setSort(e.target.value)}>
+            <Form.Select
+              name='select'
+              size='lg'
+              value={queryParams.sort}
+              onChange={e =>
+                setPageQuery({
+                  ...pageQuery,
+                  sort: e.target.value,
+                  currentPage: 1,
+                })
+              }
+            >
               {sortListInSurveyHistory.map(item => (
                 <option key={item.value} value={item.value}>
                   {item.text}
@@ -132,7 +138,10 @@ function SurveyHistory() {
             count={totalPages}
             color='primary'
             size='large'
-            onChange={(e, page) => setCurrentPage(page)}
+            page={parseInt(queryParams.page) || 1}
+            onChange={(e, page) =>
+              setPageQuery({ ...pageQuery, currentPage: page })
+            }
           />
         </div>
       </Container>
