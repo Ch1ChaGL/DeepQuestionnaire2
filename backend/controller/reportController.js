@@ -63,6 +63,7 @@ class ReportController {
   //   return res.json(getedReports);
   // }
   async getAllReport(req, res, next) {
+    const pageSize = 12; // Размер одной страницы
     let getedReports;
     const { searchQuery, sort } = req.query;
     const page = parseInt(req.query.page, 10);
@@ -84,7 +85,6 @@ class ReportController {
       );
 
     if (page) {
-      const pageSize = 12; // Размер одной страницы
       const startIndex = (page - 1) * pageSize;
       const endIndex = startIndex + pageSize;
 
@@ -92,7 +92,11 @@ class ReportController {
       console.log('getedReports', getedReports);
     }
 
-    return res.json({ total: totalReports, Reports: getedReports, pageSize: pageSize });
+    return res.json({
+      total: totalReports,
+      Reports: getedReports,
+      pageSize: pageSize,
+    });
   }
 
   async getOneReport(req, res, next) {
