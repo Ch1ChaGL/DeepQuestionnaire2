@@ -1,37 +1,59 @@
-import React, { useState, useEffect, useMemo, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { Container, Row, Col, Form } from 'react-bootstrap';
 import { sortListInSurveyHistory } from '../../utils/consts';
 import SearchInput from '../../components/UI/SearchInput';
 import SurveyCard from '../../components/Survey/SurveyCard';
 import s from './SurveyHistory.module.css';
+import queryString from 'query-string';
 import { getReports } from '../../API/reportApi';
 import ScrollButton from '../../components/UI/ScrollButton';
-import { useReports } from '../../hooks/useReports';
 import SelectAllBtn from '../../components/UI/SelectAllBtn';
+import Pagination from '@mui/material/Pagination';
 
 function SurveyHistory() {
+  const location = useLocation();
   const [checkedReports, setCheckedReports] = useState({});
   const [sort, setSort] = useState(sortListInSurveyHistory[0].value);
   const [searchQuery, setSearchQuery] = useState('');
   const [reports, setReports] = useState([]);
-  console.log('reports', reports);
-  console.log('checkedReports', checkedReports);
-  const sortedReports = useReports(reports, sort, searchQuery);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
 
   useEffect(() => {
     fetchReports();
-  }, []);
+  }, [currentPage, sort]);
+
+  useEffect(() => {
+    const queryParams = queryString.parse(location.search);
+    const page = parseInt(queryParams.page) || 1;
+    console.log('queryParams.sort', queryParams.sort);
+    setSort(queryParams.sort || 'newReports');
+    setCurrentPage(page);
+  }, [location.search]);
+
+  // const fetchReports = async () => {
+  //   const getedReports = await getReports();
+  //   setReports(getedReports);
+
+  //   const initialState = getedReports.reduce((acc, report) => {
+  //     acc[report.ReportId] = false;
+  //     return acc;
+  //   }, {});
+
+  //   setCheckedReports(initialState);
+  // };
 
   const fetchReports = async () => {
-    const getedReports = await getReports();
-    setReports(getedReports);
-
-    const initialState = getedReports.reduce((acc, report) => {
-      acc[report.ReportId] = false;
-      return acc;
-    }, {});
-
-    setCheckedReports(initialState);
+    const queryParams = queryString.parse(location.search);
+    queryParams.page = currentPage;
+    queryParams.sort = sort;
+    queryParams.searchQuery = searchQuery || '';
+    const searchString = queryString.stringify(queryParams);
+    const getedReports = await getReports(searchString);
+    console.log('getedReports', getedReports);
+    setTotalPages(getedReports.total);
+    setReports(getedReports.Reports);
   };
 
   return (
@@ -57,18 +79,6 @@ function SurveyHistory() {
             </Form.Select>
           </Col>
           <Col>
-            {/* {useMemo(
-              () => (
-                <SelectAllBtn
-                  reports={reports}
-                  checkedReports={checkedReports}
-                  setCheckedReports={setCheckedReports}
-                  setReports={setReports}
-                />
-              ),
-              [reports, checkedReports],
-            )} */}
-
             <MemoizedSelectAllBtn
               reports={reports}
               checkedReports={checkedReports}
@@ -78,9 +88,9 @@ function SurveyHistory() {
           </Col>
         </Row>
 
-        <Row>
+        <Row className='mb-3'>
           <Col className={s.gridСontainer}>
-            {sortedReports.map(report => (
+            {reports.map(report => (
               <SurveyCard
                 Time={report.QuizTime}
                 Name={report.RespondentName}
@@ -96,6 +106,18 @@ function SurveyHistory() {
             ))}
           </Col>
         </Row>
+        <div className='pb-4'>
+          <Pagination
+            className={s.pag}
+            variant='outlined'
+            shape='rounded'
+            showFirstButton
+            showLastButton
+            count={totalPages}
+            color='primary'
+            size='large'
+          />
+        </div>
       </Container>
     </>
   );

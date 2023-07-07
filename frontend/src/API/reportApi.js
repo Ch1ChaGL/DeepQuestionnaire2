@@ -5,8 +5,9 @@ export const createReport = async report => {
   return createdReport;
 };
 
-export const getReports = async () => {
-  const getedReports = await $authHost.get('api/report');
+export const getReports = async (searchString) => {
+  console.log('searchString', searchString);
+  const getedReports = await $authHost.get(`api/report/?${searchString}`);
   return getedReports.data;
 };
 export const updateReport = async report => {
