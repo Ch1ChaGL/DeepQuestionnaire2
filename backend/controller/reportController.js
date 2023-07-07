@@ -44,24 +44,57 @@ class ReportController {
     return res.json(updatedReport);
   }
 
+  // async getAllReport(req, res, next) {
+  //   if (req.user.RoleId === 2) {
+  //     const getedReports = await reportService.getAllReports();
+  //     if (!getedReports)
+  //       return next(
+  //         ApiError.badRequest('При получении всех отчетов произошла ошибка'),
+  //       );
+  //     return res.json(getedReports);
+  //   }
+
+  //   const userId = req.user.UserId;
+  //   const getedReports = await reportService.getAllReportsByUserId(userId);
+  //   if (!getedReports)
+  //     return next(
+  //       ApiError.badRequest('При получении всех отчетов произошла ошибка'),
+  //     );
+  //   return res.json(getedReports);
+  // }
   async getAllReport(req, res, next) {
+    let getedReports;
+    const { searchQuery, sort } = req.query;
+    const page = parseInt(req.query.page, 10);
+    let totalReports = 0;
+    console.log('page', page);
+    console.log(sort);
     if (req.user.RoleId === 2) {
-      const getedReports = await reportService.getAllReports();
-      if (!getedReports)
-        return next(
-          ApiError.badRequest('При получении всех отчетов произошла ошибка'),
-        );
-      return res.json(getedReports);
+      getedReports = await reportService.getAllReports(searchQuery, sort);
+      totalReports = getedReports.length;
+      //return res.json(getedReports);
+    } else {
+      const userId = req.user.UserId;
+      getedReports = await reportService.getAllReportsByUserId(userId);
     }
 
-    const userId = req.user.UserId;
-    const getedReports = await reportService.getAllReportsByUserId(userId);
     if (!getedReports)
       return next(
         ApiError.badRequest('При получении всех отчетов произошла ошибка'),
       );
-    return res.json(getedReports);
+
+    if (page) {
+      const pageSize = 10; // Размер одной страницы
+      const startIndex = (page - 1) * pageSize;
+      const endIndex = startIndex + pageSize;
+
+      getedReports = getedReports.slice(startIndex, endIndex);
+      console.log('getedReports', getedReports);
+    }
+
+    return res.json({ total: totalReports, Reports: getedReports });
   }
+
   async getOneReport(req, res, next) {
     const { id } = req.params;
     const getedReport = await reportService.getReportById(id);

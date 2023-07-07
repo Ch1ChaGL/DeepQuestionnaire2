@@ -10,7 +10,7 @@ function DeleteReportsBtn({ checkedReports, setReports, setCheckedReports }) {
       .map(([reportId]) => parseInt(reportId));
 
     // Удаление выбранных отчетов
-    await Promise.all(selectedReports.map(reportId => deleteReport(reportId)));
+    await Promise.all(selectedReports.map(reportId => deleteReport(reportId))).catch(err => console.log(`Ошибочка ну и что ${err}`));
 
     setCheckedReports(prevValue => {
       return Object.keys(prevValue).reduce((updatedCheckedReports, key) => {
