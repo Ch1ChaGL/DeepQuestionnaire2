@@ -17,7 +17,6 @@ import Pagination from '@mui/material/Pagination';
 function SurveyHistory() {
   const location = useLocation();
   const queryParams = queryString.parse(location.search);
-
   console.log('location: ' , location);
   const navigate = useNavigate();
   const [checkedReports, setCheckedReports] = useState({});
@@ -28,8 +27,8 @@ function SurveyHistory() {
   const [totalPages, setTotalPages] = useState(1);
 
   useEffect(() => {
-    fetchReports();
-  }, [location.search]);
+  
+  }, []);
 
   useEffect(() => {
     queryParams.page = currentPage;
@@ -37,9 +36,10 @@ function SurveyHistory() {
     queryParams.searchQuery = searchQuery || '';
     const searchString = queryString.stringify(queryParams);
     navigate(SURVEY_HISTORY_ROUTE + `?${searchString}`);
-  }, [currentPage, sort]);
+  }, [currentPage]);
 
   useEffect(() => {
+    fetchReports();
     console.log('Разве ты не должен поменяться ');
     const queryParams = queryString.parse(location.search);
     const page = parseInt(queryParams.page) || 1;
