@@ -66,7 +66,7 @@ class ReportController {
     const pageSize = 12; // Размер одной страницы
     let getedReports;
     const { searchQuery, sort } = req.query;
-    const page = parseInt(req.query.page, 10);
+    const page = parseInt(req.query.page, 10) || 1;
     let totalReports = 0;
     console.log('page', page);
     console.log(sort);
