@@ -92,7 +92,7 @@ class ReportController {
       console.log('getedReports', getedReports);
     }
 
-    return res.json({ total: totalReports, Reports: getedReports, pageSize });
+    return res.json({ total: totalReports, Reports: getedReports, pageSize: pageSize });
   }
 
   async getOneReport(req, res, next) {
