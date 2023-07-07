@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Container, Row, Col, Form } from 'react-bootstrap';
-import { sortListInSurveyHistory } from '../../utils/consts';
+import {
+  SURVEY_HISTORY_ROUTE,
+  sortListInSurveyHistory,
+} from '../../utils/consts';
 import SearchInput from '../../components/UI/SearchInput';
 import SurveyCard from '../../components/Survey/SurveyCard';
 import s from './SurveyHistory.module.css';
@@ -13,18 +16,31 @@ import Pagination from '@mui/material/Pagination';
 
 function SurveyHistory() {
   const location = useLocation();
+  const queryParams = queryString.parse(location.search);
+
+  console.log('location: ' , location);
+  const navigate = useNavigate();
   const [checkedReports, setCheckedReports] = useState({});
-  const [sort, setSort] = useState(sortListInSurveyHistory[0].value);
-  const [searchQuery, setSearchQuery] = useState('');
+  const [sort, setSort] = useState(queryParams.sort);
+  const [searchQuery, setSearchQuery] = useState(queryParams.searchQuery);
   const [reports, setReports] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(queryParams.page);
   const [totalPages, setTotalPages] = useState(1);
 
   useEffect(() => {
     fetchReports();
+  }, [location.search]);
+
+  useEffect(() => {
+    queryParams.page = currentPage;
+    queryParams.sort = sort;
+    queryParams.searchQuery = searchQuery || '';
+    const searchString = queryString.stringify(queryParams);
+    navigate(SURVEY_HISTORY_ROUTE + `?${searchString}`);
   }, [currentPage, sort]);
 
   useEffect(() => {
+    console.log('Разве ты не должен поменяться ');
     const queryParams = queryString.parse(location.search);
     const page = parseInt(queryParams.page) || 1;
     console.log('queryParams.sort', queryParams.sort);
@@ -52,7 +68,7 @@ function SurveyHistory() {
     const searchString = queryString.stringify(queryParams);
     const getedReports = await getReports(searchString);
     console.log('getedReports', getedReports);
-    setTotalPages(getedReports.total);
+    setTotalPages(Math.ceil(getedReports.total / getedReports.pageSize));
     setReports(getedReports.Reports);
   };
 
@@ -116,6 +132,7 @@ function SurveyHistory() {
             count={totalPages}
             color='primary'
             size='large'
+            onChange={(e, page) => setCurrentPage(page)}
           />
         </div>
       </Container>
