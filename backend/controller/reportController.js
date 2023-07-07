@@ -84,7 +84,7 @@ class ReportController {
       );
 
     if (page) {
-      const pageSize = 10; // Размер одной страницы
+      const pageSize = 12; // Размер одной страницы
       const startIndex = (page - 1) * pageSize;
       const endIndex = startIndex + pageSize;
 
