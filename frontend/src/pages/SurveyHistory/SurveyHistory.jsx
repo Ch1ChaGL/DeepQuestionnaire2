@@ -24,8 +24,9 @@ function SurveyHistory() {
     searchQuery: '',
     currentPage: 1,
   });
+
   const [checkedReports, setCheckedReports] = useState({});
-  const [searchQuery, setSearchQuery] = useState(queryParams.searchQuery);
+  const [searchQuery, setSearchQuery] = useState(queryParams.searchQuery || '');
   const [reports, setReports] = useState([]);
   const [totalPages, setTotalPages] = useState(1);
 
@@ -56,60 +57,63 @@ function SurveyHistory() {
     setReports(getedReports.Reports);
   };
 
+  const handleSearchSubmit = e => {
+    e.preventDefault();
+    setPageQuery(prevPageQuery => ({
+      ...prevPageQuery,
+      searchQuery: searchQuery.trim(),
+    }));
+  };
+
   return (
     <>
       <ScrollButton />
       <Container style={{ paddingTop: 100 }}>
-        <div className='d-flex mb-3'>
-          <Col ms={10}>
-            <SearchInput
-              name='search'
-              searchQuery={searchQuery}
-              setSearchQuery={setSearchQuery}
-            />
-          </Col>
+        <form onSubmit={handleSearchSubmit} autoComplete='off'>
+          <div className='d-flex mb-3'>
+            <Col ms={10}>
+              <SearchInput
+                name='search'
+                searchQuery={searchQuery}
+                setSearchQuery={setSearchQuery}
+              />
+            </Col>
 
-          <Button
-            ms={2}
-            className='ms-2'
-            onClick={() =>
-              setPageQuery({ ...pageQuery, searchQuery: searchQuery.trim() })
-            }
-          >
-            Найти
-          </Button>
-        </div>
-        <Row className='align-items-center mb-3 gap-2'>
-          <Col sm={3}>
-            <Form.Select
-              name='select'
-              size='lg'
-              value={queryParams.sort}
-              onChange={e =>
-                setPageQuery({
-                  ...pageQuery,
-                  sort: e.target.value,
-                  currentPage: 1,
-                })
-              }
-            >
-              {sortListInSurveyHistory.map(item => (
-                <option key={item.value} value={item.value}>
-                  {item.text}
-                </option>
-              ))}
-            </Form.Select>
-          </Col>
-          <Col>
-            <MemoizedSelectAllBtn
-              reports={reports}
-              checkedReports={checkedReports}
-              setCheckedReports={setCheckedReports}
-              setReports={setReports}
-            />
-          </Col>
-        </Row>
-
+            <Button ms={2} className='ms-2' onClick={handleSearchSubmit}>
+              Найти
+            </Button>
+          </div>
+          <Row className='align-items-center mb-3 gap-2'>
+            <Col sm={3}>
+              <Form.Select
+                name='select'
+                size='lg'
+                value={queryParams.sort}
+                onChange={e =>
+                  setPageQuery({
+                    ...pageQuery,
+                    sort: e.target.value,
+                    currentPage: 1,
+                  })
+                }
+              >
+                {sortListInSurveyHistory.map(item => (
+                  <option key={item.value} value={item.value}>
+                    {item.text}
+                  </option>
+                ))}
+              </Form.Select>
+            </Col>
+            <Col>
+              <MemoizedSelectAllBtn
+                reports={reports}
+                checkedReports={checkedReports}
+                setCheckedReports={setCheckedReports}
+                setReports={setReports}
+              />
+            </Col>
+          </Row>
+        </form>
         <Row className='mb-3'>
           <Col className={s.gridСontainer}>
             {reports.map(report => (

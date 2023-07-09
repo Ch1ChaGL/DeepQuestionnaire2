@@ -2,7 +2,6 @@ import React from 'react';
 import { Form } from 'react-bootstrap';
 function SearchInput({ searchQuery, setSearchQuery }) {
   return (
-    <Form>
       <Form.Group controlId='searchForm'>
         <Form.Control
           type='text'
@@ -11,7 +10,6 @@ function SearchInput({ searchQuery, setSearchQuery }) {
           onChange={(e) => setSearchQuery(e.target.value)}
         />
       </Form.Group>
-    </Form>
   );
 }
 
