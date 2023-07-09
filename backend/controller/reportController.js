@@ -62,14 +62,21 @@ class ReportController {
   //     );
   //   return res.json(getedReports);
   // }
+  static convertIdArrayToObject = idArray => {
+    const idObject = {};
+    idArray.forEach(id => {
+      idObject[id] = false;
+    });
+    return idObject;
+  };
   async getAllReport(req, res, next) {
     const pageSize = 12; // Размер одной страницы
     let getedReports;
     const { searchQuery, sort } = req.query;
     const page = parseInt(req.query.page, 10) || 1;
     let totalReports = 0;
-    console.log('page', page);
-    console.log(sort);
+    const idsArray = await reportService.getAllAvailableIds();
+    const ids = ReportController.convertIdArrayToObject(idsArray);
     if (req.user.RoleId === 2) {
       getedReports = await reportService.getAllReports(searchQuery, sort);
       totalReports = getedReports.length;
@@ -96,6 +103,7 @@ class ReportController {
       total: totalReports,
       Reports: getedReports,
       pageSize: pageSize,
+      ids,
     });
   }
 

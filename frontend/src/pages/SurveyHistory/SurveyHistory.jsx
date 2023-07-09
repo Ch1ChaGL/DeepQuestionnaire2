@@ -35,6 +35,16 @@ function SurveyHistory() {
     fetchReports();
   }, []);
 
+  function updateReportStatuses(newObject, checkedReports) {
+    const updatedObject = { ...newObject };
+    for (const reportId in updatedObject) {
+      if (reportId in checkedReports) {
+        updatedObject[reportId] = checkedReports[reportId];
+      }
+    }
+    setCheckedReports(updatedObject);
+  }
+
   useEffect(() => {
     const queryParams = queryString.parse(location.search);
     queryParams.page = pageQuery.currentPage;
@@ -53,6 +63,7 @@ function SurveyHistory() {
   const fetchReports = async () => {
     const searchString = queryString.stringify(queryParams);
     const getedReports = await getReports(searchString);
+    updateReportStatuses(getedReports.ids, checkedReports);
     setTotalPages(Math.ceil(getedReports.total / getedReports.pageSize));
     setReports(getedReports.Reports);
   };
@@ -62,6 +73,7 @@ function SurveyHistory() {
     setPageQuery(prevPageQuery => ({
       ...prevPageQuery,
       searchQuery: searchQuery.trim(),
+      currentPage: 1,
     }));
   };
 

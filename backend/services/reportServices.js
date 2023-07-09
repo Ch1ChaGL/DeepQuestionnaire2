@@ -10,6 +10,11 @@ class ReportService {
     const getedReport = await Report.findByPk(id);
     return getedReport;
   }
+  async getAllAvailableIds() {
+    const reports = await Report.findAll({ attributes: ['ReportId'] });
+    const reportIds = reports.map(report => report.ReportId);
+    return reportIds;
+  }
   async getAllReports(searchQuery = null, sort = 'newReports') {
     let orderOption = [];
     console.log('searchQuery', searchQuery);
