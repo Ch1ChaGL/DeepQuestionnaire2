@@ -38,8 +38,8 @@ Role.hasMany(User, { foreignKey: 'RoleId' });
 User.belongsTo(Role, { foreignKey: 'RoleId' });
 
 //Установка связи между таблицами Report и User
-Report.hasMany(User, { foreignKey: 'UserId' });
-User.belongsTo(Report, { foreignKey: 'UserId' });
+Report.belongsTo(User, { foreignKey: 'UserId' });
+User.hasMany(Report, { foreignKey: 'UserId' });
 
 module.exports = {
   Quiz,

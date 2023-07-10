@@ -1,6 +1,7 @@
 const reportService = require('../services/reportServices');
 const userService = require('../services/userServices');
 const ApiError = require('../error/ApiError');
+const exceljs = require('exceljs');
 class ReportController {
   /**
    * !Что имеет больший приоритет, при отсутствии чего нельзя создать отчет ???
@@ -130,6 +131,87 @@ class ReportController {
       return next(ApiError.badRequest('При удалении произошла ошибка'));
 
     return res.json(deletedReport);
+  }
+  async getExcelReport(req, res, next) {
+    try {
+      // Получение данных из базы данных
+
+      const data = await reportService.getReportByIds(req.body.ids);
+ 
+      // Создание нового документа Excel
+      const workbook = new exceljs.Workbook();
+      const worksheet = workbook.addWorksheet('Sheet 1');
+
+      // Заголовки столбцов
+      const headers = [
+        'ReportId',
+        'ФИО респондента',
+        'Email',
+        'Название компании',
+        'Должность',
+        'Телефонный номер',
+        'Время опроса',
+        'ФИО сотрудника',
+        'Вопрос',
+        'Ответ',
+      ];
+
+      // Добавление заголовков в таблицу Excel
+      worksheet.addRow(headers);
+
+      // Заполнение таблицы Excel данными из базы данных
+      data.forEach(item => {
+        console.log(item);
+        console.log(item.Survey);
+        const survey = JSON.parse(item.Survey);
+        const questions = Object.keys(survey);
+        const answers = Object.values(survey);
+
+        // Заполнение основных полей отчета
+        worksheet.addRow([
+          item.ReportId,
+          item.RespondentName,
+          item.Email,
+          item.CompanyName,
+          item.JobTitle,
+          item.PhoneNumber,
+          item.QuizTime,
+          item.User.FullName,
+        ]);
+
+        // Заполнение вопросов и ответов
+        questions.forEach((question, index) => {
+          worksheet.addRow([
+            '', // Пустое значение для полей отчета, чтобы совпадало с заголовками
+            '',
+            '',
+            '',
+            '',
+            '',
+            '',
+            '',
+            question,
+            answers[index],
+          ]);
+        });
+      });
+
+      // Установка заголовков и типа контента для ответа
+      res.setHeader(
+        'Content-Type',
+        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+      );
+      res.setHeader('Content-Disposition', 'attachment; filename=report.xlsx');
+
+      // Передача файла Excel в ответе
+      await workbook.xlsx.write(res);
+
+      // Завершение ответа
+      res.end();
+    } catch (error) {
+      console.error(error);
+      res.status(500).send('Internal Server Error');
+    }
   }
 }
 

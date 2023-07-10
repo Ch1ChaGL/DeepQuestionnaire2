@@ -7,6 +7,8 @@ router.post('/', authMiddleware, reportController.addReport);
 
 router.get('/', authMiddleware, reportController.getAllReport);
 router.get('/:id', authMiddleware, reportController.getOneReport);
+router.get('/Excel/Report', authMiddleware, reportController.getExcelReport);
+
 
 router.put('/',authMiddleware, reportController.updateReport);
 

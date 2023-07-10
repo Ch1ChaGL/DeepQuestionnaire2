@@ -1,4 +1,4 @@
-const { Report } = require('../models/models');
+const { Report, User } = require('../models/models');
 const { Op, Sequelize } = require('sequelize');
 
 class ReportService {
@@ -85,6 +85,17 @@ class ReportService {
       where: { ReportId: report['ReportId'] },
     });
     return updatedReport;
+  }
+  async getReportByIds(ids) {
+    const allReports = await Report.findAll({
+      where: { ReportId: ids },
+      include: {
+        model: User,
+        attributes: ['FullName'],
+      },
+    });
+    console.log('allReports', allReports);
+    return allReports;
   }
 }
 
