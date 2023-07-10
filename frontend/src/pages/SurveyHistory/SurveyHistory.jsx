@@ -13,7 +13,7 @@ import { getReports } from '../../API/reportApi';
 import ScrollButton from '../../components/UI/ScrollButton';
 import SelectAllBtn from '../../components/UI/SelectAllBtn';
 import Pagination from '@mui/material/Pagination';
-
+import SaveBtn from '../../components/UI/SaveBtn';
 function SurveyHistory() {
   const location = useLocation();
   const queryParams = queryString.parse(location.search);
@@ -123,6 +123,9 @@ function SurveyHistory() {
                 setCheckedReports={setCheckedReports}
                 setReports={setReports}
               />
+            </Col>
+            <Col>
+              <SaveBtn checkedReports={checkedReports} text={'Выгрузить'} />
             </Col>
           </Row>
         </form>
