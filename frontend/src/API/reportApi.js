@@ -24,21 +24,28 @@ export const deleteReport = async id => {
   return deletedReport;
 };
 
-export const getReportOnExcel = async ids => {
+export const getReportOnExcel = async (ids) => {
   try {
     console.log('ids', ids);
-    const response = await $authHost.get('api/report/Excel/Report', { ids: ids });
+    const response = await $authHost.post('api/report/Excel/Report', { ids: ids }, { responseType: 'blob' });
+    console.log(response);
 
-    // Создание Blob из полученных данных
-    const blob = new Blob([response.data], {
-      type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-    });
+    // Создание объекта URL для Blob
+    const url = window.URL.createObjectURL(new Blob([response.data]));
 
-    // Генерация URL для Blob
-    const url = URL.createObjectURL(blob);
+    // Создание ссылки на файл
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', 'report.xlsx');
 
-    // Сохранение файла
-    FileSaver.saveAs(url, 'report.xlsx');
+    // Добавление ссылки на страницу
+    document.body.appendChild(link);
+
+    // Нажатие на ссылку для скачивания файла
+    link.click();
+
+    // Удаление ссылки
+    document.body.removeChild(link);
   } catch (error) {
     // Обработка ошибок
     console.error(error);

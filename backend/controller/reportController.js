@@ -2,6 +2,7 @@ const reportService = require('../services/reportServices');
 const userService = require('../services/userServices');
 const ApiError = require('../error/ApiError');
 const exceljs = require('exceljs');
+
 class ReportController {
   /**
    * !Что имеет больший приоритет, при отсутствии чего нельзя создать отчет ???
@@ -45,24 +46,6 @@ class ReportController {
     return res.json(updatedReport);
   }
 
-  // async getAllReport(req, res, next) {
-  //   if (req.user.RoleId === 2) {
-  //     const getedReports = await reportService.getAllReports();
-  //     if (!getedReports)
-  //       return next(
-  //         ApiError.badRequest('При получении всех отчетов произошла ошибка'),
-  //       );
-  //     return res.json(getedReports);
-  //   }
-
-  //   const userId = req.user.UserId;
-  //   const getedReports = await reportService.getAllReportsByUserId(userId);
-  //   if (!getedReports)
-  //     return next(
-  //       ApiError.badRequest('При получении всех отчетов произошла ошибка'),
-  //     );
-  //   return res.json(getedReports);
-  // }
   static convertIdArrayToObject = idArray => {
     const idObject = {};
     idArray.forEach(id => {
@@ -132,12 +115,31 @@ class ReportController {
 
     return res.json(deletedReport);
   }
+
   async getExcelReport(req, res, next) {
+    const getArr = (inform, question, answer) => {
+      const outputArr = [];
+      for (let i = 0; i < question.length; i++) {
+        const row = [];
+        if (i === 0) {
+          inform.forEach(value => row.push(value));
+          row.push(question[i]);
+          row.push(answer[i]);
+          outputArr.push(row);
+          continue;
+        }
+        inform.forEach(() => row.push(''));
+        row.push(question[i]);
+        row.push(answer[i]);
+        outputArr.push(row);
+      }
+      return outputArr;
+    };
     try {
       // Получение данных из базы данных
 
       const data = await reportService.getReportByIds(req.body.ids);
- 
+
       // Создание нового документа Excel
       const workbook = new exceljs.Workbook();
       const worksheet = workbook.addWorksheet('Sheet 1');
@@ -167,32 +169,38 @@ class ReportController {
         const questions = Object.keys(survey);
         const answers = Object.values(survey);
 
+        console.log('questions', questions);
+        console.log('answers', answers);
         // Заполнение основных полей отчета
-        worksheet.addRow([
+        const inf = [
           item.ReportId,
           item.RespondentName,
           item.Email,
           item.CompanyName,
           item.JobTitle,
           item.PhoneNumber,
-          item.QuizTime,
+          item.QuizTime.toLocaleString(),
           item.User.FullName,
-        ]);
+        ];
+        const rows = getArr(inf, questions, answers);
+        rows.forEach((row, index) => {
+          const addedRow = worksheet.addRow(row);
 
-        // Заполнение вопросов и ответов
-        questions.forEach((question, index) => {
-          worksheet.addRow([
-            '', // Пустое значение для полей отчета, чтобы совпадало с заголовками
-            '',
-            '',
-            '',
-            '',
-            '',
-            '',
-            '',
-            question,
-            answers[index],
-          ]);
+          if((index !== (rows.length - 1)) && (index !== 0)) return;
+          if (index === rows.length - 1) {
+            addedRow.eachCell(cell => {
+              cell.border = {
+                bottom: { style: 'medium' },
+              };
+            });
+          }
+          if(index === 0){
+            addedRow.eachCell(cell => {
+              cell.border = {
+                top: { style: 'medium' },
+              };
+            });
+          }
         });
       });
 
