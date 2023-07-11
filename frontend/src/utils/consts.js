@@ -15,11 +15,12 @@ export const sortListInSurveyHistory = [
   { text: 'Сначала старые', value: 'oldReports' },
 ];
 
+
 export const SidebarData = [
   {
     title: 'Главная',
     path: ADMIN_ROUTE + '/home',
-    icon: <FontAwesomeIcon icon={faHouse} />,
+    icon: <FontAwesomeIcon icon={faHouse}/>,
     cName: 'nav-text',
   },
   {
