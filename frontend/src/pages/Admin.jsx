@@ -1,17 +1,13 @@
 import React from 'react';
 import { Container } from 'react-bootstrap';
 import SideBar from '../components/UI/SideBar';
-import s from './Admin.module.css';
-function Admin() {
-  const items = [
-    { text: 'Редактирование операторов' },
-    { text: 'Редактирование опросов' },
-  ];
 
+function Admin() {
   return (
-    <Container style={{ height: '100vh', paddingTop: 50 }}>
+    <div style={{ height: '100vh', paddingTop: 80 }}>
       <SideBar />
-    </Container>
+      <Container></Container>
+    </div>
   );
 }
 

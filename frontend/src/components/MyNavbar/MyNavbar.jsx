@@ -44,7 +44,7 @@ const MyNavbar = observer(() => {
               id="basic-nav-dropdown"
               className="test"
             >
-              <NavDropdown.Item onClick={() => navigate(ADMIN_ROUTE)}>Админ панель</NavDropdown.Item>
+              <NavDropdown.Item onClick={() => navigate(ADMIN_ROUTE+'/home')}>Админ панель</NavDropdown.Item>
               <NavDropdown.Divider />
               <NavDropdown.Item onClick={logoutClick}>Выход</NavDropdown.Item>
             </NavDropdown>
