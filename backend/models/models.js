@@ -17,6 +17,7 @@ const Report = sequelize.define('Report', {
   QuizTime: { type: DataTypes.DATE },
   Survey: { type: DataTypes.TEXT },
   UserId: { type: DataTypes.INTEGER },
+  FullNameEmployee: { type: DataTypes.STRING },
 });
 
 const User = sequelize.define('User', {

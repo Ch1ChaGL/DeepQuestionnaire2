@@ -1,5 +1,4 @@
 import { $authHost, $host } from './index';
-import FileSaver from 'file-saver';
 
 export const createReport = async report => {
   const createdReport = await $authHost.post('api/report', report);

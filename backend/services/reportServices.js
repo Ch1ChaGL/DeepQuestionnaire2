@@ -89,10 +89,6 @@ class ReportService {
   async getReportByIds(ids) {
     const allReports = await Report.findAll({
       where: { ReportId: ids },
-      include: {
-        model: User,
-        attributes: ['FullName'],
-      },
     });
     console.log('allReports', allReports);
     return allReports;

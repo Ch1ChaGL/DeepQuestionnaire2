@@ -47,7 +47,7 @@ function ReportPage() {
       await deleteReport(report.ReportId);
       navigate(SURVEY_HISTORY_ROUTE);
     },
-    promptCancelText: 'Остаться',
+    promptCancelText: 'Отмена',
     promptConfirmText: 'Да, Удалить',
     text: 'Удалить',
   };

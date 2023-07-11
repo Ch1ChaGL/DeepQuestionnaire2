@@ -17,6 +17,7 @@ function EndSurveyForm({ report, setIsStarted }) {
   const pushReportOnServer = async editedReport => {
     const reportSent = editedReport;
     reportSent.UserId = user.user.UserId;
+    reportSent.FullNameEmployee = user.user.FullName;
     await createReport(editedReport);
 
     setIsStarted(false);

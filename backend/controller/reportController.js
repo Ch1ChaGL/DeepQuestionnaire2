@@ -180,13 +180,13 @@ class ReportController {
           item.JobTitle,
           item.PhoneNumber,
           item.QuizTime.toLocaleString(),
-          item.User.FullName,
+          item.FullNameEmployee,
         ];
         const rows = getArr(inf, questions, answers);
         rows.forEach((row, index) => {
           const addedRow = worksheet.addRow(row);
 
-          if((index !== (rows.length - 1)) && (index !== 0)) return;
+          if (index !== rows.length - 1 && index !== 0) return;
           if (index === rows.length - 1) {
             addedRow.eachCell(cell => {
               cell.border = {
@@ -194,7 +194,7 @@ class ReportController {
               };
             });
           }
-          if(index === 0){
+          if (index === 0) {
             addedRow.eachCell(cell => {
               cell.border = {
                 top: { style: 'medium' },

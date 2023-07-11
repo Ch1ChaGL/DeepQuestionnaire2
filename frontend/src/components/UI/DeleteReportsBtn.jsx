@@ -30,7 +30,7 @@ function DeleteReportsBtn({ checkedReports, setReports, setCheckedReports }) {
   };
 
   return (
-    <Button variant={'danger'} onClick={deleteSelectedReports}>
+    <Button variant={'danger'} onClick={deleteSelectedReports} className='me-2'>
       Удалить
     </Button>
   );

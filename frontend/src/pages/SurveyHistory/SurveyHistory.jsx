@@ -123,9 +123,10 @@ function SurveyHistory() {
                 setCheckedReports={setCheckedReports}
                 setReports={setReports}
               />
+               <SaveBtn checkedReports={checkedReports} text={'Выгрузить'} />
             </Col>
             <Col>
-              <SaveBtn checkedReports={checkedReports} text={'Выгрузить'} />
+             
             </Col>
           </Row>
         </form>
