@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import s from './SideBar.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars, faX, faArrowLeft } from '@fortawesome/free-solid-svg-icons';
@@ -7,6 +7,7 @@ import { SidebarData } from '../../utils/consts';
 function SideBar() {
   const [sidebar, setSidebar] = useState(false);
   const showSidebar = () => setSidebar(!sidebar);
+  const navigate = useNavigate();
   return (
     <>
       <nav>
@@ -25,12 +26,21 @@ function SideBar() {
                 <div
                   key={item.path}
                   className={`${s[item.cName]}`}
-                  onClick={sidebar ? showSidebar : null}
+                  onClick={
+                    sidebar
+                      ? () => {
+                          showSidebar();
+                          navigate(item.path);
+                        }
+                      : () => {
+                          navigate(item.path);
+                        }
+                  }
                 >
-                  <Link to={item.path}>
+                  <div>
                     {item.icon}
                     <span>{item.title}</span>
-                  </Link>
+                  </div>
                 </div>
               );
             })}

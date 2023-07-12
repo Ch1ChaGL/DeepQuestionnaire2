@@ -5,7 +5,7 @@ class UserService {
     const createdUser = await User.create(user);
     return createdUser;
   }
-  async checkEmail(Email) {
+  async checkEmail(Email = '') {
     const user = await User.findOne({ where: { Email } });
     return user;
   }
@@ -16,14 +16,20 @@ class UserService {
     const user = await User.findOne({ where: { UserId: id } });
     return user;
   }
-  async updateById(id, FirstName, LastName) {
-    const user = await User.update(
-      { FirstName, LastName },
-      {
-        where: { UserId: id },
-      },
+  async getUserById(id) {
+    const getedUser = await User.findOne({ where: { UserId: id } });
+    return getedUser;
+  }
+  async deleteUserById(id) {
+    const deletedUser = await User.destroy({ where: { UserId: id } });
+    return deletedUser;
+  }
+  async updateUser(user) {
+    const udpatedUser = await User.update(
+      { ...user },
+      { where: { UserId: user.UserId } },
     );
-    return user;
+    return udpatedUser;
   }
 }
 

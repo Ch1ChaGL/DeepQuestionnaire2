@@ -13,7 +13,7 @@ const AppRouter = observer(() => {
         authRoutes.map(route => (
           <Route key={route.path} path={route.path} element={route.component} />
         ))}
-      {user.getRole === 2 &&
+      {(user.getRole === 2 || user.getRole === 3) &&
         adminRoutes.map(route => (
           <Route key={route.path} path={route.path} element={route.component} />
         ))}

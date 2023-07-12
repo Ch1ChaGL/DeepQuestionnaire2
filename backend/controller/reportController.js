@@ -61,7 +61,7 @@ class ReportController {
     let totalReports = 0;
     const idsArray = await reportService.getAllAvailableIds();
     const ids = ReportController.convertIdArrayToObject(idsArray);
-    if (req.user.RoleId === 2) {
+    if (req.user.RoleId === 2 || req.user.RoleId === 3) {
       getedReports = await reportService.getAllReports(searchQuery, sort);
       totalReports = getedReports.length;
       //return res.json(getedReports);

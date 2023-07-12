@@ -1,50 +1,62 @@
-import React, { useContext } from "react";
-import { Navbar, NavDropdown, Container, Nav, Button } from "react-bootstrap";
-import { useNavigate } from "react-router-dom";
+import React, { useContext } from 'react';
+import { Navbar, NavDropdown, Container, Nav, Button } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
 import {
-    ADMIN_ROUTE,
+  ADMIN_ROUTE,
   LOGIN_ROUTE,
   SURVEY_HISTORY_ROUTE,
   SURVEY_ROUTE,
-} from "../../utils/consts";
-import { logout } from "../../API/userApi";
-import { Context } from "../..";
-import { observer } from "mobx-react-lite";
+} from '../../utils/consts';
+import { check, logout } from '../../API/userApi';
+import { Context } from '../..';
+import { observer } from 'mobx-react-lite';
 const MyNavbar = observer(() => {
   const navigate = useNavigate();
   const { user } = useContext(Context);
 
   const logoutClick = () => {
-    console.log("я вышел");
     logout();
     user.setIsAuth(false);
     user.setUser({});
-    console.log('Авторизован', user.isAuth);
     navigate(LOGIN_ROUTE);
   };
   return (
-    <Navbar expand="lg" className="bg-dark bg-gradient" fixed="top">
+    <Navbar expand='lg' className='bg-dark bg-gradient' fixed='top'>
       <Container>
-        <Navbar.Brand className="text-light">
-          <img src="/img/logo.svg" />
+        <Navbar.Brand className='text-light'>
+          <img src='/img/logo.svg' />
         </Navbar.Brand>
-        <Navbar.Toggle aria-controls="basic-navbar-nav" />
-        <Navbar.Collapse id="basic-navbar-nav">
-          <Nav className="ms-auto">
-            <Nav.Link className="text-light">
+        <Navbar.Toggle aria-controls='basic-navbar-nav' />
+        <Navbar.Collapse id='basic-navbar-nav'>
+          <Nav className='ms-auto'>
+            <Nav.Link className='text-light'>
               <div onClick={() => navigate(SURVEY_ROUTE)}>Опрос</div>
             </Nav.Link>
-            <Nav.Link className="text-light">
-              <div onClick={() => navigate(SURVEY_HISTORY_ROUTE)}>
+            <Nav.Link className='text-light'>
+              <div
+                onClick={async () => {
+                  const checkedUser = await check();
+                  user.setUser(checkedUser);
+                  navigate(SURVEY_HISTORY_ROUTE);
+                }}
+              >
                 История опросов
               </div>
             </Nav.Link>
             <NavDropdown
-              title="Другое"
-              id="basic-nav-dropdown"
-              className="test"
+              title='Другое'
+              id='basic-nav-dropdown'
+              className='test'
             >
-              <NavDropdown.Item onClick={() => navigate(ADMIN_ROUTE+'/home')}>Админ панель</NavDropdown.Item>
+              <NavDropdown.Item
+                onClick={async () => {
+                  const checkedUser = await check();
+                  user.setUser(checkedUser);
+                  navigate(ADMIN_ROUTE + '/home');
+                }}
+              >
+                Админ панель
+              </NavDropdown.Item>
               <NavDropdown.Divider />
               <NavDropdown.Item onClick={logoutClick}>Выход</NavDropdown.Item>
             </NavDropdown>
