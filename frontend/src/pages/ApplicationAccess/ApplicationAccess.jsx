@@ -1,15 +1,36 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import SearchInput from '../../components/UI/SearchInput';
-import { Button } from 'react-bootstrap';
-import s from './ApplicationAccess.module.css'
-import Card from '../../components/UI/Card';
+import { Button, Container } from 'react-bootstrap';
+import s from './ApplicationAccess.module.css';
+import Card from './Card';
+import { getUsers } from '../../API/userApi';
 function ApplicationAccess() {
   const [searchQuery, setSearchQuery] = useState('');
+  const [users, setUsers] = useState([]);
+
+  useEffect(() => {
+    fetchUsers();
+  }, []);
+  const fetchUsers = async () => {
+    const user = await getUsers();
+    console.log(user);
+    setUsers(user);
+  };
   return (
-    <div style={{ padding: 20 }}>
+    <div
+      className={s.container}
+      style={{
+        padding: 20,
+        backgroundColor: '#19639c',
+      }}
+    >
       <SearchInput searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
       <Button className={s.addButton}>Добавить</Button>
-      <Card/>
+      <div style={{ display: 'grid' }}>
+        {users.map(user => {
+          return <Card user={user} key={user.UserId} />;
+        })}
+      </div>
     </div>
   );
 }

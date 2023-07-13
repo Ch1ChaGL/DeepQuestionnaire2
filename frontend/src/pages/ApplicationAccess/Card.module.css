@@ -1,0 +1,26 @@
+.container {
+  padding: 20px;
+  width: 100%;
+  margin-bottom: 10px;
+  background-color: antiquewhite;
+  border-radius: 5px;
+}
+.name,
+.email {
+  font-style: italic;
+}
+.name span,
+.email span {
+  font-style: normal;
+  font-weight: 600;
+}
+.row{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+@media (max-width: 650px) {
+  .row{
+    display: block;
+  }
+}

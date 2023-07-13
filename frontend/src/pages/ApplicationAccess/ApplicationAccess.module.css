@@ -7,3 +7,6 @@
 .addButton:hover{
     background-color: #1f4068 !important;
 }
+.container{
+    display: grid;
+}

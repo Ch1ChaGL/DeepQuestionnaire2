@@ -11,7 +11,6 @@ function Admin() {
   const location = useLocation();
   const [contentComponent, setContentComponent] = useState(null);
 
-  console.log(location.pathname);
   useEffect(() => {
     switch (location.pathname) {
       case ADMIN_ROUTE + '/applicationAccess':
@@ -26,9 +25,7 @@ function Admin() {
   }, [location.pathname]);
 
   return (
-    <div
-      style={{ height: '100vh', paddingTop: 80, backgroundColor: '#19639c' }}
-    >
+    <div style={{ height: '100vh', paddingTop: 80 }}>
       <SideBar />
       <div style={{ paddingLeft: 80 }}>{contentComponent}</div>
     </div>

@@ -1,7 +1,6 @@
 const ApiError = require('../error/ApiError');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const userService = require('../services/userServices');
 const { User } = require('../models/models');
 const userServices = require('../services/userServices');
 
@@ -26,7 +25,7 @@ class UserController {
       return next(ApiError.badRequest('Не все поля заполнены'));
     }
 
-    const candidate = await userService.checkEmail(Email);
+    const candidate = await userServices.checkEmail(Email);
     if (candidate) {
       return next(
         ApiError.badRequest('Пользователь с таким email уже зарегистрирован'),
@@ -34,7 +33,7 @@ class UserController {
     }
 
     const hashPassword = await bcrypt.hash(Password, 5);
-    const user = await userService.create({
+    const user = await userServices.create({
       Email,
       Password: hashPassword,
       RoleId,
@@ -53,17 +52,14 @@ class UserController {
   async login(req, res, next) {
     const { Email, Password } = req.body;
 
-    const candidate = await userService.checkEmail(Email);
+    const candidate = await userServices.checkEmail(Email);
     if (!candidate) {
       return next(
         ApiError.internal('Пользователь с таким email не существует'),
       );
     }
 
-    const comparePassword = await bcrypt.compareSync(
-      Password,
-      candidate.Password,
-    );
+    const comparePassword = bcrypt.compareSync(Password, candidate.Password);
 
     if (!comparePassword) {
       return next(ApiError.badRequest('Неверный пароль'));
@@ -130,8 +126,14 @@ class UserController {
         ),
       );
 
-    const updatedUser = userService.updateUser(req.body);
+    const updatedUser = userServices.updateUser(req.body);
     return res.json(updatedUser);
+  }
+  async getUsers(req, res, next) {
+    const RoleId = req.user.RoleId;
+    if (RoleId === 1) return next(ApiError.badRequest('Доступ запрещен'));
+    const getedUsers = await userServices.getUsers();
+    return res.json(getedUsers);
   }
 }
 

@@ -31,6 +31,12 @@ class UserService {
     );
     return udpatedUser;
   }
+  async getUsers() {
+    const getedUsers = await User.findAll({
+      attributes: ['UserId', 'RoleId', 'FullName', 'Email'],
+    });
+    return getedUsers;
+  }
 }
 
 module.exports = new UserService();
