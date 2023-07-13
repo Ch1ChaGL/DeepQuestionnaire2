@@ -34,3 +34,7 @@ export const getUsers = async () => {
   return response.data;
 }
 
+export const deleteUser = async (id) => {
+  const deletedUser = await $authHost.delete(`api/user/${id}`);
+  return deletedUser;
+}

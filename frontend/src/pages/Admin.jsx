@@ -25,7 +25,7 @@ function Admin() {
   }, [location.pathname]);
 
   return (
-    <div style={{ height: '100vh', paddingTop: 80 }}>
+    <div style={{ minHeight: '100vh', paddingTop: 80, backgroundColor: '#19639c'}}>
       <SideBar />
       <div style={{ paddingLeft: 80 }}>{contentComponent}</div>
     </div>

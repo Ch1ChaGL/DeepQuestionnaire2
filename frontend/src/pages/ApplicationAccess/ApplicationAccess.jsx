@@ -21,14 +21,13 @@ function ApplicationAccess() {
       className={s.container}
       style={{
         padding: 20,
-        backgroundColor: '#19639c',
       }}
     >
       <SearchInput searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
       <Button className={s.addButton}>Добавить</Button>
       <div style={{ display: 'grid' }}>
         {users.map(user => {
-          return <Card user={user} key={user.UserId} />;
+          return <Card user={user} key={user.UserId} setUsers={setUsers}/>;
         })}
       </div>
     </div>

@@ -1,7 +1,18 @@
 import React from 'react';
 import s from './Card.module.css';
-import { Button, Container } from 'react-bootstrap';
-function Card({ user }) {
+import { Button } from 'react-bootstrap';
+import { deleteUser } from '../../API/userApi';
+function Card({ user, setUsers, users }) {
+  const deleteUserFn = async () => {
+    await deleteUser(user.UserId);
+    setUsers(prevUsers => {
+      // Отфильтровать старые данные и исключить пользователя
+      const filteredUsers = prevUsers.filter(
+        oldUser => oldUser.UserId !== user.UserId,
+      );
+      return filteredUsers;
+    });
+  };
   return (
     <div className={s.container}>
       <div className={s.row}>
@@ -16,8 +27,12 @@ function Card({ user }) {
           </div>
         </div>
         <div className={s.buttons}>
-          <Button className='me-2'>Изменить</Button>
-          <Button>Удалить</Button>
+          <Button className='me-2' variant='success'>
+            Изменить
+          </Button>
+          <Button variant='danger' onClick={deleteUserFn}>
+            Удалить
+          </Button>
         </div>
       </div>
     </div>

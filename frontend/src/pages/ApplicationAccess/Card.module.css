@@ -14,13 +14,16 @@
   font-style: normal;
   font-weight: 600;
 }
-.row{
+.row {
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
-@media (max-width: 650px) {
-  .row{
+@media (max-width: 610px) {
+  .row {
     display: block;
+  }
+  .buttons {
+    margin-top: 10px !important;
   }
 }
