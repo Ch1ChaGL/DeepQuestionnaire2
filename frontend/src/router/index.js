@@ -24,6 +24,6 @@ export const authRoutes = [
   },
 ];
 
-export const adminRoutes = [{ path: ADMIN_ROUTE+'/home', component: <Admin /> },
+export const adminRoutes = [{ path: ADMIN_ROUTE + '/home', component: <Admin /> },
 { path: ADMIN_ROUTE+'/applicationAccess', component: <Admin /> }, 
 { path: ADMIN_ROUTE+'/survey', component: <Admin /> }];
