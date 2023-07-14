@@ -30,7 +30,6 @@ const Auth = observer(() => {
       user.setIsAuth(true);
       navigate(SURVEY_ROUTE);
     } catch (e) {
-      console.log('e', e);
       setErrMessage(e.response.data.message);
       setShowAlert(true);
     }

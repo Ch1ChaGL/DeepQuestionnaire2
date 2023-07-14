@@ -7,7 +7,6 @@ import { getUsers } from '../../API/userApi';
 function ApplicationAccess() {
   const [searchQuery, setSearchQuery] = useState('');
   const [users, setUsers] = useState([]);
-
   useEffect(() => {
     fetchUsers();
   }, []);

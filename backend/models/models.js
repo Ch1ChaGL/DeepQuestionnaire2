@@ -16,7 +16,7 @@ const Report = sequelize.define('Report', {
   PhoneNumber: { type: DataTypes.STRING },
   QuizTime: { type: DataTypes.DATE },
   Survey: { type: DataTypes.TEXT },
-  UserId: { type: DataTypes.INTEGER },
+  UserId: { type: DataTypes.INTEGER, allowNull: true },
   FullNameEmployee: { type: DataTypes.STRING },
 });
 
@@ -40,7 +40,7 @@ User.belongsTo(Role, { foreignKey: 'RoleId' });
 
 //Установка связи между таблицами Report и User
 Report.belongsTo(User, { foreignKey: 'UserId' });
-User.hasMany(Report, { foreignKey: 'UserId' });
+User.hasMany(Report, { foreignKey: 'UserId', onDelete: 'SET NULL' });
 
 module.exports = {
   Quiz,
