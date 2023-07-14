@@ -4,9 +4,11 @@ import { Button, Container } from 'react-bootstrap';
 import s from './ApplicationAccess.module.css';
 import Card from './Card';
 import { getUsers } from '../../API/userApi';
+import AddUserForm from '../../components/AdminPage/AddUserForm';
 function ApplicationAccess() {
   const [searchQuery, setSearchQuery] = useState('');
   const [users, setUsers] = useState([]);
+  const [showAddForm, setShowAddForm] = useState(false);
   useEffect(() => {
     fetchUsers();
   }, []);
@@ -23,10 +25,13 @@ function ApplicationAccess() {
       }}
     >
       <SearchInput searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
-      <Button className={s.addButton}>Добавить</Button>
+      <Button className={s.addButton} onClick={() => setShowAddForm(true)}>
+        Добавить
+      </Button>
+      <AddUserForm show={showAddForm} setShow={setShowAddForm} />
       <div style={{ display: 'grid' }}>
         {users.map(user => {
-          return <Card user={user} key={user.UserId} setUsers={setUsers}/>;
+          return <Card user={user} key={user.UserId} setUsers={setUsers} />;
         })}
       </div>
     </div>

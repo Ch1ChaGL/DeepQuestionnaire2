@@ -37,9 +37,7 @@ const StartSurveyForm = observer(({ setIsStarted }) => {
   };
 
   const start = () => {
-    console.log('selectedSurveyId', selectedSurveyId);
     if (selectedSurveyId === 0) {
-      console.log('Я тут');
       setShowAlert(true);
       return;
     }
