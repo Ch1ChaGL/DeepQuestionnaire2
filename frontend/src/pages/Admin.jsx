@@ -6,6 +6,7 @@ import ApplicationAccess from './ApplicationAccess/ApplicationAccess';
 import EditSurvey from './EditSurvey';
 import Home from './Home';
 import { ADMIN_ROUTE } from '../utils/consts';
+import ScrollButton from '../components/UI/ScrollButton';
 
 function Admin() {
   const location = useLocation();
@@ -27,6 +28,7 @@ function Admin() {
   return (
     <div style={{ minHeight: '100vh', paddingTop: 80, backgroundColor: '#b5e7e8'}}>
       <SideBar />
+      <ScrollButton/>
       <div style={{ paddingLeft: 80 }}>{contentComponent}</div>
     </div>
   );

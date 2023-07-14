@@ -28,7 +28,7 @@ function ApplicationAccess() {
       <Button className={s.addButton} onClick={() => setShowAddForm(true)}>
         Добавить
       </Button>
-      <AddUserForm show={showAddForm} setShow={setShowAddForm} />
+      <AddUserForm show={showAddForm} setShow={setShowAddForm} setUsers={setUsers}/>
       <div style={{ display: 'grid' }}>
         {users.map(user => {
           return <Card user={user} key={user.UserId} setUsers={setUsers} />;

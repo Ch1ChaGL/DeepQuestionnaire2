@@ -21,7 +21,6 @@ function Card({ user, setUsers, users }) {
         return filteredUsers;
       });
     } catch (e) {
-      console.log(e);
       setShowAlert(true);
       setErrMessage(e.response.data.message);
     }
