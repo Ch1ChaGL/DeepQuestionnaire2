@@ -5,10 +5,13 @@ import s from './ApplicationAccess.module.css';
 import Card from './Card';
 import { getUsers } from '../../API/userApi';
 import AddUserForm from '../../components/AdminPage/AddUserForm';
+import { useUsers } from '../../hooks/useUsers';
 function ApplicationAccess() {
   const [searchQuery, setSearchQuery] = useState('');
   const [users, setUsers] = useState([]);
   const [showAddForm, setShowAddForm] = useState(false);
+
+  const searchedUser = useUsers(users, searchQuery);
   useEffect(() => {
     fetchUsers();
   }, []);
@@ -30,7 +33,7 @@ function ApplicationAccess() {
       </Button>
       <AddUserForm show={showAddForm} setShow={setShowAddForm} setUsers={setUsers}/>
       <div style={{ display: 'grid' }}>
-        {users.map(user => {
+        {searchedUser.map(user => {
           return <Card user={user} key={user.UserId} setUsers={setUsers} />;
         })}
       </div>

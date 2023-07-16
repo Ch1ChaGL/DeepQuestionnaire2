@@ -102,17 +102,14 @@ class UserController {
     const getedUser = await userServices.getUserById(UserId);
 
     const checkEmail = await userServices.checkEmail(Email);
-    if (checkEmail)
-      return next(
-        ApiError.badRequest('Пользователя с таким Email уже существует'),
-      );
+
     if (!getedUser)
       return next(ApiError.badRequest('Пользователя не существует'));
 
     if (req.user.RoleId < RoleId)
       return next(
         ApiError.badRequest(
-          'Нельзя изменить уровень доступа выше или равному вашему',
+          'Ваш уровень доступа меньше, чем тот который вы хотите присвоить',
         ),
       );
 
@@ -122,11 +119,16 @@ class UserController {
     )
       return next(
         ApiError.badRequest(
-          'Нельзя изменить уровень доступа выше или равному вашему',
+          'Нельзя редактировать, уровень доступа выше или равен вашему',
         ),
       );
 
-    const updatedUser = userServices.updateUser(req.body);
+    if (checkEmail && Email !== getedUser.Email)
+      return next(
+        ApiError.badRequest('Пользователя с таким Email уже существует'),
+      );
+    const updatedUser = await userServices.updateUser(req.body);
+    console.log('updatedUser', updatedUser);
     return res.json(updatedUser);
   }
   async getUsers(req, res, next) {
@@ -137,8 +139,9 @@ class UserController {
   }
   async getUser(req, res, next) {
     const RoleId = req.user.RoleId;
+    const { id } = req.params;
     if (RoleId === 1) return next(ApiError.badRequest('Доступ запрещен'));
-    const getedUser = await userServices.getUser(req.params);
+    const getedUser = await userServices.getUser(id);
     return res.json(getedUser);
   }
 }

@@ -4,11 +4,12 @@ import { Button } from 'react-bootstrap';
 import { deleteUser } from '../../API/userApi';
 import DangerAlert from '../../components/UI/DangerAlert';
 import NavigationPrompt from '../../components/UI/NavigationPrompt';
+import EditUserForm from '../../components/AdminPage/EditUserForm';
 function Card({ user, setUsers, users }) {
   const [showAlert, setShowAlert] = useState(false);
   const [showPromt, setShowPromt] = useState(false);
   const [errMessage, setErrMessage] = useState('');
-
+  const [show, setShow] = useState(false);
   const deleteUserFn = async () => {
     setShowPromt(false);
     try {
@@ -26,48 +27,62 @@ function Card({ user, setUsers, users }) {
     }
   };
   return (
-    <div className={s.container}>
-      {showAlert && (
-        <DangerAlert
-          show={showAlert}
-          onHide={() => setShowAlert(false)}
-          title={'При удалении произошла ошибка'}
-          message={errMessage}
-        />
-      )}
-      {showPromt && (
-        <NavigationPrompt
-          title={'ВНИМАНИЕ!!! УДАЛЕНИЕ ПОЛЬЗОВАТЕЛЯ'}
-          message={
-            'Вы пытаетесь удалить пользователя, это последнее предупреждение, вы точно хотите продолжить?'
-          }
-          onCancel={() => setShowPromt(false)}
-          onConfirm={async () => await deleteUserFn()}
-          cancelText={'Закрыть'}
-          confirmText={'Да, удалить'}
-        />
-      )}
-      <div className={s.row}>
-        <div className={s.information}>
-          <div className={s.name}>
-            <span>ФИО: </span>
-            {user.FullName}
+    <>
+      <EditUserForm
+        show={show}
+        setShow={setShow}
+        userId={user.UserId}
+        setUsers={setUsers}
+      />
+      <div className={s.container}>
+        {showAlert && (
+          <DangerAlert
+            show={showAlert}
+            onHide={() => setShowAlert(false)}
+            title={'При удалении произошла ошибка'}
+            message={errMessage}
+          />
+        )}
+        {showPromt && (
+          <NavigationPrompt
+            title={'ВНИМАНИЕ!!! УДАЛЕНИЕ ПОЛЬЗОВАТЕЛЯ'}
+            message={`Вы пытаетесь удалить пользователя (${user.FullName}), это последнее предупреждение, вы точно хотите продолжить?`}
+            onCancel={() => setShowPromt(false)}
+            onConfirm={async () => await deleteUserFn()}
+            cancelText={'Закрыть'}
+            confirmText={'Да, удалить'}
+          />
+        )}
+        <div className={s.row}>
+          <div className={s.information}>
+            <div className={s.id}>
+              <span style={{ fontWeight: 'bold' }}>№: </span>
+              <span style={{ fontWeight: 'bold' }}>{user.UserId}</span>
+            </div>
+            <div className={s.name}>
+              <span>ФИО: </span>
+              {user.FullName}
+            </div>
+            <div className={s.email}>
+              <span>Email: </span>
+              {user.Email}
+            </div>
           </div>
-          <div className={s.email}>
-            <span>Email: </span>
-            {user.Email}
+          <div className={s.buttons}>
+            <Button
+              className='me-2'
+              variant='success'
+              onClick={() => setShow(true)}
+            >
+              Изменить
+            </Button>
+            <Button variant='danger' onClick={() => setShowPromt(true)}>
+              Удалить
+            </Button>
           </div>
-        </div>
-        <div className={s.buttons}>
-          <Button className='me-2' variant='success'>
-            Изменить
-          </Button>
-          <Button variant='danger' onClick={() => setShowPromt(true)}>
-            Удалить
-          </Button>
         </div>
       </div>
-    </div>
+    </>
   );
 }
 

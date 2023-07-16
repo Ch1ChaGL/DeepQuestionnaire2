@@ -29,7 +29,11 @@ class UserService {
       { ...user },
       { where: { UserId: user.UserId } },
     );
-    return udpatedUser;
+    const getedUpdatedUser = await User.findOne({
+      attributes: ['UserId', 'RoleId', 'FullName', 'Email'],
+      where: { UserId: user.UserId },
+    });
+    return getedUpdatedUser;
   }
   async getUsers() {
     const getedUsers = await User.findAll({
@@ -37,10 +41,10 @@ class UserService {
     });
     return getedUsers;
   }
-  async getUser(id){
+  async getUser(id) {
     const getedUser = await User.findAll({
       attributes: ['UserId', 'RoleId', 'FullName', 'Email'],
-      where: { UserId:id },
+      where: { UserId: id },
     });
     return getedUser;
   }
