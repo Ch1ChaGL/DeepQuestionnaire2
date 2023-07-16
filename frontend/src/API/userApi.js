@@ -29,7 +29,17 @@ export const getUsers = async () => {
   return response.data;
 }
 
+export const getUser = async (id) => {
+  const response = await $authHost.get(`api/user/${id}`);
+  return response.data;
+}
+
 export const deleteUser = async (id) => {
   const deletedUser = await $authHost.delete(`api/user/${id}`);
   return deletedUser;
+}
+
+export const updateUser = async (user)=> {
+  const updateUser = await $authHost.put('api/user', user);
+  return updateUser;
 }
