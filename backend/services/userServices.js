@@ -37,6 +37,13 @@ class UserService {
     });
     return getedUsers;
   }
+  async getUser(id){
+    const getedUser = await User.findAll({
+      attributes: ['UserId', 'RoleId', 'FullName', 'Email'],
+      where: { UserId:id },
+    });
+    return getedUser;
+  }
 }
 
 module.exports = new UserService();

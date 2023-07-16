@@ -135,6 +135,12 @@ class UserController {
     const getedUsers = await userServices.getUsers();
     return res.json(getedUsers);
   }
+  async getUser(req, res, next) {
+    const RoleId = req.user.RoleId;
+    if (RoleId === 1) return next(ApiError.badRequest('Доступ запрещен'));
+    const getedUser = await userServices.getUser(req.params);
+    return res.json(getedUser);
+  }
 }
 
 module.exports = new UserController();
