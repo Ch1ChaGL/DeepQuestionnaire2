@@ -3,7 +3,7 @@ import { Container } from 'react-bootstrap';
 import SideBar from '../components/UI/SideBar';
 import { useLocation } from 'react-router-dom';
 import ApplicationAccess from './ApplicationAccess/ApplicationAccess';
-import EditSurvey from './EditSurvey';
+import EditSurvey from './EditSurvey/EditSurvey';
 import Home from './Home';
 import { ADMIN_ROUTE } from '../utils/consts';
 import ScrollButton from '../components/UI/ScrollButton';

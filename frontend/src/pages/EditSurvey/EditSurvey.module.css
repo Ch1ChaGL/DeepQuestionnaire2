@@ -1,0 +1,17 @@
+.addButton {
+  margin: 10px 0px 10px 0px;
+  background-color: #112240 !important;
+  border: 0px !important;
+}
+.addButton:hover {
+  background-color: #1f4068 !important;
+}
+
+.gridСontainer {
+  display: grid;
+  grid-template-columns: repeat(
+    auto-fit,
+    minmax(400px, 1fr)
+  ); /* три колонки равной ширины */
+  grid-gap: 20px; /* промежуток между карточками */
+}
