@@ -1,8 +1,12 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useNavigate } from 'react-router-dom';
 import {
   faUser,
   faSquarePollVertical,
   faHouse,
+  faPlus,
+  faFloppyDisk,
+  faRightFromBracket,
 } from '@fortawesome/free-solid-svg-icons';
 
 export const ADMIN_ROUTE = '/admin';
@@ -15,12 +19,11 @@ export const sortListInSurveyHistory = [
   { text: 'Сначала старые', value: 'oldReports' },
 ];
 
-
 export const SidebarData = [
   {
     title: 'Главная',
     path: ADMIN_ROUTE + '/home',
-    icon: <FontAwesomeIcon icon={faHouse}/>,
+    icon: <FontAwesomeIcon icon={faHouse} />,
     cName: 'nav-text',
   },
   {
@@ -36,3 +39,31 @@ export const SidebarData = [
     cName: 'nav-text',
   },
 ];
+
+export const useRedactMenuData = () => {
+  const navigate = useNavigate();
+  const data = [
+    {
+      title: 'Добавить блок вопросов',
+      cName: 'nav-text',
+      icon: <FontAwesomeIcon icon={faPlus} />,
+    },
+    {
+      title: 'Сохранить',
+      cName: 'nav-text',
+      icon: <FontAwesomeIcon icon={faFloppyDisk} />,
+      fn: nodes => {
+        /**
+         * !Сохранение и все такое, можно отдельный класс написать думаю даже
+         */
+      },
+    },
+    {
+      title: 'Выйти',
+      cName: 'nav-text',
+      icon: <FontAwesomeIcon icon={faRightFromBracket} />,
+      fn: () => navigate(ADMIN_ROUTE + '/survey'),
+    },
+  ];
+  return data;
+};

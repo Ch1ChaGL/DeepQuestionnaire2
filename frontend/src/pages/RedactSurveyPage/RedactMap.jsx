@@ -11,6 +11,7 @@ import 'reactflow/dist/style.css';
 import { useSurveyNodes } from '../../hooks/useSurveyNodes';
 import { Button } from 'react-bootstrap';
 import SideBar from '../../components/UI/SideBar';
+import RedactMenu from '../../components/RedactSurvey/RedactMenu';
 function RedactMap({ survey, ...props }) {
   const [nodes, setNodes] = useSurveyNodes(survey);
 
@@ -27,8 +28,7 @@ function RedactMap({ survey, ...props }) {
         onNodesChange={onNodesChange}
         style={{ backgroundColor: '#f3f4f6' }}
       >
- 
-          <SideBar />
+        <RedactMenu nodes={nodes}/> 
 
         <Controls />
       </ReactFlow>
