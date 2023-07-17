@@ -1,6 +1,7 @@
 import Questions from '../components/Survey/Questions';
 import Admin from '../pages/Admin';
 import Auth from '../pages/Auth';
+import RedactSurveyPage from '../pages/RedactSurveyPage/RedactSurveyPage';
 import ReportPage from '../pages/ReportPage';
 import Survey from '../pages/Survey';
 import SurveyHistory from '../pages/SurveyHistory/SurveyHistory';
@@ -26,4 +27,5 @@ export const authRoutes = [
 
 export const adminRoutes = [{ path: ADMIN_ROUTE + '/home', component: <Admin /> },
 { path: ADMIN_ROUTE+'/applicationAccess', component: <Admin /> }, 
-{ path: ADMIN_ROUTE+'/survey', component: <Admin /> }];
+{ path: ADMIN_ROUTE+'/survey', component: <Admin /> }, 
+{path: ADMIN_ROUTE + '/survey/:id', component: <RedactSurveyPage/>}];

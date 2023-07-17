@@ -1,0 +1,28 @@
+.block {
+  height: 100%;
+  border: 2px solid rgb(224, 226, 233);
+  padding: 10px 25px;
+  border-radius: 10px;
+  background: white;
+}
+
+.blockHeader {
+  display: flex;
+  justify-content: start;
+  border-bottom: 1px solid rgb(224, 226, 233);
+}
+.icon {
+  margin-right: 10px;
+}
+.title {
+  font-size: 18px;
+}
+.question {
+  margin-top: 10px;
+  border: 2px solid rgb(224, 226, 233);
+  padding: 10px;
+  border-radius: 10px;
+}
+.question:hover {
+  border: 2px solid rgb(151, 152, 158);
+}
