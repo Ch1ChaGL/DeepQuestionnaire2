@@ -1,12 +1,15 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useState, useEffect } from 'react';
 import s from './QuestionBlock.module.css';
 import { Handle, Position } from 'reactflow';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFeather } from '@fortawesome/free-solid-svg-icons';
 
 function QuestionBlock({ data, isConnectable }) {
-
   const [questions, setQuestions] = useState(data.block.questions);
+
+  useEffect(() => {
+    setQuestions(data.block.questions);
+  }, [data]);
 
   return (
     <div className={s['block']}>

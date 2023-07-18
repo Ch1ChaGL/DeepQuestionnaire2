@@ -3,7 +3,10 @@ import { useLocation } from 'react-router-dom';
 import { getOneSurvey } from '../../API/surveyApi';
 import RedactMap from './RedactMap';
 import QuestionBlock from '../../components/EditSurvey/QuestionBlock';
-import { RedactSurveyProvider, useRedactSurvey } from '../../components/RedactSurvey/RedactSurveyProvider';
+import {
+  RedactSurveyProvider,
+  useRedactSurvey,
+} from '../../components/RedactSurvey/RedactSurveyProvider';
 const nodeTypes = { questionBlock: QuestionBlock };
 
 function RedactSurveyPage() {
@@ -20,12 +23,12 @@ function RedactSurveyPage() {
     const parsedSurvey = JSON.parse(getedSurvey.Survey);
     getedSurvey = { ...getedSurvey, Survey: parsedSurvey };
     redact.setCurrentSurvey(getedSurvey);
-    setSurvey(getedSurvey);
+    setSurvey(redact.getCurrentSurvey());
   };
 
   return (
     <div style={{ height: '100vh', paddingTop: 80 }}>
-      <RedactMap survey={survey} nodeTypes={nodeTypes} />
+      <RedactMap QuizId={QuizId} nodeTypes={nodeTypes} />
     </div>
   );
 }

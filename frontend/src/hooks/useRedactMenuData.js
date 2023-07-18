@@ -5,11 +5,14 @@ import {
   faFloppyDisk,
   faRightFromBracket,
 } from '@fortawesome/free-solid-svg-icons';
+import { useRedactSurvey } from '../components/RedactSurvey/RedactSurveyProvider';
+import { updateSurvey } from '../API/surveyApi';
 
 export const ADMIN_ROUTE = '/admin';
 
 export const useRedactMenuData = () => {
   const navigate = useNavigate();
+  const redact = useRedactSurvey();
   const data = [
     {
       title: 'Добавить блок вопросов',
@@ -20,20 +23,8 @@ export const useRedactMenuData = () => {
       title: 'Сохранить',
       cName: 'nav-text',
       icon: <FontAwesomeIcon icon={faFloppyDisk} />,
-      fn: nodes => {
-
-        const updatedObjSurvey = nodes.reduce(
-          (obj, node) => {
-            const currentBlock = {
-              ...node.data.block,
-              position: node.position,
-            };
-            return { blocks: [...obj.blocks, currentBlock] };
-          },
-          { blocks: [] },
-        );
-
-          
+      fn: async () => {
+        await updateSurvey(redact.getCurrentSurvey());
       },
     },
     {

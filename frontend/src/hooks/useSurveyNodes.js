@@ -1,15 +1,17 @@
 import React, { useState, useEffect } from 'react';
-
 export const useSurveyNodes = survey => {
   const [nodes, setNodes] = useState([]);
-  console.log('useSurveyNodes', survey);
+
   useEffect(() => {
-    if(survey.length === 0) return;
-    const extractedNodes = survey.blocks.map(node => ({
+    // if (survey.length === 0) return;
+    const extractedNodes = survey.Survey.blocks.map(node => ({
       id: node.id + '',
       type: 'questionBlock',
       data: { block: node },
-      position: { x: parseFloat(node.position.x), y: parseFloat(node.position.y) },
+      position: {
+        x: parseFloat(node.position.x),
+        y: parseFloat(node.position.y),
+      },
     }));
 
     setNodes(extractedNodes);

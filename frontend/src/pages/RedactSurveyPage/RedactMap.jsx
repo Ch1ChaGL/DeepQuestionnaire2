@@ -1,27 +1,39 @@
-import React, { useEffect, useCallback } from 'react';
+import React, { useEffect, useCallback, useState } from 'react';
 import s from './RedactMap.module.css';
-import ReactFlow, {
-  Controls,
-  applyNodeChanges,
-} from 'reactflow';
+import ReactFlow, { Controls, applyNodeChanges } from 'reactflow';
 import 'reactflow/dist/style.css';
 import { useSurveyNodes } from '../../hooks/useSurveyNodes';
 import { useRedactSurvey } from '../../components/RedactSurvey/RedactSurveyProvider';
 import { getOneSurvey } from '../../API/surveyApi';
 import RedactMenu from '../../components/RedactSurvey/RedactMenu';
-import { useUpdatedSurvey } from '../../hooks/useUpdatedSurvey';
+import { faL } from '@fortawesome/free-solid-svg-icons';
+import { Button } from 'react-bootstrap';
+// import { useUpdatedSurvey } from '../../hooks/useUpdatedSurvey';
 
-function RedactMap({ survey, ...props }) {
+const RedactMap = ({ QuizId, ...props }) => {
+  const redact = useRedactSurvey();
 
-  const [nodes, setNodes] = useSurveyNodes(survey.Survey);
+  const [survey, setSurvey] = useState({ Survey: { blocks: [] } });
+  useEffect(() => {
+    fetchSurvey();
+  }, []);
 
-  console.log('nodes', nodes);
-  const updatedSurvey = useUpdatedSurvey(nodes);
-  
-  const onNodesChange = useCallback(
-    changes => setNodes(nds => applyNodeChanges(changes, nds)),
-    [setNodes],
-  );
+  const fetchSurvey = async () => {
+    let getedSurvey = await getOneSurvey(QuizId);
+    const parsedSurvey = JSON.parse(getedSurvey.Survey);
+    getedSurvey = { ...getedSurvey, Survey: parsedSurvey };
+    redact.setCurrentSurvey(getedSurvey);
+    setSurvey(redact.getCurrentSurvey());
+  };
+
+  const [nodes, setNodes] = useSurveyNodes(survey);
+
+  const onNodesChange = useCallback(changes => {
+    if (!changes[0].dragging) return;
+    const blockId = parseInt(changes[0].id);
+    const position = changes[0].position;
+    redact.setBlockPosition(blockId, position, setSurvey);
+  }, []);
 
   return (
     <>
@@ -32,11 +44,16 @@ function RedactMap({ survey, ...props }) {
         style={{ backgroundColor: '#f3f4f6' }}
       >
         <RedactMenu nodes={nodes} />
-
+        <Button
+          onClick={() => redact.addQuestion(setSurvey)}
+          style={{ marginLeft: 300, zIndex: 1000, position: 'absolute' }}
+        >
+          ХУЙ
+        </Button>
         <Controls />
       </ReactFlow>
     </>
   );
-}
+};
 
 export default RedactMap;
