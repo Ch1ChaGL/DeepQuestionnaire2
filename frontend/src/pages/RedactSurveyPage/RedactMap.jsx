@@ -9,12 +9,15 @@ import ReactFlow, {
 } from 'reactflow';
 import 'reactflow/dist/style.css';
 import { useSurveyNodes } from '../../hooks/useSurveyNodes';
-import { Button } from 'react-bootstrap';
-import SideBar from '../../components/UI/SideBar';
+import { useRedactSurvey } from '../../components/RedactSurvey/RedactSurveyProvider';
+import { getOneSurvey } from '../../API/surveyApi';
 import RedactMenu from '../../components/RedactSurvey/RedactMenu';
-function RedactMap({ survey, ...props }) {
-  const [nodes, setNodes] = useSurveyNodes(survey);
 
+function RedactMap({ survey, ...props }) {
+  const redactSurvey = useRedactSurvey();
+  const [nodes, setNodes] = useSurveyNodes(survey);
+  redactSurvey.setCurrentSurvey(survey);
+  console.log('redactSurvey.Survey', redactSurvey.Survey);
   const onNodesChange = useCallback(
     changes => setNodes(nds => applyNodeChanges(changes, nds)),
     [setNodes],
@@ -28,7 +31,7 @@ function RedactMap({ survey, ...props }) {
         onNodesChange={onNodesChange}
         style={{ backgroundColor: '#f3f4f6' }}
       >
-        <RedactMenu nodes={nodes}/> 
+        <RedactMenu nodes={nodes} />
 
         <Controls />
       </ReactFlow>

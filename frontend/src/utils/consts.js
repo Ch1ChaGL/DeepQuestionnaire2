@@ -40,30 +40,3 @@ export const SidebarData = [
   },
 ];
 
-export const useRedactMenuData = () => {
-  const navigate = useNavigate();
-  const data = [
-    {
-      title: 'Добавить блок вопросов',
-      cName: 'nav-text',
-      icon: <FontAwesomeIcon icon={faPlus} />,
-    },
-    {
-      title: 'Сохранить',
-      cName: 'nav-text',
-      icon: <FontAwesomeIcon icon={faFloppyDisk} />,
-      fn: nodes => {
-        /**
-         * !Сохранение и все такое, можно отдельный класс написать думаю даже
-         */
-      },
-    },
-    {
-      title: 'Выйти',
-      cName: 'nav-text',
-      icon: <FontAwesomeIcon icon={faRightFromBracket} />,
-      fn: () => navigate(ADMIN_ROUTE + '/survey'),
-    },
-  ];
-  return data;
-};

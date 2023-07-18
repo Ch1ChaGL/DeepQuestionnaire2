@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import s from './RedactMenu.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars, faX, faArrowLeft } from '@fortawesome/free-solid-svg-icons';
-import { useRedactMenuData } from '../../utils/consts';
+import { useRedactMenuData } from '../../hooks/useRedactMenuData';
 function RedactMenu({ nodes }) {
   const [sidebar, setSidebar] = useState(false);
   const showSidebar = () => setSidebar(!sidebar);
@@ -33,6 +33,7 @@ function RedactMenu({ nodes }) {
                           item.fn(nodes);
                         }
                       : () => {
+                          console.log(item);
                           item.fn(nodes);
                         }
                   }

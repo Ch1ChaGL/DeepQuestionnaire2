@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { Container } from 'react-bootstrap';
 import SideBar from '../components/UI/SideBar';
 import { useLocation } from 'react-router-dom';
 import ApplicationAccess from './ApplicationAccess/ApplicationAccess';
@@ -26,9 +25,11 @@ function Admin() {
   }, [location.pathname]);
 
   return (
-    <div style={{ minHeight: '100vh', paddingTop: 80, backgroundColor: '#b5e7e8'}}>
+    <div
+      style={{ minHeight: '100vh', paddingTop: 80, backgroundColor: '#b5e7e8' }}
+    >
       <SideBar />
-      <ScrollButton/>
+      <ScrollButton />
       <div style={{ paddingLeft: 80 }}>{contentComponent}</div>
     </div>
   );
