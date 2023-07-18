@@ -9,10 +9,15 @@ export default class RedactSurveyStore {
   setCurrentSurvey(survey) {
     if (typeof survey !== 'object')
       throw new TypeError('Тип данных не подходит');
-    console.log('surveyInStore', survey);
     this.currentSurvey = survey;
   }
 
+  setOnlySurvey(survey) {
+    this.currentSurvey.Survey = survey;
+  }
+  getCurrentSurvey(){
+    return this.currentSurvey;
+  }
   get Survey() {
     return this.currentSurvey.Survey;
   }

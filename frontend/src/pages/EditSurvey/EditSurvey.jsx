@@ -29,7 +29,7 @@ function EditSurvey() {
       <Button className={s.addButton}>Добавить</Button>
       <div className={s.gridСontainer}>
         {survey.map(sur => (
-          <EditSurveyCard name={sur.Name} QuizId={sur.QuizId}/>
+          <EditSurveyCard name={sur.Name} QuizId={sur.QuizId} key={sur.QuizId}/>
         ))}
       </div>
     </div>

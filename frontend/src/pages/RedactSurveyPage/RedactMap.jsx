@@ -2,9 +2,6 @@ import React, { useEffect, useCallback } from 'react';
 import s from './RedactMap.module.css';
 import ReactFlow, {
   Controls,
-  Background,
-  addEdge,
-  applyEdgeChanges,
   applyNodeChanges,
 } from 'reactflow';
 import 'reactflow/dist/style.css';
@@ -12,12 +9,15 @@ import { useSurveyNodes } from '../../hooks/useSurveyNodes';
 import { useRedactSurvey } from '../../components/RedactSurvey/RedactSurveyProvider';
 import { getOneSurvey } from '../../API/surveyApi';
 import RedactMenu from '../../components/RedactSurvey/RedactMenu';
+import { useUpdatedSurvey } from '../../hooks/useUpdatedSurvey';
 
 function RedactMap({ survey, ...props }) {
-  const redactSurvey = useRedactSurvey();
-  const [nodes, setNodes] = useSurveyNodes(survey);
-  redactSurvey.setCurrentSurvey(survey);
-  console.log('redactSurvey.Survey', redactSurvey.Survey);
+
+  const [nodes, setNodes] = useSurveyNodes(survey.Survey);
+
+  console.log('nodes', nodes);
+  const updatedSurvey = useUpdatedSurvey(nodes);
+  
   const onNodesChange = useCallback(
     changes => setNodes(nds => applyNodeChanges(changes, nds)),
     [setNodes],

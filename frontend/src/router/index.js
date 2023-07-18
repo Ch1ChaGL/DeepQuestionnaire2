@@ -1,3 +1,4 @@
+import { RedactSurveyProvider } from '../components/RedactSurvey/RedactSurveyProvider';
 import Questions from '../components/Survey/Questions';
 import Admin from '../pages/Admin';
 import Auth from '../pages/Auth';
@@ -25,7 +26,16 @@ export const authRoutes = [
   },
 ];
 
-export const adminRoutes = [{ path: ADMIN_ROUTE + '/home', component: <Admin /> },
-{ path: ADMIN_ROUTE+'/applicationAccess', component: <Admin /> }, 
-{ path: ADMIN_ROUTE+'/survey', component: <Admin /> }, 
-{path: ADMIN_ROUTE + '/survey/:id', component: <RedactSurveyPage/>}];
+export const adminRoutes = [
+  { path: ADMIN_ROUTE + '/home', component: <Admin /> },
+  { path: ADMIN_ROUTE + '/applicationAccess', component: <Admin /> },
+  { path: ADMIN_ROUTE + '/survey', component: <Admin /> },
+  {
+    path: ADMIN_ROUTE + '/survey/:id',
+    component: (
+      <RedactSurveyProvider>
+        <RedactSurveyPage />
+      </RedactSurveyProvider>
+    ),
+  },
+];
