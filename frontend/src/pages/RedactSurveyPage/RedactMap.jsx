@@ -64,5 +64,4 @@ const RedactMap = ({ QuizId, ...props }) => {
 };
 
 const FunctionMenuMemo = React.memo(FunctionMenu);
-
 export default RedactMap;

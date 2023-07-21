@@ -2,12 +2,15 @@ import React, { useState } from 'react';
 import s from './FunctionMenu.module.css';
 import RedactQuestionCard from './RedactQuestionCard';
 import EditAndAddQuestionForm from './EditAndAddQuestionForm';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
 function FunctionMenu({
   selectedBlock,
   showFunctionMenu,
   setSurvey,
   setShowFunctionMenu,
 }) {
+  console.log('!');
   const [show, setShow] = useState(false);
   return (
     <div className={`${s['container']} ${showFunctionMenu ? s['show'] : ''}`}>
@@ -28,11 +31,15 @@ function FunctionMenu({
                 key={block.id}
               />
             ))}
-            <div className={s.buttons}>
-              <div className={s.addQuestion} onClick={() => setShow(true)}>
-                Добавить
-              </div>
-              <div onClick={() => setShowFunctionMenu(false)} className={s.closeBtn}>Закрыть</div>
+
+            <div className={s.addQuestion} onClick={() => setShow(true)}>
+              <FontAwesomeIcon icon={faPlus} /> Новый вопрос
+            </div>
+            <div
+              onClick={() => setShowFunctionMenu(false)}
+              className={s.closeBtn}
+            >
+              Закрыть
             </div>
           </div>
         </>

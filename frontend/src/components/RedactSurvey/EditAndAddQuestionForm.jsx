@@ -2,7 +2,7 @@ import { Switch, FormControlLabel } from '@mui/material';
 import React, { useState } from 'react';
 import { Modal, Form, FloatingLabel, Button } from 'react-bootstrap';
 import OptionCard from './OptionCard';
-import { v4 as uuidv4 } from 'uuid';
+import s from './EditAndAddQuestionForm.module.css';
 import { useRedactSurvey } from './RedactSurveyProvider';
 function EditAndAddQuestionForm({
   show,
@@ -93,21 +93,26 @@ function EditAndAddQuestionForm({
               />
             );
           })}
-          <Button onClick={handleAddOption}>Добавить вариант ответа</Button>
-          <Button
-            onClick={() => {
-              setShow(false);
-              setQuestion({
-                text: '',
-                type: 'singleChoice',
-                options: [],
-                hasOtherOption: false,
-              });
-            }}
-          >
-            Закрыть
-          </Button>
-          <Button onClick={addQuestion}>Добавить вопрос</Button>
+          <div onClick={handleAddOption} className={s.addQuestionbtn}>
+            Добавить вариант ответа
+          </div>
+          <div className={s.buttons}>
+            <div
+              className={s.close}
+              onClick={() => {
+                setShow(false);
+                setQuestion({
+                  text: '',
+                  type: 'singleChoice',
+                  options: [],
+                  hasOtherOption: false,
+                });
+              }}
+            >
+              Закрыть
+            </div>
+            <div onClick={addQuestion} className={s.save}>Добавить вопрос</div>
+          </div>
         </Form>
       ) : (
         <></>

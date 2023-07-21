@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import s from './OptionCard.module.css';
 import { Button, Form } from 'react-bootstrap';
-
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTrash } from '@fortawesome/free-solid-svg-icons';
 function OptionCard({ option, setQuestion, question, index }) {
   const [questionTexs, setQuestionTexs] = useState(option);
-
 
   const handleChangeOption = (index, value) => {
     const updatedOptions = [...question.options];
@@ -21,12 +21,15 @@ function OptionCard({ option, setQuestion, question, index }) {
 
   return (
     <div className={s.container}>
-      <Form.Control
+      <input
         type='text'
+        className={s.input}
         value={option}
         onChange={event => handleChangeOption(index, event.target.value)}
       />
-      <Button onClick={() => handleRemoveOption(index)}>Удалить</Button>
+      <div onClick={() => handleRemoveOption(index)} className={s.deleteBtn}>
+        <FontAwesomeIcon icon={faTrash} />
+      </div>
     </div>
   );
 }

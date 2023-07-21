@@ -1,0 +1,41 @@
+.addQuestionbtn {
+  padding: 10px 20px;
+  background-color: rgb(224, 226, 233);
+  border-radius: 3px;
+  text-align: center;
+  font-weight: bold;
+  margin: 10px 0px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+.addQuestionbtn:hover {
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+.buttons {
+  display: flex;
+}
+.save,
+.close {
+  padding: 10px;
+  border-radius: 3px;
+  font-weight: bold;
+  background-color: rgb(224, 226, 233);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.save {
+  margin-left: 3px;
+  text-align: center;
+  flex: 1 1 auto;
+}
+
+.close:hover {
+  color: white;
+  background-color: rgb(135, 51, 51);
+}
+
+.save:hover {
+    color: white;
+    background-color: rgb(40, 82, 39);
+}

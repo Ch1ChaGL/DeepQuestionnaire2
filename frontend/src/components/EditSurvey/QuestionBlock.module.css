@@ -18,11 +18,13 @@
   font-size: 18px;
 }
 .question {
+  transition: all 0.3s ease;
   margin-top: 10px;
   border: 2px solid rgb(224, 226, 233);
   padding: 10px;
   border-radius: 10px;
 }
 .question:hover {
+  
   border: 2px solid rgb(151, 152, 158);
 }

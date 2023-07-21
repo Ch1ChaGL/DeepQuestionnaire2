@@ -30,3 +30,10 @@ body::-webkit-scrollbar-thumb {
   background-color: #888888;
   border-radius: 30px;
 }
+
+input:focus {
+  outline: none;
+}
+input {
+  border: none;
+}
