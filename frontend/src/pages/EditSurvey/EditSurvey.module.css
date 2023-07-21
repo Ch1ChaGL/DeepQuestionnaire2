@@ -11,7 +11,7 @@
   display: grid;
   grid-template-columns: repeat(
     auto-fit,
-    minmax(400px, 1fr)
+    minmax(300px, 1fr)
   ); /* три колонки равной ширины */
   grid-gap: 20px; /* промежуток между карточками */
 }

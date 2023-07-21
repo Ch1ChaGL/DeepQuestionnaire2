@@ -53,6 +53,7 @@ const RedactMap = ({ QuizId, ...props }) => {
         <RedactMenu nodes={nodes} />
         <FunctionMenuMemo
           showFunctionMenu={showFunctionMenu}
+          setShowFunctionMenu={setShowFunctionMenu}
           selectedBlock={selectedBlock}
           setSurvey={setSurvey}
         />

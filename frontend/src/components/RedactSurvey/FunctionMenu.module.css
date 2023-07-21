@@ -1,22 +1,46 @@
 .container {
+  transition: all 0.3s ease-in-out;
   position: fixed;
-  right: 0px;
+  right: -400px; /* Начальное положение за пределами экрана */
+  top: 1;
   z-index: 100;
-  max-width: 600px;
-  height: 300px;
-  border: 1px red solid;
+  width: 400px;
+  height: 100%;
+  padding: 20px;
+  border: 1px blue solid;
+}
+
+@media (max-width: 488px) {
+  .container{
+    width: 300px;
+  }
 }
 .content {
+  transition: all 0.3s ease-in-out;
   width: 100%;
+}
+.container.show {
+  transition: all 0.3s ease;
+  transform: translateX(-400px);
+}
+.buttons{
+  display: flex;
+  justify-content: space-between;
+}
+
+.closeBtn{
+  padding: 10px;
+  text-align: center;
+  border: 1px solid blue;
+  cursor: pointer;
 }
 .addQuestion {
   padding: 10px;
   text-align: center;
-  border: 1px red solid;
+  border: 1px blue solid;
   cursor: pointer;
   transition: all 0.3s ease-in-out;
 }
 .addQuestion:hover {
- 
- background-color: brown;
+  background-color: brown;
 }
