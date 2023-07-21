@@ -26,7 +26,7 @@ function Questions({ setIsStarted }) {
     if (res) {
       setIsFinally(true);
       console.log('question', question);
-      console.log(res);
+      console.log('res', res);
       setReport(survey.createReport(interviewer.getInformation(), res));
       setQuestion(question);
     } else {

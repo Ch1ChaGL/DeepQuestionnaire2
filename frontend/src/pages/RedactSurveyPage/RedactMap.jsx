@@ -54,6 +54,7 @@ const RedactMap = ({ QuizId, ...props }) => {
         <FunctionMenuMemo
           showFunctionMenu={showFunctionMenu}
           selectedBlock={selectedBlock}
+          setSurvey={setSurvey}
         />
         <Controls />
       </ReactFlow>

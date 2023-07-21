@@ -43,6 +43,7 @@ function Question({ question, answerTheQuestion, goBack }) {
     setSelectedOption(0);
     setSelectedOptions([]);
     setAnswerText('');
+    setIsOthetAnswer(false);
   };
 
   const answerClick = () => {
@@ -123,6 +124,7 @@ function Question({ question, answerTheQuestion, goBack }) {
               type='switch'
               id='custom-switch'
               label='Другой ответ'
+              checked={isOthetAnswer}
               onChange={e => {
                 setIsOthetAnswer(e.target.checked);
               }}

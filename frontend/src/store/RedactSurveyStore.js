@@ -1,4 +1,5 @@
 import { makeAutoObservable } from 'mobx';
+import { v4 as uuidv4 } from 'uuid';
 
 export default class RedactSurveyStore {
   constructor() {
@@ -6,26 +7,26 @@ export default class RedactSurveyStore {
     this.currentSurvey = {};
   }
 
-  
-  addQuestion(setSurvey) {
+  addQuestion(setSurvey, question, selectedBlock) {
     const block = this.currentSurvey.Survey.blocks.find(
-      block => block.id === 4,
+      block => block.id === selectedBlock.data.block.id,
     );
+
     if (block) {
+      const newId = uuidv4();
       block.questions.push({
-        id: 10,
-        text: 'Вопрос 3 в блоке 4',
-        type: 'multipleChoice',
-        options: ['123', '234'],
-        hasOtherOption: true,
+        ...question,
+        id: newId,
       });
     }
 
     setSurvey({ ...this.currentSurvey });
+
+    //setSurvey({ ...this.currentSurvey });
   }
   /**
    * Сетает текущий опрос
-   * @param {Object} survey - весь объект опроса с названием 
+   * @param {Object} survey - весь объект опроса с названием
    */
   setCurrentSurvey(survey) {
     if (typeof survey !== 'object')
@@ -34,10 +35,10 @@ export default class RedactSurveyStore {
   }
 
   /**
-   * 
-   * @param {int} blockId - id блока 
+   *
+   * @param {int} blockId - id блока
    * @param {object} newPosition - объект с полями x и y
-   * @param {function} setSurvey - сетает опрос 
+   * @param {function} setSurvey - сетает опрос
    */
   setBlockPosition(blockId, newPosition, setSurvey) {
     // //console.log('this.currentSurvey.Survey', this.currentSurvey.Survey);
@@ -63,8 +64,8 @@ export default class RedactSurveyStore {
   }
 
   /**
-   * 
-   * @param {object} survey - опрос именно сами вопросы и ответы 
+   *
+   * @param {object} survey - опрос именно сами вопросы и ответы
    */
   setOnlySurvey(survey) {
     this.currentSurvey.Survey = survey;

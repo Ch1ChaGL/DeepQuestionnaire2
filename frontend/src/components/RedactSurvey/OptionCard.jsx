@@ -5,6 +5,7 @@ import { Button, Form } from 'react-bootstrap';
 function OptionCard({ option, setQuestion, question, index }) {
   const [questionTexs, setQuestionTexs] = useState(option);
 
+
   const handleChangeOption = (index, value) => {
     const updatedOptions = [...question.options];
     updatedOptions[index] = value;

@@ -2,21 +2,30 @@ import { Switch, FormControlLabel } from '@mui/material';
 import React, { useState } from 'react';
 import { Modal, Form, FloatingLabel, Button } from 'react-bootstrap';
 import OptionCard from './OptionCard';
-
+import { v4 as uuidv4 } from 'uuid';
+import { useRedactSurvey } from './RedactSurveyProvider';
 function EditAndAddQuestionForm({
   show,
   setShow,
   isAdd = false,
   isEdit = false,
+  setSurvey,
+  selectedBlock,
 }) {
+  const redact = useRedactSurvey();
   const [question, setQuestion] = useState({
     text: '',
-    type: '',
+    type: 'singleChoice',
     options: [],
     hasOtherOption: false,
   });
 
   console.log('question', question);
+
+  const addQuestion = () => {
+    redact.addQuestion(setSurvey, question, selectedBlock);
+    setShow(false);
+  };
 
   const handleAddOption = () => {
     setQuestion(prevQuestion => ({
@@ -39,21 +48,38 @@ function EditAndAddQuestionForm({
             label='Вопрос'
             className='mb-2'
           >
-            <Form.Control type='text' />
+            <Form.Control
+              type='text'
+              value={question.text}
+              onChange={e => setQuestion({ ...question, text: e.target.value })}
+            />
           </FloatingLabel>
           <FloatingLabel
             controlId='questiontType'
             label='Тип ответов'
             className='mb-2'
           >
-            <Form.Select>
-              <option>Одиночный выбор</option>
-              <option>Множественный выбор</option>
+            <Form.Select
+              onChange={e => setQuestion({ ...question, type: e.target.value })}
+              value={question.type}
+            >
+              <option value={'singleChoice'}>Одиночный выбор</option>
+              <option value={'multipleChoice'}>Множественный выбор</option>
             </Form.Select>
           </FloatingLabel>
 
           <FormControlLabel
-            control={<Switch name='gilad' />}
+            control={
+              <Switch
+                //value={question.hasOtherOption}
+                onChange={e =>
+                  setQuestion({
+                    ...question,
+                    hasOtherOption: !question.hasOtherOption,
+                  })
+                }
+              />
+            }
             label='Можно ответить по-другому'
           />
           <Modal.Title>Варианты ответов</Modal.Title>
@@ -73,7 +99,7 @@ function EditAndAddQuestionForm({
               setShow(false);
               setQuestion({
                 text: '',
-                type: '',
+                type: 'singleChoice',
                 options: [],
                 hasOtherOption: false,
               });
@@ -81,6 +107,7 @@ function EditAndAddQuestionForm({
           >
             Закрыть
           </Button>
+          <Button onClick={addQuestion}>Добавить вопрос</Button>
         </Form>
       ) : (
         <></>
