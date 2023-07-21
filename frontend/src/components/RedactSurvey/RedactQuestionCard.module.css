@@ -1,0 +1,10 @@
+.container {
+  padding: 10px;
+  border: 1px solid red;
+  cursor: pointer;
+  margin-bottom: 10px;
+  transition: all 0.3s ease;
+}
+.container:hover {
+  background-color: brown;
+}

@@ -8,6 +8,7 @@ import { getOneSurvey } from '../../API/surveyApi';
 import RedactMenu from '../../components/RedactSurvey/RedactMenu';
 import { faL } from '@fortawesome/free-solid-svg-icons';
 import { Button } from 'react-bootstrap';
+import FunctionMenu from '../../components/RedactSurvey/FunctionMenu';
 // import { useUpdatedSurvey } from '../../hooks/useUpdatedSurvey';
 
 const RedactMap = ({ QuizId, ...props }) => {
@@ -18,6 +19,8 @@ const RedactMap = ({ QuizId, ...props }) => {
     fetchSurvey();
   }, []);
 
+  const [selectedBlock, setSelectedBlock] = useState({});
+  const [showFunctionMenu, setShowFunctionMenu] = useState(false);
   const fetchSurvey = async () => {
     let getedSurvey = await getOneSurvey(QuizId);
     const parsedSurvey = JSON.parse(getedSurvey.Survey);
@@ -42,6 +45,10 @@ const RedactMap = ({ QuizId, ...props }) => {
         {...props}
         onNodesChange={onNodesChange}
         style={{ backgroundColor: '#f3f4f6' }}
+        onNodeClick={(event, node) => {
+          setSelectedBlock(node);
+          setShowFunctionMenu(true);
+        }}
       >
         <RedactMenu nodes={nodes} />
         <Button
@@ -50,10 +57,16 @@ const RedactMap = ({ QuizId, ...props }) => {
         >
           ХУЙ
         </Button>
+        <FunctionMenuMemo
+          showFunctionMenu={showFunctionMenu}
+          selectedBlock={selectedBlock}
+        />
         <Controls />
       </ReactFlow>
     </>
   );
 };
+
+const FunctionMenuMemo = React.memo(FunctionMenu);
 
 export default RedactMap;

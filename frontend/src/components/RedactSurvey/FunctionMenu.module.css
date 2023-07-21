@@ -1,0 +1,22 @@
+.container {
+  position: fixed;
+  right: 0px;
+  z-index: 100;
+  max-width: 600px;
+  height: 300px;
+  border: 1px red solid;
+}
+.content {
+  width: 100%;
+}
+.addQuestion {
+  padding: 10px;
+  text-align: center;
+  border: 1px red solid;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+.addQuestion:hover {
+ 
+ background-color: brown;
+}

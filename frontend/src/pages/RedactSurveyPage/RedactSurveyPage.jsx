@@ -13,7 +13,7 @@ function RedactSurveyPage() {
   const location = useLocation();
   const redact = useRedactSurvey();
   const QuizId = parseInt(location.pathname.split('/').slice(-1)[0]);
-  const [survey, setSurvey] = useState({ Survey: { blocks: [] } });
+
   useEffect(() => {
     fetchSurvey();
   }, []);
@@ -23,7 +23,6 @@ function RedactSurveyPage() {
     const parsedSurvey = JSON.parse(getedSurvey.Survey);
     getedSurvey = { ...getedSurvey, Survey: parsedSurvey };
     redact.setCurrentSurvey(getedSurvey);
-    setSurvey(redact.getCurrentSurvey());
   };
 
   return (

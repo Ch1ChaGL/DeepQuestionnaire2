@@ -23,12 +23,22 @@ export default class RedactSurveyStore {
 
     setSurvey({ ...this.currentSurvey });
   }
+  /**
+   * Сетает текущий опрос
+   * @param {Object} survey - весь объект опроса с названием 
+   */
   setCurrentSurvey(survey) {
     if (typeof survey !== 'object')
       throw new TypeError('Тип данных не подходит');
     this.currentSurvey = survey;
   }
 
+  /**
+   * 
+   * @param {int} blockId - id блока 
+   * @param {object} newPosition - объект с полями x и y
+   * @param {function} setSurvey - сетает опрос 
+   */
   setBlockPosition(blockId, newPosition, setSurvey) {
     // //console.log('this.currentSurvey.Survey', this.currentSurvey.Survey);
     // const block = this.currentSurvey.Survey.blocks.find(
@@ -52,6 +62,10 @@ export default class RedactSurveyStore {
     setSurvey({ ...this.currentSurvey });
   }
 
+  /**
+   * 
+   * @param {object} survey - опрос именно сами вопросы и ответы 
+   */
   setOnlySurvey(survey) {
     this.currentSurvey.Survey = survey;
   }
