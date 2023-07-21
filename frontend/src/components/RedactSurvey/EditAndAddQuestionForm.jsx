@@ -1,6 +1,6 @@
 import { Switch, FormControlLabel } from '@mui/material';
 import React, { useState } from 'react';
-import { Modal, Form, FloatingLabel } from 'react-bootstrap';
+import { Modal, Form, FloatingLabel, Button } from 'react-bootstrap';
 import OptionCard from './OptionCard';
 
 function EditAndAddQuestionForm({
@@ -12,9 +12,18 @@ function EditAndAddQuestionForm({
   const [question, setQuestion] = useState({
     text: '',
     type: '',
-    options: ['Ответ 1', 'Ответ 2'],
+    options: [],
     hasOtherOption: false,
   });
+
+  console.log('question', question);
+
+  const handleAddOption = () => {
+    setQuestion(prevQuestion => ({
+      ...prevQuestion,
+      options: [...prevQuestion.options, 'Новый ответ'],
+    }));
+  };
 
   if (isAdd && isEdit)
     throw new Error('Компонент не может быть и добавляющим и изменяющим');
@@ -48,9 +57,30 @@ function EditAndAddQuestionForm({
             label='Можно ответить по-другому'
           />
           <Modal.Title>Варианты ответов</Modal.Title>
-          {question.options.map(option => {
-            return <OptionCard option={option} setQuestion={setQuestion} />;
+          {question.options.map((option, index) => {
+            return (
+              <OptionCard
+                option={option}
+                index={index}
+                setQuestion={setQuestion}
+                question={question}
+              />
+            );
           })}
+          <Button onClick={handleAddOption}>Добавить вариант ответа</Button>
+          <Button
+            onClick={() => {
+              setShow(false);
+              setQuestion({
+                text: '',
+                type: '',
+                options: [],
+                hasOtherOption: false,
+              });
+            }}
+          >
+            Закрыть
+          </Button>
         </Form>
       ) : (
         <></>

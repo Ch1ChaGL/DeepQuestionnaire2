@@ -51,12 +51,6 @@ const RedactMap = ({ QuizId, ...props }) => {
         }}
       >
         <RedactMenu nodes={nodes} />
-        <Button
-          onClick={() => redact.addQuestion(setSurvey)}
-          style={{ marginLeft: 300, zIndex: 1000, position: 'absolute' }}
-        >
-          ХУЙ
-        </Button>
         <FunctionMenuMemo
           showFunctionMenu={showFunctionMenu}
           selectedBlock={selectedBlock}
