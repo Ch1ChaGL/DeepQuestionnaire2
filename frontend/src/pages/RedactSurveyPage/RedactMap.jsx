@@ -32,7 +32,6 @@ const RedactMap = ({ QuizId, ...props }) => {
   };
 
   const [nodes, setNodes] = useSurveyNodes(survey);
-  console.log('nodes ', nodes);
   const onNodesChange = useCallback(changes => {
     if (!changes[0].dragging) return;
     const blockId = parseInt(changes[0].id);

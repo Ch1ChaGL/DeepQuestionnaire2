@@ -31,6 +31,8 @@ function FunctionMenu({
                 question={block}
                 selectedBlock={selectedBlock}
                 key={block.id}
+                setSelectedBlock={setSelectedBlock}
+                setSurvey={setSurvey}
               />
             ))}
 

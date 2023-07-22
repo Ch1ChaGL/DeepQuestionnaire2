@@ -7,6 +7,29 @@ export default class RedactSurveyStore {
     this.currentSurvey = {};
   }
 
+  deleteQuestion(setSurvey, question, selectedBlock, setSelectedBlock) {
+    console.log('question', question);
+    console.log('selectedBlock', selectedBlock);
+
+    //Нашли блок в котором надо удалить
+    const block = this.currentSurvey.Survey.blocks.find(
+      block => block.id === selectedBlock.data.block.id,
+    );
+
+    console.log('block before', { ...block });
+    if (block) {
+      block.questions = block.questions.filter(a => a.id !== question.id);
+    }
+    console.log('block after', block);
+
+    setSelectedBlock(prevState => ({
+      ...prevState,
+      data: { block: block },
+    }));
+
+    setSurvey({ ...this.currentSurvey });
+  }
+
   addQuestion(setSurvey, question, selectedBlock, setSelectedBlock) {
     console.log('selectedBlock ', selectedBlock);
     const block = this.currentSurvey.Survey.blocks.find(
