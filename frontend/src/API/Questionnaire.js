@@ -10,7 +10,7 @@ function binarySearch(blocks, blockId) {
     const mid = Math.floor((low + high) / 2);
     const guess = blocks[mid].id;
     if (guess === blockId) return mid;
-    if (guess > blockId) high = mid - 1;
+    if (guess.toString() > blockId) high = mid - 1;
     else {
       low = mid + 1;
     }
@@ -69,7 +69,6 @@ class Questionnaire {
       QuizTime,
       PhoneNumber,
       Email,
-
     };
     const sortedBlocks = quicksort(this.blocks);
     report['Survey'] = {};
@@ -80,10 +79,16 @@ class Questionnaire {
 
       const blockInBlocks = sortedBlocks[binarySearch(this.blocks, blockId)];
       const questions = blockInBlocks.questions;
-      const questionInQuestions =
-        questions[binarySearch(questions, idQuestion)];
+      // const questionInQuestions =
+      //   questions[binarySearch(questions, idQuestion)];
 
+
+      const questionInQuestions = questions.find(question => question.id === idQuestion);
+      //questions[binarySearch(questions, idQuestion)];
+
+      console.log('questionInQuestions', questionInQuestions);
       const questionText = questionInQuestions.text;
+      console.log('questionText', questionText);
 
       report['Survey'][questionText] = answer;
     }

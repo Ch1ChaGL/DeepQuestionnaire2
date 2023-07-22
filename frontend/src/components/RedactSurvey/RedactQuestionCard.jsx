@@ -1,8 +1,8 @@
 import React from 'react';
 import s from './RedactQuestionCard.module.css';
 function RedactQuestionCard({ question, selectedBlock }) {
-  console.log('question', question);
-  console.log('selectedBlock', selectedBlock);
+  // console.log('question', question);
+  // console.log('selectedBlock', selectedBlock);
 
   return (
     <div className={s.container}>

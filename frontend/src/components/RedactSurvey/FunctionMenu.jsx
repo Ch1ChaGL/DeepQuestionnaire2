@@ -9,8 +9,9 @@ function FunctionMenu({
   showFunctionMenu,
   setSurvey,
   setShowFunctionMenu,
+  setSelectedBlock
 }) {
-  console.log('!');
+  console.log('Рисую с ', selectedBlock);
   const [show, setShow] = useState(false);
   return (
     <div className={`${s['container']} ${showFunctionMenu ? s['show'] : ''}`}>
@@ -22,6 +23,7 @@ function FunctionMenu({
             isAdd
             setSurvey={setSurvey}
             selectedBlock={selectedBlock}
+            setSelectedBlock={setSelectedBlock}
           />
           <div className={s.content}>
             {selectedBlock.data.block.questions.map(block => (

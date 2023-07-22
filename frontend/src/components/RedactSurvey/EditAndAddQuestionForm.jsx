@@ -11,7 +11,9 @@ function EditAndAddQuestionForm({
   isEdit = false,
   setSurvey,
   selectedBlock,
+  setSelectedBlock
 }) {
+  console.log('Рисую 2 с ', selectedBlock);
   const redact = useRedactSurvey();
   const [question, setQuestion] = useState({
     text: '',
@@ -20,11 +22,16 @@ function EditAndAddQuestionForm({
     hasOtherOption: false,
   });
 
-  console.log('question', question);
-
   const addQuestion = () => {
-    redact.addQuestion(setSurvey, question, selectedBlock);
+    redact.addQuestion(setSurvey, question, selectedBlock, setSelectedBlock);
     setShow(false);
+
+    setQuestion({
+      text: '',
+      type: 'singleChoice',
+      options: [],
+      hasOtherOption: false,
+    });
   };
 
   const handleAddOption = () => {
@@ -111,7 +118,9 @@ function EditAndAddQuestionForm({
             >
               Закрыть
             </div>
-            <div onClick={addQuestion} className={s.save}>Добавить вопрос</div>
+            <div onClick={addQuestion} className={s.save}>
+              Добавить вопрос
+            </div>
           </div>
         </Form>
       ) : (

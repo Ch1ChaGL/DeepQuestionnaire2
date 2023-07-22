@@ -20,7 +20,9 @@ const RedactMap = ({ QuizId, ...props }) => {
   }, []);
 
   const [selectedBlock, setSelectedBlock] = useState({});
+
   const [showFunctionMenu, setShowFunctionMenu] = useState(false);
+
   const fetchSurvey = async () => {
     let getedSurvey = await getOneSurvey(QuizId);
     const parsedSurvey = JSON.parse(getedSurvey.Survey);
@@ -30,7 +32,7 @@ const RedactMap = ({ QuizId, ...props }) => {
   };
 
   const [nodes, setNodes] = useSurveyNodes(survey);
-
+  console.log('nodes ', nodes);
   const onNodesChange = useCallback(changes => {
     if (!changes[0].dragging) return;
     const blockId = parseInt(changes[0].id);
@@ -56,7 +58,9 @@ const RedactMap = ({ QuizId, ...props }) => {
           setShowFunctionMenu={setShowFunctionMenu}
           selectedBlock={selectedBlock}
           setSurvey={setSurvey}
+          setSelectedBlock={setSelectedBlock}
         />
+
         <Controls />
       </ReactFlow>
     </>

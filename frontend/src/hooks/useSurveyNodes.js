@@ -13,7 +13,6 @@ export const useSurveyNodes = survey => {
         y: parseFloat(node.position.y),
       },
     }));
-
     setNodes(extractedNodes);
   }, [survey]);
 

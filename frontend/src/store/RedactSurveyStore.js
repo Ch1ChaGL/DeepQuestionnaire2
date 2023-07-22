@@ -7,7 +7,8 @@ export default class RedactSurveyStore {
     this.currentSurvey = {};
   }
 
-  addQuestion(setSurvey, question, selectedBlock) {
+  addQuestion(setSurvey, question, selectedBlock, setSelectedBlock) {
+    console.log('selectedBlock ', selectedBlock);
     const block = this.currentSurvey.Survey.blocks.find(
       block => block.id === selectedBlock.data.block.id,
     );
@@ -20,6 +21,16 @@ export default class RedactSurveyStore {
       });
     }
 
+    const newBlock = this.currentSurvey.Survey.blocks.find(
+      block => block.id === selectedBlock.data.block.id,
+    );
+
+    setSelectedBlock(prevState => ({
+      ...prevState,
+      data: { block: newBlock },
+    }));
+    console.log('block', block);
+    console.log('this.currentSurvey ', this.currentSurvey);
     setSurvey({ ...this.currentSurvey });
 
     //setSurvey({ ...this.currentSurvey });
