@@ -4,7 +4,7 @@ import s from './RedactMenu.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars, faX, faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import { useRedactMenuData } from '../../hooks/useRedactMenuData';
-function RedactMenu({ nodes }) {
+function RedactMenu({ nodes, setSurvey, survey }) {
   const [sidebar, setSidebar] = useState(false);
   const showSidebar = () => setSidebar(!sidebar);
   const RedactMenuData = useRedactMenuData();
@@ -30,11 +30,11 @@ function RedactMenu({ nodes }) {
                     sidebar
                       ? () => {
                           showSidebar();
-                          item.fn(nodes);
+                          item.fn(nodes, setSurvey, survey);
                         }
                       : () => {
                           console.log(item);
-                          item.fn(nodes);
+                          item.fn(nodes, setSurvey, survey);
                         }
                   }
                 >

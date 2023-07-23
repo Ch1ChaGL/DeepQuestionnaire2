@@ -32,9 +32,12 @@ const RedactMap = ({ QuizId, ...props }) => {
   };
 
   const [nodes, setNodes] = useSurveyNodes(survey);
+
+  //*!Поменять changes[0].id, с parseInt на
   const onNodesChange = useCallback(changes => {
     if (!changes[0].dragging) return;
-    const blockId = parseInt(changes[0].id);
+    const blockId = Number(changes[0].id) || changes[0].id;
+    console.log('blockId', blockId);
     const position = changes[0].position;
     redact.setBlockPosition(blockId, position, setSurvey);
   }, []);
@@ -51,14 +54,25 @@ const RedactMap = ({ QuizId, ...props }) => {
           setShowFunctionMenu(true);
         }}
       >
-        <RedactMenu nodes={nodes} />
-        <FunctionMenuMemo
+        <RedactMenu nodes={nodes} setSurvey={setSurvey} survey={survey} />
+        {Object.keys(selectedBlock).length ? (
+          <FunctionMenuMemo
+            showFunctionMenu={showFunctionMenu}
+            setShowFunctionMenu={setShowFunctionMenu}
+            selectedBlock={selectedBlock}
+            setSurvey={setSurvey}
+            setSelectedBlock={setSelectedBlock}
+          />
+        ) : (
+          <></>
+        )}
+        {/* <FunctionMenuMemo
           showFunctionMenu={showFunctionMenu}
           setShowFunctionMenu={setShowFunctionMenu}
           selectedBlock={selectedBlock}
           setSurvey={setSurvey}
           setSelectedBlock={setSelectedBlock}
-        />
+        /> */}
 
         <Controls />
       </ReactFlow>

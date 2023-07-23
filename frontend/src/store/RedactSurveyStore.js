@@ -52,12 +52,47 @@ export default class RedactSurveyStore {
       ...prevState,
       data: { block: newBlock },
     }));
-    console.log('block', block);
-    console.log('this.currentSurvey ', this.currentSurvey);
+
     setSurvey({ ...this.currentSurvey });
 
     //setSurvey({ ...this.currentSurvey });
   }
+
+  addQuestionBlock(setSurvey, nameBlock) {
+    const newBlock = {
+      id: uuidv4(),
+      position: { x: 300, y: 300 },
+      title: nameBlock,
+      parentBlock: null,
+      questions: [],
+      nextBlock: null,
+    };
+
+    this.currentSurvey.Survey.blocks.push(newBlock);
+    setSurvey({ ...this.currentSurvey });
+  }
+
+  updateQuestion(setSurvey, question, selectedBlock, setSelectedBlock) {
+    //Нашли блок в котором надо обновить
+    const block = this.currentSurvey.Survey.blocks.find(
+      block => block.id === selectedBlock.data.block.id,
+    );
+
+    if (!block) throw new Error('Нет такого блока');
+
+    const index = block.questions.findIndex(a => a.id === question.id);
+    if (index !== -1) {
+      block.questions[index] = { ...question };
+    }
+
+    setSelectedBlock(prevState => ({
+      ...prevState,
+      data: { block: block },
+    }));
+
+    setSurvey({ ...this.currentSurvey });
+  }
+
   /**
    * Сетает текущий опрос
    * @param {Object} survey - весь объект опроса с названием
@@ -87,9 +122,11 @@ export default class RedactSurveyStore {
     /**
      * ! пиздецу
      *  */
+
     const block = this.currentSurvey.Survey.blocks.find(
       block => block.id === blockId,
     );
+
     if (block) {
       block.position = newPosition;
     }
@@ -97,6 +134,22 @@ export default class RedactSurveyStore {
     setSurvey({ ...this.currentSurvey });
   }
 
+  setBlockName(selectedBlock, newName, setSurvey) {
+    console.log('selectedBlock', selectedBlock);
+    console.log('newName', newName);
+    console.log('this.currentSurvey', this.currentSurvey.Survey.blocks);
+    const index = this.currentSurvey.Survey.blocks.findIndex(block => {
+      const id = Number(selectedBlock.id) || selectedBlock.id;
+      console.log('id', id);
+      return block.id === id;
+    });
+    console.log('index', index);
+    if (index !== -1) {
+      this.currentSurvey.Survey.blocks[index].title = newName;
+    }
+
+    setSurvey({ ...this.currentSurvey });
+  }
   /**
    *
    * @param {object} survey - опрос именно сами вопросы и ответы

@@ -18,6 +18,9 @@ export const useRedactMenuData = () => {
       title: 'Добавить блок вопросов',
       cName: 'nav-text',
       icon: <FontAwesomeIcon icon={faPlus} />,
+      fn: (nodes, setSurvey, survey)=> {
+        redact.addQuestionBlock(setSurvey, 'Новый блок');
+      },
     },
     {
       title: 'Сохранить',

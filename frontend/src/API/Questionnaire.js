@@ -127,6 +127,7 @@ class Questionnaire {
   _CheckConditional(conditions, answerQuestion) {
     const { Operator, blockId } = conditions[0];
 
+    console.log('conditions', conditions);
     if (Operator === 'and') {
       for (let i = 1; i < conditions.length; i++) {
         const questionId = conditions[i]['questionId'];

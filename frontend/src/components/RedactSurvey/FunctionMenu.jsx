@@ -1,18 +1,33 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import s from './FunctionMenu.module.css';
 import RedactQuestionCard from './RedactQuestionCard';
 import EditAndAddQuestionForm from './EditAndAddQuestionForm';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import { useRedactSurvey } from './RedactSurveyProvider';
 function FunctionMenu({
   selectedBlock,
   showFunctionMenu,
   setSurvey,
   setShowFunctionMenu,
-  setSelectedBlock
+  setSelectedBlock,
 }) {
-  console.log('Рисую с ', selectedBlock);
+
+  console.log('selectedBlock', selectedBlock);
+  const redact = useRedactSurvey();
+
+  useEffect(
+    () => setBlockName(selectedBlock.data.block.title),
+    [selectedBlock],
+  );
   const [show, setShow] = useState(false);
+  const [blockName, setBlockName] = useState(selectedBlock.data.block.title);
+
+  const nameChange = e => {
+    const newName = e.target.value; 
+    setBlockName(newName);
+    redact.setBlockName(selectedBlock, newName, setSurvey);
+  };
   return (
     <div className={`${s['container']} ${showFunctionMenu ? s['show'] : ''}`}>
       {showFunctionMenu ? (
@@ -26,6 +41,7 @@ function FunctionMenu({
             setSelectedBlock={setSelectedBlock}
           />
           <div className={s.content}>
+            <input value={blockName} onChange={nameChange} />
             {selectedBlock.data.block.questions.map(block => (
               <RedactQuestionCard
                 question={block}

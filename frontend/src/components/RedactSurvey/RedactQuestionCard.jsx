@@ -1,29 +1,49 @@
-import React from 'react';
+import React, { useState } from 'react';
 import s from './RedactQuestionCard.module.css';
 import { Button } from 'react-bootstrap';
 import { useRedactSurvey } from './RedactSurveyProvider';
-function RedactQuestionCard({ question, selectedBlock, setSurvey, setSelectedBlock }) {
-  console.log('question', question);
-  console.log('selectedBlock', selectedBlock);
+import EditAndAddQuestionForm from './EditAndAddQuestionForm';
+function RedactQuestionCard({
+  question,
+  selectedBlock,
+  setSurvey,
+  setSelectedBlock,
+}) {
   const redact = useRedactSurvey();
+  const [showEditMenu, setShowEditMenu] = useState(false);
   return (
-    <div className={s.container}>
-      <div className={s.content}>{question.text}</div>
-      <Button>Редактировать</Button>
-      <Button
-        variant='danger'
-        onClick={() =>
-          redact.deleteQuestion(
-            setSurvey,
-            question,
-            selectedBlock,
-            setSelectedBlock,
-          )
-        }
-      >
-        Удалить
-      </Button>
-    </div>
+    <>
+      {question && showEditMenu ? (
+        <EditAndAddQuestionForm
+          show={showEditMenu}
+          setShow={setShowEditMenu}
+          isEdit
+          setSurvey={setSurvey}
+          selectedBlock={selectedBlock}
+          setSelectedBlock={setSelectedBlock}
+          selectedQuestion={question}
+        />
+      ) : (
+        <></>
+      )}
+      <div className={s.container}>
+        <div className={s.content}>{question.text}</div>
+        <Button onClick={() => setShowEditMenu(true)}>Редактировать</Button>
+        <Button
+          variant='danger'
+          onClick={() =>
+            redact.deleteQuestion(
+              setSurvey,
+              question,
+              selectedBlock,
+              setSelectedBlock,
+            )
+          }
+        >
+          Удалить
+        </Button>
+      </div>
+    </>
   );
 }
 
