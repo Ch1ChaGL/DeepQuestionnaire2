@@ -5,19 +5,16 @@ import { addSurvey } from '../../../API/surveyApi';
 
 function AddAndEditSurveyForm({ show, setShow, setSurvey }) {
   const [NewSurvey, setNewSurvey] = useState({
-    QuizId: 0,
     Name: '',
     Survey: { blocks: [] },
   });
 
   const addNewSurvey = async () => {
     const newSurvey = NewSurvey;
-    newSurvey.QuizId = uuidv4();
     setSurvey(prev => [...prev, newSurvey]);
     setShow(false);
     await addSurvey(newSurvey);
     setNewSurvey({
-      QuizId: 0,
       Name: '',
       Survey: { blocks: [] },
     });
