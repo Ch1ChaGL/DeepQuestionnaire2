@@ -13,3 +13,8 @@ export const updateSurvey = async survey => {
   const updatedSurvey = await $authHost.put('api/quiz', survey);
   return updatedSurvey;
 };
+
+export const addSurvey = async survey => {
+  const res = await $authHost.post('api/quiz', survey);
+  return res;
+};
