@@ -4,6 +4,7 @@ import { Modal, Form, FloatingLabel, Button } from 'react-bootstrap';
 import OptionCard from './OptionCard';
 import s from './EditAndAddQuestionForm.module.css';
 import { useRedactSurvey } from './RedactSurveyProvider';
+import { v4 as uuidv4 } from 'uuid';
 function EditAndAddQuestionForm({
   show,
   setShow,
@@ -52,7 +53,10 @@ function EditAndAddQuestionForm({
   const handleAddOption = () => {
     setQuestion(prevQuestion => ({
       ...prevQuestion,
-      options: [...prevQuestion.options, 'Новый ответ'],
+      options: [
+        ...prevQuestion.options,
+        { id: uuidv4(), answer: 'Новый ответ' },
+      ],
     }));
   };
 
