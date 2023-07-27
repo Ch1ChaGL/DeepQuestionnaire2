@@ -28,6 +28,8 @@ class QuizController {
   }
   async getOneQuiz(req, res, next) {
     const { id } = req.params;
+
+    console.log('id', id);
     const getedQuiz = await quizServices.getQuizById(id);
 
     if (!getedQuiz)

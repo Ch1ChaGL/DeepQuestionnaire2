@@ -5,6 +5,7 @@ import EditAndAddQuestionForm from './EditAndAddQuestionForm';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { useRedactSurvey } from './RedactSurveyProvider';
+import { Button } from 'react-bootstrap';
 function FunctionMenu({
   selectedBlock,
   showFunctionMenu,
@@ -12,7 +13,6 @@ function FunctionMenu({
   setShowFunctionMenu,
   setSelectedBlock,
 }) {
-
   console.log('selectedBlock', selectedBlock);
   const redact = useRedactSurvey();
 
@@ -24,7 +24,7 @@ function FunctionMenu({
   const [blockName, setBlockName] = useState(selectedBlock.data.block.title);
 
   const nameChange = e => {
-    const newName = e.target.value; 
+    const newName = e.target.value;
     setBlockName(newName);
     redact.setBlockName(selectedBlock, newName, setSurvey);
   };
@@ -61,6 +61,7 @@ function FunctionMenu({
             >
               Закрыть
             </div>
+            <Button variant='danger'>Удалить</Button>
           </div>
         </>
       ) : (

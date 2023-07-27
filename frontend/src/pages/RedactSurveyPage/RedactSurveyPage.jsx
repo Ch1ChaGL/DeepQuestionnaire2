@@ -20,6 +20,7 @@ function RedactSurveyPage() {
 
   const fetchSurvey = async () => {
     let getedSurvey = await getOneSurvey(QuizId);
+    console.log('getedSurvey', getedSurvey);
     const parsedSurvey = JSON.parse(getedSurvey.Survey);
     getedSurvey = { ...getedSurvey, Survey: parsedSurvey };
     redact.setCurrentSurvey(getedSurvey);

@@ -26,6 +26,7 @@ const Auth = observer(() => {
   const click = async e => {
     try {
       const data = await login(email, password);
+      console.log('data', data);
       user.setUser(data);
       user.setIsAuth(true);
       navigate(SURVEY_ROUTE);

@@ -9,21 +9,33 @@ const survey = {
           id: 1,
           text: 'Вопрос 1 в блоке 1',
           type: 'singleChoice',
-          options: ['Ответ 1', 'Ответ 2', 'Ответ 3'],
+          options: [
+            { id: 1, answer: 'Ответ 1' },
+            { id: 2, answer: 'Ответ 2' },
+            { id: 3, answer: 'Ответ 3' },
+          ],
           hasOtherOption: true,
         },
         {
           id: 2,
           text: 'Вопрос 2 в блоке 1',
           type: 'singleChoice',
-          options: ['Ответ 1', 'Ответ 2', 'Ответ 3'],
+          options: [
+            { id: 4, answer: 'Ответ 1' },
+            { id: 5, answer: 'Ответ 2' },
+            { id: 6, answer: 'Ответ 3' },
+          ],
           hasOtherOption: true,
         },
         {
           id: 3,
           text: 'Вопрос 3 в блоке 1',
           type: 'multipleChoice',
-          options: ['Ответ 1', 'Ответ 2', 'Ответ 3'],
+          options: [
+            { id: 7, answer: 'Ответ 1' },
+            { id: 8, answer: 'Ответ 2' },
+            { id: 9, answer: 'Ответ 3' },
+          ],
           hasOtherOption: true,
         },
       ],
@@ -36,12 +48,12 @@ const survey = {
             },
             {
               questionId: 1,
-              answer: {isOtherOption: true}, 
+              answer: { isOtherOption: true },
             },
             {
               questionId: 2,
-              answer: {isOtherOption: true}, 
-            }
+              answer: { isOtherOption: true },
+            },
           ],
           [
             {
@@ -50,11 +62,11 @@ const survey = {
             },
             {
               questionId: 1,
-              answer: 'Ответ 2',
+              answerId: 2,
             },
             {
               questionId: 2,
-              answer: 'Ответ 3',
+              answerId: 6,
             },
           ],
           [
@@ -64,7 +76,7 @@ const survey = {
             },
             {
               questionId: 3,
-              answer: ['Ответ 1', 'Ответ 2'],
+              answerId: [7, 8],
             },
           ],
           [
@@ -74,11 +86,11 @@ const survey = {
             },
             {
               questionId: 1,
-              answer: 'Ответ 1',
+              answerId: 1,
             },
             {
               questionId: 2,
-              answer: 'Ответ 3',
+              answerId: 6,
             },
           ],
         ],
@@ -92,14 +104,22 @@ const survey = {
           id: 1,
           text: 'Вопрос 1 в блоке 2',
           type: 'singleChoice',
-          options: ['Ответ 1', 'Ответ 2', 'Ответ 3'],
+          options: [
+            { id: 10, answer: 'Ответ 1' },
+            { id: 11, answer: 'Ответ 2' },
+            { id: 12, answer: 'Ответ 3' },
+          ],
           hasOtherOption: true,
         },
         {
           id: 2,
           text: 'Вопрос 2 в блоке 2',
           type: 'singleChoice',
-          options: ['Ответ 1', 'Ответ 2', 'Ответ 3'],
+          options: [
+            { id: 13, answer: 'Ответ 1' },
+            { id: 14, answer: 'Ответ 2' },
+            { id: 15, answer: 'Ответ 3' },
+          ],
           hasOtherOption: true,
         },
       ],

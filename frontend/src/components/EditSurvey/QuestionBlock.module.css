@@ -5,7 +5,9 @@
   border-radius: 10px;
   background: white;
 }
-
+.block.start {
+  background: rgb(125, 209, 125);
+}
 .blockHeader {
   display: flex;
   justify-content: start;
@@ -16,6 +18,7 @@
 }
 .title {
   font-size: 18px;
+  font-weight: bold;
 }
 .question {
   transition: all 0.3s ease;

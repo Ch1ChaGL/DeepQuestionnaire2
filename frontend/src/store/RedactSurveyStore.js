@@ -7,6 +7,20 @@ export default class RedactSurveyStore {
     this.currentSurvey = {};
   }
 
+
+  /**
+   * !Вернуться когда будут переделаны условия перехода
+   */
+  deleteBlock(setSurvey, selectedBlock, setSelectedBlock) {
+
+
+
+
+    setSurvey({ ...this.currentSurvey });
+  }
+  /**
+   * !Переделать удаление вопроса, удалить все условия связанные с этим вопросом
+   */
   deleteQuestion(setSurvey, question, selectedBlock, setSelectedBlock) {
     console.log('question', question);
     console.log('selectedBlock', selectedBlock);

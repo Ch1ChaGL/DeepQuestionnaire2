@@ -1,6 +1,6 @@
 .sidebar {
   position: fixed;
-  z-index: 100000;
+  z-index: 99;
   background-color: #0a192f;
   width: 350px;
   height: 100vh;
