@@ -7,15 +7,10 @@ export default class RedactSurveyStore {
     this.currentSurvey = {};
   }
 
-
   /**
    * !Вернуться когда будут переделаны условия перехода
    */
   deleteBlock(setSurvey, selectedBlock, setSelectedBlock) {
-
-
-
-
     setSurvey({ ...this.currentSurvey });
   }
   /**
@@ -88,13 +83,21 @@ export default class RedactSurveyStore {
 
   updateQuestion(setSurvey, question, selectedBlock, setSelectedBlock) {
     //Нашли блок в котором надо обновить
+    const questionId = question.id;
+    const questionOptions = question.options;
+
     const block = this.currentSurvey.Survey.blocks.find(
       block => block.id === selectedBlock.data.block.id,
     );
 
+    console.log('block', { ...block });
     if (!block) throw new Error('Нет такого блока');
 
     const index = block.questions.findIndex(a => a.id === question.id);
+
+    const currentOptions = block.questions[index].options;
+    console.log('questionOptions', questionOptions);
+    console.log('currentOptions', currentOptions);
     if (index !== -1) {
       block.questions[index] = { ...question };
     }

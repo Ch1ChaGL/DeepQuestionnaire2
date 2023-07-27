@@ -22,12 +22,12 @@ function Question({ question, answerTheQuestion, goBack }) {
   const [showAlert, setShowAlert] = useState(false);
 
   const handleOptionChange = e => {
-    setSelectedOption(parseInt(e.target.value));
+    setSelectedOption(e.target.value);
     console.log(e.target.value);
   };
 
   const handleCheckboxChange = e => {
-    const value = parseInt(e.target.value);
+    const value = e.target.value;
 
     // Проверяем, есть ли значение в массиве
     if (selectedOptions.includes(value)) {
@@ -91,12 +91,12 @@ function Question({ question, answerTheQuestion, goBack }) {
             {question.options.map((option, index) => (
               <Form.Check
                 type={'radio'}
-                value={index + 1}
-                label={`${option}`}
+                value={option.id}
+                label={`${option.answer}`}
                 key={index}
                 disabled={isOthetAnswer}
                 name='radioGroup'
-                checked={selectedOption === index + 1}
+                checked={selectedOption === option.id}
                 onChange={handleOptionChange}
               />
             ))}
@@ -106,12 +106,12 @@ function Question({ question, answerTheQuestion, goBack }) {
             {question.options.map((option, index) => (
               <Form.Check
                 type={'checkbox'}
-                label={`${option}`}
+                label={`${option.answer}`}
                 key={index}
                 disabled={isOthetAnswer}
-                value={index + 1}
+                value={option.id}
                 name='checkboxGroup'
-                checked={selectedOptions.includes(index + 1)}
+                checked={selectedOptions.includes(option.id)}
                 onChange={handleCheckboxChange}
               />
             ))}

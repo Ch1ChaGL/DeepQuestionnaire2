@@ -61,7 +61,11 @@ function FunctionMenu({
             >
               Закрыть
             </div>
-            <Button variant='danger'>Удалить</Button>
+            {selectedBlock.data.block.id === 1 ? (
+              <></>
+            ) : (
+              <Button variant='danger'>Удалить</Button>
+            )}
           </div>
         </>
       ) : (

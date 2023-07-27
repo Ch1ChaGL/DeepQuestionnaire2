@@ -77,23 +77,44 @@ class Questionnaire {
       const { block, answer } = answerBlock;
       const blockId = block.id;
 
+      console.log('answer', answer);
       const blockInBlocks = sortedBlocks[binarySearch(this.blocks, blockId)];
       const questions = blockInBlocks.questions;
       // const questionInQuestions =
       //   questions[binarySearch(questions, idQuestion)];
 
-
-      const questionInQuestions = questions.find(question => question.id === idQuestion);
+      const questionInQuestions = questions.find(
+        question => question.id === idQuestion,
+      );
       //questions[binarySearch(questions, idQuestion)];
 
       console.log('questionInQuestions', questionInQuestions);
       const questionText = questionInQuestions.text;
       console.log('questionText', questionText);
 
-      report['Survey'][questionText] = answer;
+      const answerText = this.getAnswerTextById(answer, questionInQuestions);
+
+      console.log('answerText', answerText);
+      report['Survey'][questionText] = answerText ? answerText : answer;
     }
 
+    console.log('report', report);
     return report;
+  }
+  getAnswerTextById(answer, questionInQuestions) {
+    const answerTextArray = questionInQuestions.options
+      .filter(option => {
+        if (Array.isArray(answer)) {
+          return answer.includes(option.id);
+        } else {
+          return option.id === answer;
+        }
+      })
+      .map(option => option.answer);
+
+    return Array.isArray(answer)
+      ? answerTextArray.join(', ')
+      : answerTextArray[0];
   }
 
   /**
@@ -111,6 +132,7 @@ class Questionnaire {
     let nextBlockId = null;
 
     for (const condition of conditions) {
+      console.log('condition', condition);
       nextBlockId = this._CheckConditional(condition, answerQuestion);
       if (nextBlockId) break;
     }
@@ -127,11 +149,12 @@ class Questionnaire {
   _CheckConditional(conditions, answerQuestion) {
     const { Operator, blockId } = conditions[0];
 
-    console.log('conditions', conditions);
     if (Operator === 'and') {
       for (let i = 1; i < conditions.length; i++) {
         const questionId = conditions[i]['questionId'];
-        const answerInCondition = conditions[i]['answer'];
+        const answerInCondition =
+          conditions[i]['answer'].id || conditions[i]['answer'];
+        console.log('answerInCondition', answerInCondition);
         const getedAnswer = answerQuestion.get(questionId);
 
         if (answerInCondition.isOtherOption && getedAnswer.isOtherOption) {
@@ -142,6 +165,7 @@ class Questionnaire {
         }
 
         const answer = getedAnswer.answer;
+        console.log('getedAnswer', getedAnswer);
         console.log('answer', answer);
         if (answerInCondition.toString() !== answer.toString()) {
           return null;
@@ -154,14 +178,16 @@ class Questionnaire {
 
       for (let i = 1; i < conditions.length; i++) {
         const questionId = conditions[i]['questionId'];
-        const answerInCondition = conditions[i]['answer'];
+        const answerInCondition =
+          conditions[i]['answer'].id || conditions[i]['answer'];
         const getedAnswer = answerQuestion.get(questionId);
 
         if (getedAnswer === undefined) {
           return null;
         }
         const answer = getedAnswer.answer;
-
+        console.log('getedAnswer', getedAnswer);
+        console.log('answer', answer);
         if (answerInCondition.toString() === answer.toString()) {
           orCondition = true;
         }
@@ -245,6 +271,8 @@ class Questionnaire {
 
     const questionId = question['id'];
 
+    console.log('Ответ текстом', answer);
+
     const block = this.currentBlock;
     this.answerQuestion.set(questionId, { block, answer, isOtherOption: true });
     this.currentQuestion++;
@@ -269,9 +297,10 @@ class Questionnaire {
       return;
     }
     if (question['type'] === SINGLE_CHOISE_TYPE) {
-      this._checkCountOptions(question, Answer);
+      // this._checkCountOptions(question, Answer);
 
-      const answer = question['options'][Answer - 1];
+      console.log('Answer', Answer);
+      const answer = Answer;
       const questionId = question['id'];
 
       const block = this.currentBlock;
@@ -285,15 +314,11 @@ class Questionnaire {
       }
     }
     if (question['type'] === MULTIPLE_CHOISE_TYPE) {
-      this._checkCountOptions(question, Answer);
+      //this._checkCountOptions(question, Answer);
       const questionId = question['id'];
-      let answer = [];
-      for (const answerNum of Answer) {
-        answer.push(question['options'][answerNum - 1]);
-      }
 
       const block = this.currentBlock;
-      this.answerQuestion.set(questionId, { block, answer });
+      this.answerQuestion.set(questionId, { block, answer: Answer });
 
       this.currentQuestion++;
 

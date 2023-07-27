@@ -8,7 +8,7 @@ function OptionCard({ option, setQuestion, question, index }) {
 
   const handleChangeOption = (index, value) => {
     const updatedOptions = [...question.options];
-    updatedOptions[index] = value;
+    updatedOptions[index].answer = value;
     setQuestion(prevQuestion => ({ ...prevQuestion, options: updatedOptions }));
   };
 
@@ -24,7 +24,7 @@ function OptionCard({ option, setQuestion, question, index }) {
       <input
         type='text'
         className={s.input}
-        value={option}
+        value={option.answer}
         onChange={event => handleChangeOption(index, event.target.value)}
       />
       <div onClick={() => handleRemoveOption(index)} className={s.deleteBtn}>

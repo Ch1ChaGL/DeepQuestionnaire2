@@ -37,7 +37,6 @@ const RedactMap = ({ QuizId, ...props }) => {
   const onNodesChange = useCallback(changes => {
     if (!changes[0].dragging) return;
     const blockId = Number(changes[0].id) || changes[0].id;
-    console.log('blockId', blockId);
     const position = changes[0].position;
     redact.setBlockPosition(blockId, position, setSurvey);
   }, []);

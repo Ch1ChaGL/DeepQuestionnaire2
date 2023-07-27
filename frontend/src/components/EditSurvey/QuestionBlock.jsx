@@ -7,8 +7,6 @@ import { faFeather } from '@fortawesome/free-solid-svg-icons';
 function QuestionBlock({ data, isConnectable }) {
   const [questions, setQuestions] = useState(data.block.questions);
 
-  console.log('block', data.block);
-  console.log('questions', questions);
   useEffect(() => {
     setQuestions(data.block.questions);
   }, [data]);

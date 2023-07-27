@@ -39,6 +39,7 @@ function EditAndAddQuestionForm({
   };
 
   const updateQuestion = () => {
+    console.log('Обновление');
     redact.updateQuestion(setSurvey, question, selectedBlock, setSelectedBlock);
     setShow(false);
     setQuestion({
@@ -104,6 +105,7 @@ function EditAndAddQuestionForm({
         {question.options.map((option, index) => {
           return (
             <OptionCard
+              key={option.id}
               option={option}
               index={index}
               setQuestion={setQuestion}
