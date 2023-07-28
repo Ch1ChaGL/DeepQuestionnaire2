@@ -161,6 +161,26 @@ export default class RedactSurveyStore {
       }
     }
   }
+  _changeConditonAfterChangeOtherOption(questionId, block) {
+    const conditions = block.nextBlock.condition;
+    for (let i = 0; i < conditions.length; i++) {
+      const condition = conditions[i];
+      for (let j = 1; j < condition.length; j++) {
+        const answer = condition[j].answer;
+        if (
+          condition[j].questionId === questionId &&
+          answer.isOtherOption === true
+        ) {
+          condition.splice(j, 1); // Удаляем объект с ответом { hasOtherOption: true }
+          if (condition.length === 1) {
+            conditions.splice(i, 1); // Если после удаления объекта остался только один объект с оператором и blockId, удаляем весь блок условия
+            i--;
+          }
+          break;
+        }
+      }
+    }
+  }
   updateQuestion(setSurvey, question, selectedBlock, setSelectedBlock) {
     //Нашли блок в котором надо обновить
     const questionId = question.id;
@@ -168,6 +188,9 @@ export default class RedactSurveyStore {
     const block = this.currentSurvey.Survey.blocks.find(
       block => block.id === selectedBlock.data.block.id,
     );
+
+    if (question.hasOtherOption === false)
+      this._changeConditonAfterChangeOtherOption(questionId, block);
 
     console.log('block', { ...block });
     if (!block) throw new Error('Нет такого блока');
