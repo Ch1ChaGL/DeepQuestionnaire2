@@ -7,11 +7,66 @@ export default class RedactSurveyStore {
     this.currentSurvey = {};
   }
 
+  _changeConditionAfterDeleteBlock(blockId) {
+    const blocks = this.currentSurvey.Survey.blocks;
+    for (const block of blocks) {
+      if (block.nextBlock === null) continue;
+      const conditions = block.nextBlock.condition;
+      for (let i = conditions.length - 1; i >= 0; i--) {
+        const condition = conditions[i];
+        console.log('condition[0].blockId', condition[0].blockId);
+        console.log('blockId', blockId);
+        if (condition[0].blockId + '' === blockId) {
+          console.log('я туть');
+          conditions.splice(i, 1); // Удаляем блок условия, если blockId совпадает
+        }
+      }
+    }
+  }
   /**
    * !Вернуться когда будут переделаны условия перехода
    */
-  deleteBlock(setSurvey, selectedBlock, setSelectedBlock) {
-    setSurvey({ ...this.currentSurvey });
+  deleteBlockFn(setSurvey, selectedBlock) {
+    const blockId = selectedBlock.id;
+    console.log('blockId', blockId);
+    console.log(
+      'this.currentSurvey.Survey.blocks',
+      this.currentSurvey.Survey.blocks,
+    );
+    // Находим индекс выбранного блока в массиве блоков опроса
+    const index = this.currentSurvey.Survey.blocks.findIndex(
+      block => blockId === block.id + '',
+    );
+    console.log('index', index);
+    // Если блок найден (индекс не равен -1), удаляем его из массива блоков
+    if (index !== -1) {
+      this.currentSurvey.Survey.blocks.splice(index, 1);
+
+      console.log(
+        'this.currentSurvey.Survey.blocks',
+        this.currentSurvey.Survey.blocks,
+      );
+      this._changeConditionAfterDeleteBlock(blockId);
+      // Обновляем опрос с обновленными данными
+      setSurvey({ ...this.currentSurvey });
+    }
+  }
+
+  _changeConditionAfterDeleteQuestion(questionId, block) {
+    const conditions = block.nextBlock.condition;
+    for (let i = 0; i < conditions.length; i++) {
+      const condition = conditions[i];
+      for (let j = 1; j < condition.length; j++) {
+        if (condition[j].questionId === questionId) {
+          condition.splice(j, 1); // Удаляем объект с указанным questionId из условия
+          if (condition.length === 1) {
+            conditions.splice(i, 1); // Если после удаления объекта остался только один объект с оператором и blockId, удаляем весь блок условия
+            i--;
+          }
+          break;
+        }
+      }
+    }
   }
   /**
    * !Переделать удаление вопроса, удалить все условия связанные с этим вопросом
@@ -20,11 +75,13 @@ export default class RedactSurveyStore {
     console.log('question', question);
     console.log('selectedBlock', selectedBlock);
 
+    const questionId = question.id;
+
     //Нашли блок в котором надо удалить
     const block = this.currentSurvey.Survey.blocks.find(
       block => block.id === selectedBlock.data.block.id,
     );
-
+    this._changeConditionAfterDeleteQuestion(questionId, block);
     console.log('block before', { ...block });
     if (block) {
       block.questions = block.questions.filter(a => a.id !== question.id);
@@ -92,7 +149,7 @@ export default class RedactSurveyStore {
 
     return missingIds;
   }
-  _changeConditionAfterDeleteQuestion(missingIds, block) {
+  _changeConditionAfterDeleteOption(missingIds, block) {
     const conditions = block.nextBlock.condition;
     for (const id of missingIds) {
       for (let i = 0; i < conditions.length; i++) {
@@ -201,7 +258,7 @@ export default class RedactSurveyStore {
     const currentOptions = block.questions[index].options;
 
     const missingIds = this._findMissingIds(questionOptions, currentOptions);
-    this._changeConditionAfterDeleteQuestion(missingIds, block);
+    this._changeConditionAfterDeleteOption(missingIds, block);
     // console.log('questionOptions', questionOptions);
     // console.log('currentOptions', currentOptions);
     console.log('missingIds', missingIds);

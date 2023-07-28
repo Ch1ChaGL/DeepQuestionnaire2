@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { useRedactSurvey } from './RedactSurveyProvider';
 import { Button } from 'react-bootstrap';
+
 function FunctionMenu({
   selectedBlock,
   showFunctionMenu,
@@ -27,6 +28,11 @@ function FunctionMenu({
     const newName = e.target.value;
     setBlockName(newName);
     redact.setBlockName(selectedBlock, newName, setSurvey);
+  };
+
+  const deleteBlock = () => {
+    redact.deleteBlockFn(setSurvey, selectedBlock);
+    setShowFunctionMenu(false);
   };
   return (
     <div className={`${s['container']} ${showFunctionMenu ? s['show'] : ''}`}>
@@ -64,7 +70,9 @@ function FunctionMenu({
             {selectedBlock.data.block.id === 1 ? (
               <></>
             ) : (
-              <Button variant='danger'>Удалить</Button>
+              <Button variant='danger' onClick={deleteBlock}>
+                Удалить
+              </Button>
             )}
           </div>
         </>
