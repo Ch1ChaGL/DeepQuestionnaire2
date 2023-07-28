@@ -80,11 +80,24 @@ export default class RedactSurveyStore {
     this.currentSurvey.Survey.blocks.push(newBlock);
     setSurvey({ ...this.currentSurvey });
   }
+  _findMissingIds(newArray, oldArray) {
+    const newIds = new Set(newArray.map(obj => obj.id));
+    const missingIds = [];
 
+    for (const obj of oldArray) {
+      if (!newIds.has(obj.id)) {
+        missingIds.push(obj.id);
+      }
+    }
+
+    return missingIds;
+  }
+  _changeConditionAfterDeleteQuestion(missingIds, block){
+
+  }
   updateQuestion(setSurvey, question, selectedBlock, setSelectedBlock) {
     //Нашли блок в котором надо обновить
     const questionId = question.id;
-    const questionOptions = question.options;
 
     const block = this.currentSurvey.Survey.blocks.find(
       block => block.id === selectedBlock.data.block.id,
@@ -95,9 +108,13 @@ export default class RedactSurveyStore {
 
     const index = block.questions.findIndex(a => a.id === question.id);
 
+    const questionOptions = question.options;
     const currentOptions = block.questions[index].options;
+
+    const missingIds = this._findMissingIds(questionOptions, currentOptions);
     console.log('questionOptions', questionOptions);
     console.log('currentOptions', currentOptions);
+    console.log('missingIds', missingIds);
     if (index !== -1) {
       block.questions[index] = { ...question };
     }
