@@ -2,23 +2,31 @@ function _changeConditionAfterDeleteQuestion(missingIds, block) {
   const conditions = block.nextBlock.condition;
   console.log(conditions === block.nextBlock.condition);
   for (const id of missingIds) {
-    for (const condition of conditions) {
+    for (let i = 0; i < conditions.length; i++) {
+      const condition = conditions[i];
       const operator = condition[0].Operator;
       switch (operator) {
         case 'and':
-          for (let i = 1; i < condition.length; i++) {
-            const answer = condition[i].answer.id;
-            if (Array.isArray(answer)) {
-
+          let deleteBlock = false;
+          for (let j = 1; j < condition.length; j++) {
+            const answer = condition[j].answer.id;
+            if (Array.isArray(answer) && answer.includes(id)) {
+              deleteBlock = true;
+              break;
+            } else if (id === answer) {
+              deleteBlock = true;
+              break;
             }
-            else {
-                if(id !== answer) continue;
+          }
 
-            }
+          if (deleteBlock) {
+            conditions.splice(i, 1);
+            i--;
           }
           break;
 
         case 'or':
+          
           break;
         default:
           throw new Error('Ошибка в condition');
@@ -47,7 +55,7 @@ const block = {
   },
 };
 
-const missingIds = ['q1o2'];
+const missingIds = ['q1o1'];
 _changeConditionAfterDeleteQuestion(missingIds, block);
 
-console.log('res:', block.nextBlock);
+console.log(block.nextBlock);

@@ -92,8 +92,74 @@ export default class RedactSurveyStore {
 
     return missingIds;
   }
-  _changeConditionAfterDeleteQuestion(missingIds, block){
+  _changeConditionAfterDeleteQuestion(missingIds, block) {
+    const conditions = block.nextBlock.condition;
+    for (const id of missingIds) {
+      for (let i = 0; i < conditions.length; i++) {
+        const condition = conditions[i];
+        const operator = condition[0].Operator;
 
+        switch (operator) {
+          case 'and':
+            let deleteBlock = false;
+            for (let j = 1; j < condition.length; j++) {
+              const answer = condition[j].answer.id;
+              if (Array.isArray(answer)) {
+                const index = answer.indexOf(id);
+                if (index !== -1) {
+                  answer.splice(index, 1); // Удаляем id из массива answer
+                  if (answer.length === 0) {
+                    condition.splice(j, 1); // Удаляем пустой объект с answer из условия
+                    if (condition.length === 1) {
+                      conditions.splice(i, 1); // Если остался только один объект с оператором и blockId, удаляем весь блок условия
+                      i--;
+                    }
+                    break;
+                  }
+                }
+              } else if (id === answer) {
+                condition.splice(j, 1); // Удаляем конкретный объект с answer из условия
+                if (condition.length === 1) {
+                  conditions.splice(i, 1); // Если остался только один объект с оператором и blockId, удаляем весь блок условия
+                  i--;
+                }
+                break;
+              }
+            }
+            break;
+
+          case 'or':
+            for (let j = 1; j < condition.length; j++) {
+              const answer = condition[j].answer.id;
+              if (Array.isArray(answer)) {
+                const index = answer.indexOf(id);
+                if (index !== -1) {
+                  answer.splice(index, 1); // Удаляем id из массива answer
+                  if (answer.length === 0) {
+                    condition.splice(j, 1); // Удаляем пустой объект с answer из условия
+                    if (condition.length === 1) {
+                      conditions.splice(i, 1); // Если остался только один объект с оператором и blockId, удаляем весь блок условия
+                      i--;
+                    }
+                    break;
+                  }
+                }
+              } else if (id === answer) {
+                condition.splice(j, 1); // Удаляем конкретный объект с answer из условия
+                if (condition.length === 1) {
+                  conditions.splice(i, 1); // Если остался только один объект с оператором и blockId, удаляем весь блок условия
+                  i--;
+                }
+                break;
+              }
+            }
+            break;
+
+          default:
+            throw new Error('Ошибка в condition');
+        }
+      }
+    }
   }
   updateQuestion(setSurvey, question, selectedBlock, setSelectedBlock) {
     //Нашли блок в котором надо обновить
@@ -112,9 +178,11 @@ export default class RedactSurveyStore {
     const currentOptions = block.questions[index].options;
 
     const missingIds = this._findMissingIds(questionOptions, currentOptions);
-    console.log('questionOptions', questionOptions);
-    console.log('currentOptions', currentOptions);
+    this._changeConditionAfterDeleteQuestion(missingIds, block);
+    // console.log('questionOptions', questionOptions);
+    // console.log('currentOptions', currentOptions);
     console.log('missingIds', missingIds);
+    console.log('block', block);
     if (index !== -1) {
       block.questions[index] = { ...question };
     }
