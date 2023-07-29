@@ -10,7 +10,8 @@ import { faL } from '@fortawesome/free-solid-svg-icons';
 import { Button } from 'react-bootstrap';
 import FunctionMenu from '../../components/RedactSurvey/FunctionMenu';
 // import { useUpdatedSurvey } from '../../hooks/useUpdatedSurvey';
-
+import { useSurveyEdges } from '../../hooks/useSurveyEdges';
+import ConnectionLine from '../../components/EditSurvey/ConnectionLine';
 const RedactMap = ({ QuizId, ...props }) => {
   const redact = useRedactSurvey();
 
@@ -32,6 +33,7 @@ const RedactMap = ({ QuizId, ...props }) => {
   };
 
   const [nodes, setNodes] = useSurveyNodes(survey);
+  const [edges, setEdges] = useSurveyEdges(survey);
 
   //*!Поменять changes[0].id, с parseInt на
   const onNodesChange = useCallback(changes => {
@@ -41,10 +43,14 @@ const RedactMap = ({ QuizId, ...props }) => {
     redact.setBlockPosition(blockId, position, setSurvey);
   }, []);
 
+  // console.log('edges', edges);
+  // console.log('nodes', nodes);
   return (
     <>
       <ReactFlow
         nodes={nodes}
+        edges={edges}
+        connectionLineComponent={ConnectionLine}
         {...props}
         onNodesChange={onNodesChange}
         style={{ backgroundColor: '#f3f4f6' }}

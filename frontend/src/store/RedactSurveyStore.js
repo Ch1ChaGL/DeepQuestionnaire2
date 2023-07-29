@@ -14,10 +14,7 @@ export default class RedactSurveyStore {
       const conditions = block.nextBlock.condition;
       for (let i = conditions.length - 1; i >= 0; i--) {
         const condition = conditions[i];
-        console.log('condition[0].blockId', condition[0].blockId);
-        console.log('blockId', blockId);
         if (condition[0].blockId + '' === blockId) {
-          console.log('я туть');
           conditions.splice(i, 1); // Удаляем блок условия, если blockId совпадает
         }
       }
@@ -28,16 +25,10 @@ export default class RedactSurveyStore {
    */
   deleteBlockFn(setSurvey, selectedBlock) {
     const blockId = selectedBlock.id;
-    console.log('blockId', blockId);
-    console.log(
-      'this.currentSurvey.Survey.blocks',
-      this.currentSurvey.Survey.blocks,
-    );
     // Находим индекс выбранного блока в массиве блоков опроса
     const index = this.currentSurvey.Survey.blocks.findIndex(
       block => blockId === block.id + '',
     );
-    console.log('index', index);
     // Если блок найден (индекс не равен -1), удаляем его из массива блоков
     if (index !== -1) {
       this.currentSurvey.Survey.blocks.splice(index, 1);

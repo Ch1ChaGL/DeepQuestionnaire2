@@ -9,3 +9,7 @@
 .container:hover {
   border: 2px solid grey;
 }
+.content{
+  max-width: 400px;
+  word-wrap: break-word;
+}

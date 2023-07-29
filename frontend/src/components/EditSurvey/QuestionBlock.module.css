@@ -6,28 +6,38 @@
   background: white;
 }
 .block.start {
-  background: rgb(125, 209, 125);
+  border: 2px solid #1db7ad;
 }
+.block.start .title,
+.block.start .icon {
+  color: #1db7ad;
+}
+
 .blockHeader {
   display: flex;
   justify-content: start;
-  border-bottom: 1px solid rgb(224, 226, 233);
+  border-bottom: 1px solid rgb(0, 0, 0);
 }
 .icon {
   margin-right: 10px;
 }
 .title {
+  max-width: 400px;
   font-size: 18px;
   font-weight: bold;
+  word-wrap: break-word;
 }
 .question {
   transition: all 0.3s ease;
   margin-top: 10px;
-  border: 2px solid rgb(224, 226, 233);
+  font-weight: 500;
+  max-width: 400px;
+  word-break: break-all;
+  background-color: rgb(224, 226, 233);
   padding: 10px;
-  border-radius: 10px;
+  border-radius: 5px;
 }
 .question:hover {
-  
-  border: 2px solid rgb(151, 152, 158);
+  background-color: rgb(116, 117, 123);
+  color: white;
 }

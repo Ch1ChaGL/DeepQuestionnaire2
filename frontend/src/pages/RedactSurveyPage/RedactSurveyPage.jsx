@@ -7,6 +7,7 @@ import {
   RedactSurveyProvider,
   useRedactSurvey,
 } from '../../components/RedactSurvey/RedactSurveyProvider';
+
 const nodeTypes = { questionBlock: QuestionBlock };
 
 function RedactSurveyPage() {
@@ -27,9 +28,9 @@ function RedactSurveyPage() {
   };
 
   return (
-    <div style={{ height: '100vh', paddingTop: 80 }}>
-      <RedactMap QuizId={QuizId} nodeTypes={nodeTypes} />
-    </div>
+      <div style={{ height: '100vh', paddingTop: 80 }}>
+        <RedactMap QuizId={QuizId} nodeTypes={nodeTypes} />
+      </div>
   );
 }
 
