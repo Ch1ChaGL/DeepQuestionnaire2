@@ -7,6 +7,34 @@ export default class RedactSurveyStore {
     this.currentSurvey = {};
   }
 
+  deleteCondition = (
+    block,
+    index,
+    setSurvey,
+    selectedBlock,
+    setSelectedBlock,
+  ) => {
+    console.log('block', block);
+    console.log('index', index);
+    const blockId = block.id;
+
+    const blockInSurvey = this.currentSurvey.Survey.blocks.find(
+      block => block.id === blockId,
+    );
+
+    if (blockInSurvey) {
+      console.log('blockInSurvey', blockInSurvey);
+      blockInSurvey.nextBlock?.condition.splice(index, 1);
+
+      const newSelectedBlock = { ...selectedBlock };
+      newSelectedBlock.data.block = blockInSurvey;
+      //console.log('selectedBlock', selectedBlock);
+      setSelectedBlock(newSelectedBlock);
+    }
+
+    setSurvey({ ...this.currentSurvey });
+  };
+
   _changeConditionAfterDeleteBlock(blockId) {
     const blocks = this.currentSurvey.Survey.blocks;
     for (const block of blocks) {

@@ -122,7 +122,7 @@ function EditSurveyForm({ report, redBtn, greenBtn }) {
           <h2>Результат опроса</h2>
           {Object.entries(editedReport.Survey).map(([question, answer]) => (
             <Form.Group key={question} className='mb-3' controlId={question}>
-              <Form.Label>{question}</Form.Label>
+              <Form.Label style={{wordBreak: 'break-all'}}>{question}</Form.Label>
               <Form.Control
                 type='text'
                 name={question}

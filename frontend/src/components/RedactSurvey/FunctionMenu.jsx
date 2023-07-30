@@ -15,13 +15,11 @@ function FunctionMenu({
   setShowFunctionMenu,
   setSelectedBlock,
 }) {
-  console.log('selectedBlock', selectedBlock);
+  console.log('<-selectedBlock->', selectedBlock);
   const redact = useRedactSurvey();
   const [conditions, setConditions] = useState(null);
   useEffect(() => {
     const conditions = selectedBlock.data.block.nextBlock?.condition || null;
-    console.log('я меняю conditions');
-    console.log('conditions', conditions);
     setConditions(conditions);
   }, [selectedBlock]);
 
@@ -60,8 +58,8 @@ function FunctionMenu({
             {selectedBlock.data.block.questions.map(block => (
               <RedactQuestionCard
                 question={block}
-                selectedBlock={selectedBlock}
                 key={block.id}
+                selectedBlock={selectedBlock}
                 setSelectedBlock={setSelectedBlock}
                 setSurvey={setSurvey}
               />
@@ -80,6 +78,9 @@ function FunctionMenu({
                   sourceBlockId={selectedBlock.data.block.id}
                   targetBlockId={condition[0].blockId}
                   index={index}
+                  selectedBlock={selectedBlock}
+                  setSelectedBlock={setSelectedBlock}
+                  setSurvey={setSurvey}
                 />
               ))
             ) : (

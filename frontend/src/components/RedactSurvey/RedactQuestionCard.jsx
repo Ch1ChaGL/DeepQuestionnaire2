@@ -3,6 +3,13 @@ import s from './RedactQuestionCard.module.css';
 import { Button } from 'react-bootstrap';
 import { useRedactSurvey } from './RedactSurveyProvider';
 import EditAndAddQuestionForm from './EditAndAddQuestionForm';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {
+  faArrowRight,
+  faPenToSquare,
+  faTrash,
+} from '@fortawesome/free-solid-svg-icons';
+
 function RedactQuestionCard({
   question,
   selectedBlock,
@@ -29,9 +36,12 @@ function RedactQuestionCard({
       <div className={s.container}>
         <div className={s.content}>{question.text}</div>
         <div className={s.buttons}>
-          <div className={s.editBtn} onClick={() => setShowEditMenu(true)}>Редактировать</div>
-          <div
-          className={s.deleteBtn}
+          <FontAwesomeIcon
+            icon={faPenToSquare}
+            onClick={() => setShowEditMenu(true)}
+            className={s.editBtn}
+          />
+          <FontAwesomeIcon
             onClick={() =>
               redact.deleteQuestion(
                 setSurvey,
@@ -40,9 +50,9 @@ function RedactQuestionCard({
                 setSelectedBlock,
               )
             }
-          >
-            Удалить
-          </div>
+            icon={faTrash}
+            className={s.deleteBtn}
+          />
         </div>
       </div>
     </>
