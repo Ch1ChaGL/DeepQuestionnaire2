@@ -1,8 +1,9 @@
 .container {
-  padding: 10px;
+  padding: 10px 10px 5px 10px;
   border: 2px solid rgb(224, 226, 233);
   border-radius: 10px;
   cursor: pointer;
+  background-color: #f5f5f5;
   margin-bottom: 10px;
   transition: all 0.3s ease;
 }
@@ -12,4 +13,28 @@
 .content{
   max-width: 400px;
   word-wrap: break-word;
+}
+
+.buttons{
+  display: flex;
+}
+
+.editBtn,.deleteBtn{
+  padding: 5px;
+  color: white;
+  font-weight: bold;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-bottom: 10px;
+  transition: all 0.3s ease;
+  text-align: center;
+  margin-right: 10px;
+  margin-top: 5px;
+}
+.editBtn{
+  background-color: rgb(40, 82, 39);
+}
+
+.deleteBtn{
+  background-color: rgb(135, 51, 51);
 }

@@ -20,9 +20,11 @@ function FunctionMenu({
   const [conditions, setConditions] = useState(null);
   useEffect(() => {
     const conditions = selectedBlock.data.block.nextBlock?.condition || null;
+    console.log('я меняю conditions');
+    console.log('conditions', conditions);
     setConditions(conditions);
   }, [selectedBlock]);
- 
+
   useEffect(
     () => setBlockName(selectedBlock.data.block.title),
     [selectedBlock],
@@ -74,6 +76,7 @@ function FunctionMenu({
             {conditions ? (
               conditions.map((condition, index) => (
                 <ConditionCard
+                  key={`${selectedBlock.data.block.id}_${condition[0].blockId}_${index}`}
                   sourceBlockId={selectedBlock.data.block.id}
                   targetBlockId={condition[0].blockId}
                   index={index}
@@ -92,9 +95,9 @@ function FunctionMenu({
             {selectedBlock.data.block.id === 1 ? (
               <></>
             ) : (
-              <Button variant='danger' onClick={deleteBlock}>
+              <div className={s.closeBtn} onClick={deleteBlock}>
                 Удалить блок
-              </Button>
+              </div>
             )}
           </div>
         </>

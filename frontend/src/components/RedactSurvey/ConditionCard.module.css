@@ -1,0 +1,24 @@
+/* ConditionCard.module.css */
+.content {
+  background-color: #f5f5f5;
+  border: 2px solid #ddd;
+  border-radius: 5px;
+  padding: 10px;
+  margin-bottom: 10px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.title {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.condition {
+  font-style: italic;
+  color: #777;
+}
+
+.content:hover {
+  border: 2px solid grey;
+}

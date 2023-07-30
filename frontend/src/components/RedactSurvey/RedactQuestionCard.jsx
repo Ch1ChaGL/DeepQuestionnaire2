@@ -28,20 +28,22 @@ function RedactQuestionCard({
       )}
       <div className={s.container}>
         <div className={s.content}>{question.text}</div>
-        <Button onClick={() => setShowEditMenu(true)}>Редактировать</Button>
-        <Button
-          variant='danger'
-          onClick={() =>
-            redact.deleteQuestion(
-              setSurvey,
-              question,
-              selectedBlock,
-              setSelectedBlock,
-            )
-          }
-        >
-          Удалить
-        </Button>
+        <div className={s.buttons}>
+          <div className={s.editBtn} onClick={() => setShowEditMenu(true)}>Редактировать</div>
+          <div
+          className={s.deleteBtn}
+            onClick={() =>
+              redact.deleteQuestion(
+                setSurvey,
+                question,
+                selectedBlock,
+                setSelectedBlock,
+              )
+            }
+          >
+            Удалить
+          </div>
+        </div>
       </div>
     </>
   );
