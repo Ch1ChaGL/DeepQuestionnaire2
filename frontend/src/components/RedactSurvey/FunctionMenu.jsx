@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { useRedactSurvey } from './RedactSurveyProvider';
 import { Button } from 'react-bootstrap';
+import ConditionCard from './ConditionCard';
 
 function FunctionMenu({
   selectedBlock,
@@ -16,7 +17,12 @@ function FunctionMenu({
 }) {
   console.log('selectedBlock', selectedBlock);
   const redact = useRedactSurvey();
-
+  const [conditions, setConditions] = useState(null);
+  useEffect(() => {
+    const conditions = selectedBlock.data.block.nextBlock?.condition || null;
+    setConditions(conditions);
+  }, [selectedBlock]);
+ 
   useEffect(
     () => setBlockName(selectedBlock.data.block.title),
     [selectedBlock],
@@ -48,6 +54,7 @@ function FunctionMenu({
           />
           <div className={s.content}>
             <input value={blockName} onChange={nameChange} />
+            <h1 className={s.title}>Вопросы</h1>
             {selectedBlock.data.block.questions.map(block => (
               <RedactQuestionCard
                 question={block}
@@ -61,6 +68,21 @@ function FunctionMenu({
             <div className={s.addQuestion} onClick={() => setShow(true)}>
               <FontAwesomeIcon icon={faPlus} /> Новый вопрос
             </div>
+
+            <h1 className={s.title}>Условия перехода</h1>
+
+            {conditions ? (
+              conditions.map((condition, index) => (
+                <ConditionCard
+                  sourceBlockId={selectedBlock.data.block.id}
+                  targetBlockId={condition[0].blockId}
+                  index={index}
+                />
+              ))
+            ) : (
+              <></>
+            )}
+
             <div
               onClick={() => setShowFunctionMenu(false)}
               className={s.closeBtn}
@@ -71,7 +93,7 @@ function FunctionMenu({
               <></>
             ) : (
               <Button variant='danger' onClick={deleteBlock}>
-                Удалить
+                Удалить блок
               </Button>
             )}
           </div>

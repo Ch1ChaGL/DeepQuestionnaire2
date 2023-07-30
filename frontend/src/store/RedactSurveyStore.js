@@ -336,6 +336,11 @@ export default class RedactSurveyStore {
   get Survey() {
     return this.currentSurvey.Survey;
   }
+  getBlockById(id) {
+    return (
+      this.currentSurvey.Survey.blocks.find(block => block.id === id) || -1
+    );
+  }
 }
 
 //    const parsedSurvey = JSON.parse(getedSurvey.Survey);
