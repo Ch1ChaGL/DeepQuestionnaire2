@@ -369,6 +369,29 @@ export default class RedactSurveyStore {
       this.currentSurvey.Survey.blocks.find(block => block.id === id) || -1
     );
   }
+
+  addCondition(condition, selectedBlock, setSurvey, setSelectedBlock) {
+    console.log('condition', condition);
+    console.log('selectedBlock', selectedBlock);
+    const block = this.currentSurvey.Survey.blocks.find(
+      block => block.id === selectedBlock.data.block.id,
+    );
+
+    if (!block) throw new Error('Нет такого блока');
+
+    if (!block.nextBlock) {
+      block.nextBlock = { condition: [condition] };
+    } else {
+      block.nextBlock.condition.push(condition);
+    }
+
+    const newSelectedBlock = { ...selectedBlock };
+    newSelectedBlock.data.block = block;
+
+    setSelectedBlock(newSelectedBlock);
+
+    setSurvey({ ...this.currentSurvey });
+  }
 }
 
 //    const parsedSurvey = JSON.parse(getedSurvey.Survey);

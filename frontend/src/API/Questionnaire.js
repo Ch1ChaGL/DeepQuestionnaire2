@@ -134,9 +134,11 @@ class Questionnaire {
     for (const condition of conditions) {
       console.log('condition', condition);
       nextBlockId = this._CheckConditional(condition, answerQuestion);
+      console.log('nextBlockId', nextBlockId);
       if (nextBlockId) break;
     }
 
+    console.log('this.blocks', this.blocks);
     return this.blocks.find(block => block['id'] === nextBlockId);
   }
 
@@ -155,8 +157,10 @@ class Questionnaire {
         const answerInCondition =
           conditions[i]['answer'].id || conditions[i]['answer'];
         console.log('answerInCondition', answerInCondition);
+        console.log('answerQuestion', answerQuestion);
+        console.log('questionId', questionId);
         const getedAnswer = answerQuestion.get(questionId);
-
+        console.log('getedAnswer', getedAnswer);
         if (answerInCondition.isOtherOption && getedAnswer.isOtherOption) {
           continue;
         }
@@ -303,6 +307,7 @@ class Questionnaire {
       const answer = Answer;
       const questionId = question['id'];
 
+      console.log('questionId in answer', questionId);
       const block = this.currentBlock;
       this.answerQuestion.set(questionId, { block, answer });
 

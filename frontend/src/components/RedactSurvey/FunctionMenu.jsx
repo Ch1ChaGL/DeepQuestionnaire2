@@ -7,6 +7,7 @@ import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { useRedactSurvey } from './RedactSurveyProvider';
 import { Button } from 'react-bootstrap';
 import ConditionCard from './ConditionCard';
+import AddAndEditConditionForm from './AddAndEditConditionForm';
 
 function FunctionMenu({
   selectedBlock,
@@ -28,6 +29,7 @@ function FunctionMenu({
     [selectedBlock],
   );
   const [show, setShow] = useState(false);
+  const [showConditionForm, setShowConditionForm] = useState(false);
   const [blockName, setBlockName] = useState(selectedBlock.data.block.title);
 
   const nameChange = e => {
@@ -50,6 +52,14 @@ function FunctionMenu({
             isAdd
             setSurvey={setSurvey}
             selectedBlock={selectedBlock}
+            setSelectedBlock={setSelectedBlock}
+          />
+          <AddAndEditConditionForm
+            isAdd={true}
+            show={showConditionForm}
+            setShow={setShowConditionForm}
+            selectedBlock={selectedBlock}
+            setSurveyFn={setSurvey}
             setSelectedBlock={setSelectedBlock}
           />
           <div className={s.content}>
@@ -86,7 +96,9 @@ function FunctionMenu({
             ) : (
               <></>
             )}
-
+            <Button onClick={() => setShowConditionForm(true)}>
+              Добавить условие
+            </Button>
             <div
               onClick={() => setShowFunctionMenu(false)}
               className={s.closeBtn}
