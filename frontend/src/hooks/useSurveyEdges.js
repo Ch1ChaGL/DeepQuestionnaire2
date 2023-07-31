@@ -19,6 +19,7 @@ export const useSurveyEdges = survey => {
           markerEnd: {
             type: MarkerType.ArrowClosed,
           },
+          type: 'smoothstep',
         };
         if (arr.find(condition => condition.id === edgeId)) return;
         arr.push(edge);

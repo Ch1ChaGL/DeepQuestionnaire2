@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { addSurvey, getSurvey } from '../../../API/surveyApi';
 
 const startBlock = {
-  id: 1,
+  id: "1",
   title: 'Стартовый блок',
   position: { x: 300, y: 300 },
   questions: [],

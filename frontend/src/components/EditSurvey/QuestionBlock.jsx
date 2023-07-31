@@ -27,7 +27,7 @@ function QuestionBlock({ data, isConnectable }) {
   }, [data]);
 
   return (
-    <div className={`${s['block']} ${data.block.id === 1 ? s['start'] : ''}`}>
+    <div className={`${s['block']} ${data.block.id === "1" ? s['start'] : ''}`}>
       <div>
         <Handle
           type='output'
@@ -37,7 +37,7 @@ function QuestionBlock({ data, isConnectable }) {
           isConnectable={isConnectable}
         />
 
-        {data.block.id === 1 ? (
+        {data.block.id === "1" ? (
           <></>
         ) : (
           <Handle

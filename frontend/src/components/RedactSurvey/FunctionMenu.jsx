@@ -105,7 +105,7 @@ function FunctionMenu({
             >
               Закрыть
             </div>
-            {selectedBlock.data.block.id === 1 ? (
+            {selectedBlock.data.block.id === '1' ? (
               <></>
             ) : (
               <div className={s.closeBtn} onClick={deleteBlock}>
