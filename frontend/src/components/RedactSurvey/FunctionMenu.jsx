@@ -16,6 +16,7 @@ function FunctionMenu({
   setSurvey,
   setShowFunctionMenu,
   setSelectedBlock,
+  survey
 }) {
   console.log('<-selectedBlock->', selectedBlock);
   const redact = useRedactSurvey();
@@ -101,6 +102,7 @@ function FunctionMenu({
               selectedBlock={selectedBlock}
               setSelectedBlock={setSelectedBlock}
               setSurvey={setSurvey}
+              survey={survey}
             />
             <div
               className={s.addCondition}

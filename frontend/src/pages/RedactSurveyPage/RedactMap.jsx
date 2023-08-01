@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback, useState } from 'react';
+import React, { useEffect, useCallback, useState, useRef } from 'react';
 import s from './RedactMap.module.css';
 import ReactFlow, { Controls, applyNodeChanges } from 'reactflow';
 import 'reactflow/dist/style.css';
@@ -16,6 +16,7 @@ const RedactMap = ({ QuizId, ...props }) => {
   const redact = useRedactSurvey();
 
   const [survey, setSurvey] = useState({ Survey: { blocks: [] } });
+
   useEffect(() => {
     fetchSurvey();
   }, []);
@@ -67,6 +68,7 @@ const RedactMap = ({ QuizId, ...props }) => {
             selectedBlock={selectedBlock}
             setSurvey={setSurvey}
             setSelectedBlock={setSelectedBlock}
+            survey={survey}
           />
         ) : (
           <></>

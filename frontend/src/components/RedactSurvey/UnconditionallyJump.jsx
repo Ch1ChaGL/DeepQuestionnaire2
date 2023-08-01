@@ -2,19 +2,19 @@ import React, { useEffect, useState } from 'react';
 import s from './UnconditionallyJump.module.css';
 import { Form } from 'react-bootstrap';
 import { useRedactSurvey } from './RedactSurveyProvider';
-function UnconditionallyJump({ selectedBlock, setSelectedBlock, setSurvey }) {
+function UnconditionallyJump({ selectedBlock, setSelectedBlock, setSurvey,survey }) {
   const redact = useRedactSurvey();
-  const surveyMy = redact.getCurrentSurvey();
+  
   //console.log('redact.getCurrentSurvey()', redact.getCurrentSurvey());
 
   const [unconditionalJump, setUnconditionalJump] = useState(
     selectedBlock.data.block.nextBlock?.unconditionallyJump || -1,
   );
 
-//   const [blocks, setBlocks] = useState([]);
-//   useEffect(() => {
-//     setBlocks();
-//   }, [surveyMy]);
+  const [blocks, setBlocks] = useState([]);
+  useEffect(() => {
+    setBlocks(redact.getCurrentSurvey().Survey.blocks);
+  }, [survey]);
 
   useEffect(() => {
     setUnconditionalJump(
@@ -40,8 +40,8 @@ function UnconditionallyJump({ selectedBlock, setSelectedBlock, setSurvey }) {
         onChange={changeUnconditionallyJump}
       >
         <option value={-1}>Нет</option>
-        {redact.getCurrentSurvey().Survey.blocks.map(block => {
-          if (block.id === selectedBlock.id) return <></>;
+        {blocks.map(block => {
+          if (block.id === selectedBlock.id || block.id === '1') return <></>;
           return (
             <option value={block.id} key={block.id}>
               {block.title}
