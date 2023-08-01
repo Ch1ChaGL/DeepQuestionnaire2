@@ -18,3 +18,8 @@ export const addSurvey = async survey => {
   const res = await $authHost.post('api/quiz', survey);
   return res;
 };
+
+export const deleteSurvey = async id => {
+  const res = await $authHost.delete(`api/quiz/${id}`);
+  return res;
+}

@@ -44,6 +44,8 @@ function EditSurvey() {
             name={sur.Name}
             QuizId={sur.QuizId}
             key={sur.QuizId}
+            survey={survey}
+            setSurvey={setSurvey}
           />
         ))}
       </div>

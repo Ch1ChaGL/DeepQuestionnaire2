@@ -8,6 +8,7 @@ import { useRedactSurvey } from './RedactSurveyProvider';
 import { Button } from 'react-bootstrap';
 import ConditionCard from './ConditionCard';
 import AddAndEditConditionForm from './AddAndEditConditionForm';
+import UnconditionallyJump from './UnconditionallyJump';
 
 function FunctionMenu({
   selectedBlock,
@@ -96,9 +97,17 @@ function FunctionMenu({
             ) : (
               <></>
             )}
-            <Button onClick={() => setShowConditionForm(true)}>
+            <UnconditionallyJump
+              selectedBlock={selectedBlock}
+              setSelectedBlock={setSelectedBlock}
+              setSurvey={setSurvey}
+            />
+            <div
+              className={s.addCondition}
+              onClick={() => setShowConditionForm(true)}
+            >
               Добавить условие
-            </Button>
+            </div>
             <div
               onClick={() => setShowFunctionMenu(false)}
               className={s.closeBtn}
@@ -108,9 +117,12 @@ function FunctionMenu({
             {selectedBlock.data.block.id === '1' ? (
               <></>
             ) : (
-              <div className={s.closeBtn} onClick={deleteBlock}>
-                Удалить блок
-              </div>
+              <>
+                <hr className={s.separatorLine} />
+                <div className={s.closeBtn} onClick={deleteBlock}>
+                  Удалить блок
+                </div>
+              </>
             )}
           </div>
         </>

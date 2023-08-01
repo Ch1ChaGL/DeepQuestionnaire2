@@ -19,12 +19,28 @@ export const useSurveyEdges = survey => {
           markerEnd: {
             type: MarkerType.ArrowClosed,
           },
-          type: 'smoothstep',
+          // type: 'smoothstep',
         };
         if (arr.find(condition => condition.id === edgeId)) return;
         arr.push(edge);
       });
 
+      if (block.nextBlock.unconditionallyJump !== -1) {
+        const unconditionallyJump = block.nextBlock.unconditionallyJump;
+        const edgeId =
+          currentId + '-' + unconditionallyJump + '-unconditionally';
+        const edge = {
+          id: edgeId,
+          source: currentId,
+          target: unconditionallyJump,
+          markerEnd: {
+            type: MarkerType.ArrowClosed,
+          },
+          // type: 'smoothstep',
+        };
+
+        arr.push(edge);
+      }
       return arr;
     }, []);
 

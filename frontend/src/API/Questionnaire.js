@@ -78,11 +78,17 @@ class Questionnaire {
       const blockId = block.id;
 
       console.log('answer', answer);
-      const blockInBlocks = sortedBlocks[binarySearch(this.blocks, blockId)];
+
+      console.log('<---sortedBlocks--->', sortedBlocks);
+      // const blockInBlocks = sortedBlocks[binarySearch(this.blocks, blockId)];
+      const blockInBlocks = sortedBlocks.find(block => block.id === blockId);
       const questions = blockInBlocks.questions;
       // const questionInQuestions =
       //   questions[binarySearch(questions, idQuestion)];
 
+      console.log('<---blockInBlocks--->', blockInBlocks);
+      console.log('<---questions--->', questions);
+      console.log('<---idQuestion--->', idQuestion);
       const questionInQuestions = questions.find(
         question => question.id === idQuestion,
       );
@@ -139,6 +145,10 @@ class Questionnaire {
     }
 
     console.log('this.blocks', this.blocks);
+    
+    if (!nextBlockId && PreviousBlock['nextBlock'].unconditionallyJump !== -1)
+      nextBlockId = PreviousBlock['nextBlock'].unconditionallyJump;
+
     return this.blocks.find(block => block['id'] === nextBlockId);
   }
 

@@ -40,6 +40,7 @@ export default class RedactSurveyStore {
     for (const block of blocks) {
       if (block.nextBlock === null) continue;
       const conditions = block.nextBlock.condition;
+      block.nextBlock.unconditionallyJump = -1;
       for (let i = conditions.length - 1; i >= 0; i--) {
         const condition = conditions[i];
         if (condition[0].blockId + '' === blockId) {
@@ -148,9 +149,8 @@ export default class RedactSurveyStore {
       id: uuidv4(),
       position: { x: 300, y: 300 },
       title: nameBlock,
-      parentBlock: null,
       questions: [],
-      nextBlock: null,
+      nextBlock: { condition: [], unconditionallyJump: -1 },
     };
 
     this.currentSurvey.Survey.blocks.push(newBlock);
@@ -379,17 +379,37 @@ export default class RedactSurveyStore {
 
     if (!block) throw new Error('Нет такого блока');
 
-    if (!block.nextBlock) {
-      block.nextBlock = { condition: [condition] };
-    } else {
-      block.nextBlock.condition.push(condition);
-    }
+    // if (!block.nextBlock) {
+    //   block.nextBlock = { condition: [condition] };
+    // } else {
+    block.nextBlock.condition.push(condition);
+    // }
 
     const newSelectedBlock = { ...selectedBlock };
     newSelectedBlock.data.block = block;
 
     setSelectedBlock(newSelectedBlock);
 
+    setSurvey({ ...this.currentSurvey });
+  }
+
+  updateUnconditionallyJump(
+    unconditionallyJump,
+    selectedBlock,
+    setSelectedBlock,
+    setSurvey,
+  ) {
+    const block = this.currentSurvey.Survey.blocks.find(
+      block => block.id === selectedBlock.data.block.id,
+    );
+
+    if (!block) throw new Error('Нет такого блока');
+    block.nextBlock.unconditionallyJump = unconditionallyJump;
+
+    const newSelectedBlock = { ...selectedBlock };
+    newSelectedBlock.data.block = block;
+
+    setSelectedBlock(newSelectedBlock);
     setSurvey({ ...this.currentSurvey });
   }
 }
