@@ -174,9 +174,8 @@ function Condition({ selectedBlock, condition, setCondition, index }) {
       ) : (
         <></>
       )}
-      <Button
-        className='mt-2'
-        variant='danger'
+      <div
+        className={s.deleteBtn}
         onClick={() => {
           const newCondition = [...condition];
           newCondition.splice(index, 1); // Удаляем 1 элемент с указанного индекса
@@ -184,7 +183,7 @@ function Condition({ selectedBlock, condition, setCondition, index }) {
         }}
       >
         Удалить
-      </Button>
+      </div>
     </div>
   );
 }

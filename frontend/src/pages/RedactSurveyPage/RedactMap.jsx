@@ -75,14 +75,6 @@ const RedactMap = ({ QuizId, ...props }) => {
         ) : (
           <></>
         )}
-        {/* <FunctionMenuMemo
-          showFunctionMenu={showFunctionMenu}
-          setShowFunctionMenu={setShowFunctionMenu}
-          selectedBlock={selectedBlock}
-          setSurvey={setSurvey}
-          setSelectedBlock={setSelectedBlock}
-        /> */}
-
         <Controls style={{ marginLeft: 100 }} />
         <MiniMap />
       </ReactFlow>

@@ -3,6 +3,22 @@ import s from './EditConditionForm.module.css';
 import { Modal, Form, FloatingLabel, Button } from 'react-bootstrap';
 import Condition from './Condition';
 import { useRedactSurvey } from './RedactSurveyProvider';
+
+const checkCondition = condition => {
+  let res = true;
+  for (let i = 0; i < condition.length; i++) {
+    if (i === 0) {
+      if (condition[0].Operator === '' || condition[0].blockId === '')
+        res = false;
+      continue;
+    }
+    if (condition[i].questionId === '' || condition[i].answer?.id === '') {
+      res = false;
+    }
+  }
+  return res;
+};
+
 function EditConditionForm({
   show,
   setShow,
@@ -21,6 +37,7 @@ function EditConditionForm({
   console.log('condition', condition);
 
   const updateCondition = () => {
+    if (!checkCondition(condition)) return;
     redact.updateCondition(
       index,
       condition,
@@ -100,24 +117,32 @@ function EditConditionForm({
           );
         })}
 
-        <Button
+        <div
+          className={s.addBtn}
           variant='success'
           onClick={() =>
             setCondition([...condition, { questionId: '', answer: { id: '' } }])
           }
         >
           Добавить вопрос
-        </Button>
-        <Button
-          onClick={() => {
-            setShow(false);
-          }}
-        >
-          Закрыть
-        </Button>
-        <Button variant='warning' onClick={updateCondition}>
-          Обновить условие
-        </Button>
+        </div>
+        <div className={s.btns}>
+          <div
+            className={s.closeBtn}
+            onClick={() => {
+              setShow(false);
+            }}
+          >
+            Закрыть
+          </div>
+          <div
+            className={s.editBtn}
+            variant='warning'
+            onClick={updateCondition}
+          >
+            Обновить условие
+          </div>
+        </div>
       </Form>
     </Modal>
   );

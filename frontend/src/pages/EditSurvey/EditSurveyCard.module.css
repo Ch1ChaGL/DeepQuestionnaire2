@@ -1,0 +1,62 @@
+.container {
+  display: grid;
+  grid-auto-flow: row;
+  grid-template: 1fr minmax(40px, auto) / 1fr;
+  padding: 10px;
+  background-color: aliceblue;
+  word-wrap: break-word;
+  border-radius: 5px;
+}
+
+.title {
+  font-size: 18px;
+  padding: 10px;
+  word-break: break-all;
+}
+
+.btns {
+  display: flex;
+}
+
+.deleteBtn,
+.editBtn {
+  text-align: center;
+  padding: 10px;
+  border-radius: 3px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.editBtn {
+  padding: 10px 20px;
+  background-color: rgb(31, 64, 104);
+  color: white;
+  border-radius: 3px;
+  text-align: center;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.editBtn {
+  margin-left: 3px;
+  text-align: center;
+  color: white;
+  background-color: rgb(40, 82, 39);
+}
+
+.editBtn:hover {
+  color: white;
+  background-color: rgb(34, 70, 33);
+}
+
+.deleteBtn {
+  color: white;
+  background-color: rgb(135, 51, 51);
+}
+.deleteBtn:hover {
+  color: white;
+  background-color: rgb(104, 41, 41);
+}

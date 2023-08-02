@@ -18,7 +18,7 @@ export const useRedactMenuData = () => {
       title: 'Добавить блок вопросов',
       cName: 'nav-text',
       icon: <FontAwesomeIcon icon={faPlus} />,
-      fn: (nodes, setSurvey, survey)=> {
+      fn: (nodes, setSurvey, survey) => {
         redact.addQuestionBlock(setSurvey, 'Новый блок');
       },
     },
@@ -31,6 +31,11 @@ export const useRedactMenuData = () => {
       },
     },
     {
+      close: true,
+      confirmFn: async () => {
+        await updateSurvey(redact.getCurrentSurvey());
+        navigate(ADMIN_ROUTE + '/survey');
+      },
       title: 'Выйти',
       cName: 'nav-text',
       icon: <FontAwesomeIcon icon={faRightFromBracket} />,

@@ -57,7 +57,10 @@ function FunctionMenu({
               confirmText={'Да, удалить'}
               cancelText={'Закрыть'}
               onCancel={() => setShowAlert(false)}
-              onConfirm={deleteBlock}
+              onConfirm={() => {
+                deleteBlock();
+                setShowAlert(false);
+            }}
             />
           )}
           <EditAndAddQuestionForm

@@ -26,7 +26,7 @@ function Admin() {
 
   return (
     <div
-      style={{ minHeight: '100vh', paddingTop: 80, backgroundColor: '#b5e7e8' }}
+      style={{ minHeight: '100vh', paddingTop: 80, backgroundColor: '#b0c3cf' }}
     >
       <SideBar />
       <ScrollButton />

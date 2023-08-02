@@ -5,11 +5,14 @@ import s from './EditSurvey.module.css';
 import { getSurvey } from '../../API/surveyApi';
 import EditSurveyCard from './EditSurveyCard';
 import AddAndEditSurveyForm from './AddAndEditSurveyForm/AddAndEditSurveyForm';
+import { useSurveys } from '../../hooks/useSurveys';
 function EditSurvey() {
   const [searchQuery, setSearchQuery] = useState('');
   const [survey, setSurvey] = useState([]);
 
   const [show, setShow] = useState(false);
+
+  const searchedSurvey = useSurveys(survey, searchQuery);
 
   useEffect(() => {
     fetchSurvey();
@@ -39,7 +42,7 @@ function EditSurvey() {
         Добавить
       </Button>
       <div className={s.gridСontainer}>
-        {survey.map(sur => (
+        {searchedSurvey.map(sur => (
           <EditSurveyCard
             name={sur.Name}
             QuizId={sur.QuizId}

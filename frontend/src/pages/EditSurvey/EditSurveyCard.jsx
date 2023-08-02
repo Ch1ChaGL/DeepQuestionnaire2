@@ -4,6 +4,8 @@ import { useNavigate } from 'react-router-dom';
 import { ADMIN_ROUTE } from '../../utils/consts';
 import { deleteSurvey } from '../../API/surveyApi';
 import NavigationPrompt from '../../components/UI/NavigationPrompt';
+import s from './EditSurveyCard.module.css';
+
 function EditSurveyCard({ name, QuizId, survey, setSurvey }) {
   const navigation = useNavigate();
 
@@ -29,24 +31,22 @@ function EditSurveyCard({ name, QuizId, survey, setSurvey }) {
           onConfirm={deleteQuiz}
         />
       )}
-      <Card>
-        <Card.Header>
-          №:{QuizId} {name}
-        </Card.Header>
+      <div className={s.container}>
+        <div className={s.title}>{name}</div>
+        <hr />
         {/* <Card.Body></Card.Body> */}
-        <Card.Footer>
-          <Button onClick={() => navigation(ADMIN_ROUTE + `/survey/${QuizId}`)}>
-            Редактировать
-          </Button>
-          <Button
-            variant='danger'
-            className='ms-2'
-            onClick={() => setShowPrompt(true)}
-          >
+        <div className={s.btns}>
+          <div className={s.deleteBtn} onClick={() => setShowPrompt(true)}>
             Удалить
-          </Button>
-        </Card.Footer>
-      </Card>
+          </div>
+          <div
+            onClick={() => navigation(ADMIN_ROUTE + `/survey/${QuizId}`)}
+            className={s.editBtn}
+          >
+            Редактировать
+          </div>
+        </div>
+      </div>
     </>
   );
 }

@@ -40,11 +40,12 @@ export default class RedactSurveyStore {
     for (const block of blocks) {
       if (block.nextBlock === null) continue;
       const conditions = block.nextBlock.condition;
-      block.nextBlock.unconditionallyJump = -1;
+
       for (let i = conditions.length - 1; i >= 0; i--) {
         const condition = conditions[i];
         if (condition[0].blockId + '' === blockId) {
-          conditions.splice(i, 1); // Удаляем блок условия, если blockId совпадает
+          conditions.splice(i, 1);
+          block.nextBlock.unconditionallyJump = -1; // Удаляем блок условия, если blockId совпадает
         }
       }
     }

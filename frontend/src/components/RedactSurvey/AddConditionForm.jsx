@@ -3,6 +3,22 @@ import { Modal, Form, Button, FloatingLabel } from 'react-bootstrap';
 import { useRedactSurvey } from './RedactSurveyProvider';
 import Condition from './Condition';
 import { v4 as uuidv4 } from 'uuid';
+import s from './AddConditionForm.module.css';
+
+const checkCondition = condition => {
+  let res = true;
+  for (let i = 0; i < condition.length; i++) {
+    if (i === 0) {
+      if (condition[0].Operator === '' || condition[0].blockId === '')
+        res = false;
+      continue;
+    }
+    if (condition[i].questionId === '' || condition[i].answer?.id === '') {
+      res = false;
+    }
+  }
+  return res;
+};
 
 function AddConditionForm({
   show,
@@ -21,6 +37,7 @@ function AddConditionForm({
   console.log('[...condition]', [...condition]);
 
   const addCondition = () => {
+    if (!checkCondition(condition)) return;
     redact.addCondition(
       condition,
       selectedBlock,
@@ -29,13 +46,12 @@ function AddConditionForm({
     );
     setShow(false);
   };
+
   return (
     <Modal show={show}>
       <Form style={{ padding: 30 }}>
         <Modal.Header className='mb-2'>
-          <Modal.Title>
-            {'Форма добавления условия'}
-          </Modal.Title>
+          <Modal.Title>{'Форма добавления условия'}</Modal.Title>
         </Modal.Header>
         <FloatingLabel controlId='fromBlock' label='from' className='mb-2'>
           <Form.Select disabled={true} value={selectedBlock}>
@@ -91,25 +107,28 @@ function AddConditionForm({
           );
         })}
 
-        <Button
-          variant='success'
+        <div
+          className={s.addBtn}
           onClick={() =>
             setCondition([...condition, { questionId: '', answer: { id: '' } }])
           }
         >
           Добавить вопрос
-        </Button>
-        <Button
-          onClick={() => {
-            setShow(false);
-            setCondition([{ Operator: 'and', blockId: '' }]);
-          }}
-        >
-          Закрыть
-        </Button>
-        <Button variant='warning' onClick={addCondition}>
-          Создать условие
-        </Button>
+        </div>
+        <div className={s.btns}>
+          <div
+            className={s.closeBtn}
+            onClick={() => {
+              setShow(false);
+              setCondition([{ Operator: 'and', blockId: '' }]);
+            }}
+          >
+            Закрыть
+          </div>
+          <div className={s.editBtn} onClick={addCondition}>
+            Создать условие
+          </div>
+        </div>
       </Form>
     </Modal>
   );

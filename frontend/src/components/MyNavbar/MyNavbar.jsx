@@ -52,7 +52,7 @@ const MyNavbar = observer(() => {
                 onClick={async () => {
                   const checkedUser = await check();
                   user.setUser(checkedUser);
-                  navigate(ADMIN_ROUTE + '/home');
+                  navigate(ADMIN_ROUTE + '/survey');
                 }}
               >
                 Админ панель

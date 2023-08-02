@@ -57,7 +57,7 @@ function QuestionBlock({ data, isConnectable }) {
         </div>
         <div className={s.questionsContainer}>
           {questions.map(question => (
-            <div className={s.question}>{question.text}</div>
+            <div className={s.question} key={question.id}>{question.text}</div>
           ))}
         </div>
       </div>

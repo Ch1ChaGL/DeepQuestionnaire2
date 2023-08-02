@@ -20,12 +20,12 @@ export const sortListInSurveyHistory = [
 ];
 
 export const SidebarData = [
-  {
-    title: 'Главная',
-    path: ADMIN_ROUTE + '/home',
-    icon: <FontAwesomeIcon icon={faHouse} />,
-    cName: 'nav-text',
-  },
+  // {
+  //   title: 'Главная',
+  //   path: ADMIN_ROUTE + '/home',
+  //   icon: <FontAwesomeIcon icon={faHouse} />,
+  //   cName: 'nav-text',
+  // },
   {
     title: 'Доступ к приложению',
     path: ADMIN_ROUTE + '/applicationAccess',
