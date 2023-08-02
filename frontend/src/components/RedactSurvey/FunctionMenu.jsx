@@ -9,7 +9,7 @@ import { Button } from 'react-bootstrap';
 import ConditionCard from './ConditionCard';
 import AddAndEditConditionForm from './AddConditionForm';
 import UnconditionallyJump from './UnconditionallyJump';
-
+import NavigationPrompt from '../../components/UI/NavigationPrompt';
 function FunctionMenu({
   selectedBlock,
   showFunctionMenu,
@@ -19,6 +19,7 @@ function FunctionMenu({
 }) {
   console.log('<-selectedBlock->', selectedBlock);
   const redact = useRedactSurvey();
+  const [showAlert, setShowAlert] = useState(false);
   const [conditions, setConditions] = useState(null);
   useEffect(() => {
     const conditions = selectedBlock.data.block.nextBlock?.condition || null;
@@ -47,6 +48,18 @@ function FunctionMenu({
     <div className={`${s['container']} ${showFunctionMenu ? s['show'] : ''}`}>
       {showFunctionMenu ? (
         <>
+          {showAlert && (
+            <NavigationPrompt
+              title={'Удаление блока'}
+              message={
+                'Вы пытаетесь удалить блок, вы уверены, что хотите продолжить?'
+              }
+              confirmText={'Да, удалить'}
+              cancelText={'Закрыть'}
+              onCancel={() => setShowAlert(false)}
+              onConfirm={deleteBlock}
+            />
+          )}
           <EditAndAddQuestionForm
             show={show}
             setShow={setShow}
@@ -119,7 +132,7 @@ function FunctionMenu({
             ) : (
               <>
                 <hr className={s.separatorLine} />
-                <div className={s.closeBtn} onClick={deleteBlock}>
+                <div className={s.closeBtn} onClick={() => setShowAlert(true)}>
                   Удалить блок
                 </div>
               </>

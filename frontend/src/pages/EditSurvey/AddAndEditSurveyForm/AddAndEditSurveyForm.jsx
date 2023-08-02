@@ -47,10 +47,12 @@ function AddAndEditSurveyForm({ show, setShow, setSurvey }) {
         <Form.Control
           type='text'
           value={NewSurvey.Name}
+          className='mb-2'
           onChange={e => setNewSurvey({ ...NewSurvey, Name: e.target.value })}
         />
-        <Button onClick={addNewSurvey}>Добавить</Button>
+        <Button onClick={addNewSurvey} className='me-2' variant='success'>Добавить</Button>
         <Button
+        variant='danger'
           onClick={() => {
             setShow(false);
             setNewSurvey({
