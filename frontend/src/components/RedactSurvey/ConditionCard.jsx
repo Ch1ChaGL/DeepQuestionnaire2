@@ -8,6 +8,7 @@ import {
   faTrash,
 } from '@fortawesome/free-solid-svg-icons';
 import { Button } from 'react-bootstrap';
+import EditConditionForm from './EditConditionForm';
 
 function ConditionCard({
   sourceBlockId,
@@ -20,6 +21,8 @@ function ConditionCard({
   const redact = useRedactSurvey();
   const [sourceBlock, setSourceBlock] = useState({ title: '' });
   const [targetBlock, setTargetBlock] = useState({ title: '' });
+
+  const [show, setShow] = useState(false);
 
   useEffect(() => {
     const source = redact.getBlockById(sourceBlockId);
@@ -39,13 +42,39 @@ function ConditionCard({
     );
   };
 
+  const updateCondition = () => {
+    setShow(true);
+  };
+
   return (
     <div className={s.content}>
+      {show ? (
+        <EditConditionForm
+          show={show}
+          setShow={setShow}
+          selectedBlock={selectedBlock}
+          setSurveyFn={setSurvey}
+          setSelectedBlock={setSelectedBlock}
+          index={index}
+        />
+      ) : (
+        <></>
+      )}
       <div className={s.title}>
         <div>{`Приоритет ${index + 1}`}</div>
         <div className={s.btns}>
-          <FontAwesomeIcon icon={faPenToSquare} className={s.editBtn} size='sm'/>
-          <FontAwesomeIcon icon={faTrash} className={s.deleteBtn} onClick={deleteCondition} size='sm'/>
+          <FontAwesomeIcon
+            icon={faPenToSquare}
+            className={s.editBtn}
+            size='sm'
+            onClick={updateCondition}
+          />
+          <FontAwesomeIcon
+            icon={faTrash}
+            className={s.deleteBtn}
+            onClick={deleteCondition}
+            size='sm'
+          />
         </div>
       </div>
       <div className={s.condition}>

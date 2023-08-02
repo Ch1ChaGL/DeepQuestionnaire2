@@ -1,6 +1,6 @@
 import React, { useEffect, useCallback, useState, useRef } from 'react';
 import s from './RedactMap.module.css';
-import ReactFlow, { Controls, applyNodeChanges } from 'reactflow';
+import ReactFlow, { Controls, MiniMap, applyNodeChanges } from 'reactflow';
 import 'reactflow/dist/style.css';
 import { useSurveyNodes } from '../../hooks/useSurveyNodes';
 import { useRedactSurvey } from '../../components/RedactSurvey/RedactSurveyProvider';
@@ -12,6 +12,7 @@ import FunctionMenu from '../../components/RedactSurvey/FunctionMenu';
 // import { useUpdatedSurvey } from '../../hooks/useUpdatedSurvey';
 import { useSurveyEdges } from '../../hooks/useSurveyEdges';
 import ConnectionLine from '../../components/EditSurvey/ConnectionLine';
+import { SurveyProvider } from '../../components/RedactSurvey/SurveysProvider';
 const RedactMap = ({ QuizId, ...props }) => {
   const redact = useRedactSurvey();
 
@@ -62,14 +63,15 @@ const RedactMap = ({ QuizId, ...props }) => {
       >
         <RedactMenu nodes={nodes} setSurvey={setSurvey} survey={survey} />
         {Object.keys(selectedBlock).length ? (
-          <FunctionMenuMemo
-            showFunctionMenu={showFunctionMenu}
-            setShowFunctionMenu={setShowFunctionMenu}
-            selectedBlock={selectedBlock}
-            setSurvey={setSurvey}
-            setSelectedBlock={setSelectedBlock}
-            survey={survey}
-          />
+          <SurveyProvider survey={survey}>
+            <FunctionMenuMemo
+              showFunctionMenu={showFunctionMenu}
+              setShowFunctionMenu={setShowFunctionMenu}
+              selectedBlock={selectedBlock}
+              setSurvey={setSurvey}
+              setSelectedBlock={setSelectedBlock}
+            />
+          </SurveyProvider>
         ) : (
           <></>
         )}
@@ -81,7 +83,8 @@ const RedactMap = ({ QuizId, ...props }) => {
           setSelectedBlock={setSelectedBlock}
         /> */}
 
-        <Controls />
+        <Controls style={{ marginLeft: 100 }} />
+        <MiniMap />
       </ReactFlow>
     </>
   );

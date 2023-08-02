@@ -7,7 +7,7 @@ import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { useRedactSurvey } from './RedactSurveyProvider';
 import { Button } from 'react-bootstrap';
 import ConditionCard from './ConditionCard';
-import AddAndEditConditionForm from './AddAndEditConditionForm';
+import AddAndEditConditionForm from './AddConditionForm';
 import UnconditionallyJump from './UnconditionallyJump';
 
 function FunctionMenu({
@@ -16,7 +16,6 @@ function FunctionMenu({
   setSurvey,
   setShowFunctionMenu,
   setSelectedBlock,
-  survey
 }) {
   console.log('<-selectedBlock->', selectedBlock);
   const redact = useRedactSurvey();
@@ -102,7 +101,6 @@ function FunctionMenu({
               selectedBlock={selectedBlock}
               setSelectedBlock={setSelectedBlock}
               setSurvey={setSurvey}
-              survey={survey}
             />
             <div
               className={s.addCondition}

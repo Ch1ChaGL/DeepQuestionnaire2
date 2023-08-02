@@ -1,16 +1,44 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Form, FloatingLabel, Button } from 'react-bootstrap';
 import s from './Condition.module.css';
 function Condition({ selectedBlock, condition, setCondition, index }) {
   console.log('selectedBlock', selectedBlock);
 
+  console.log('condition', condition);
   const [options, setOptions] = useState({
     type: 'singleChoice',
     options: [],
     hasOtherOption: false,
   });
-
   const [isOtherOption, setIsOtherOption] = useState(false);
+  const [questionId, setQuestionId] = useState('');
+  useEffect(() => {
+    const getedQuestionId = condition[index].questionId;
+    const question = selectedBlock.data.block.questions.find(
+      question => question.id + '' === getedQuestionId + '',
+    );
+
+    if (question) {
+      console.log('&&&question&&&', question);
+      setOptions({
+        type: question.type,
+        options: question.options,
+        hasOtherOption: question.hasOtherOption,
+      });
+      setQuestionId(getedQuestionId);
+      if (condition[index].answer?.isOtherOption) {
+        setIsOtherOption(condition[index].answer?.isOtherOption);
+      }
+    } else {
+      setOptions({
+        type: 'singleChoice',
+        options: [],
+        hasOtherOption: false,
+      });
+      setQuestionId('');
+    }
+  }, []);
+  console.log('<--options-->', options);
 
   const changeQuestion = e => {
     const questionId = e.target.value;
@@ -99,7 +127,12 @@ function Condition({ selectedBlock, condition, setCondition, index }) {
             Выберите вопрос
           </option>
           {selectedBlock.data.block.questions.map(question => (
-            <option value={question.id}>{question.text}</option>
+            <option
+              value={question.id}
+              selectedBlock={question.id === questionId}
+            >
+              {question.text}
+            </option>
           ))}
         </Form.Select>
       </FloatingLabel>

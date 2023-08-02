@@ -2,11 +2,13 @@ import React, { useEffect, useState } from 'react';
 import s from './UnconditionallyJump.module.css';
 import { Form } from 'react-bootstrap';
 import { useRedactSurvey } from './RedactSurveyProvider';
-function UnconditionallyJump({ selectedBlock, setSelectedBlock, setSurvey,survey }) {
+import { useSurvey } from './SurveysProvider';
+function UnconditionallyJump({ selectedBlock, setSelectedBlock, setSurvey }) {
   const redact = useRedactSurvey();
-  
+
   //console.log('redact.getCurrentSurvey()', redact.getCurrentSurvey());
 
+  const survey = useSurvey();
   const [unconditionalJump, setUnconditionalJump] = useState(
     selectedBlock.data.block.nextBlock?.unconditionallyJump || -1,
   );
@@ -22,7 +24,6 @@ function UnconditionallyJump({ selectedBlock, setSelectedBlock, setSurvey,survey
     );
   }, [selectedBlock]);
 
-  console.log('selectedBlock в этом компонете', selectedBlock);
   const changeUnconditionallyJump = e => {
     redact.updateUnconditionallyJump(
       e.target.value,

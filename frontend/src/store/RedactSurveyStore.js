@@ -393,6 +393,32 @@ export default class RedactSurveyStore {
     setSurvey({ ...this.currentSurvey });
   }
 
+  updateCondition(
+    index,
+    newCondition,
+    selectedBlock,
+    setSurvey,
+    setSelectedBlock,
+  ) {
+    console.log('==index==', index);
+    console.log('==newCondition==', newCondition);
+    console.log('==selectedBlock==', selectedBlock);
+
+    const block = this.currentSurvey.Survey.blocks.find(
+      block => block.id === selectedBlock.data.block.id,
+    );
+    if (!block) throw new Error('Нет такого блока');
+
+    block.nextBlock.condition[index] = newCondition;
+
+    const newSelectedBlock = { ...selectedBlock };
+    newSelectedBlock.data.block = block;
+
+    setSelectedBlock(newSelectedBlock);
+
+    setSurvey({ ...this.currentSurvey });
+  }
+
   updateUnconditionallyJump(
     unconditionallyJump,
     selectedBlock,

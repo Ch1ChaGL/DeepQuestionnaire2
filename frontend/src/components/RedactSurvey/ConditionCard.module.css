@@ -27,8 +27,6 @@
   border: 2px solid grey;
 }
 
-.btns {
-}
 .deleteBtn {
   transition: all 0.3s ease;
   color: rgb(135, 51, 51);
