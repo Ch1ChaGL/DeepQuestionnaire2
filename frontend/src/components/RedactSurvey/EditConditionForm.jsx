@@ -3,7 +3,7 @@ import s from './EditConditionForm.module.css';
 import { Modal, Form, FloatingLabel, Button } from 'react-bootstrap';
 import Condition from './Condition';
 import { useRedactSurvey } from './RedactSurveyProvider';
-
+import DangerAlert from '../../components/UI/DangerAlert';
 const checkCondition = condition => {
   let res = true;
   for (let i = 0; i < condition.length; i++) {
@@ -32,12 +32,15 @@ function EditConditionForm({
   const [condition, setCondition] = useState(
     selectedBlock.data.block.nextBlock.condition[index],
   );
-
+  const [showAlert, setShowAlert] = useState(false);
   //   console.log('seletedBLock', selectedBlock);
   console.log('condition', condition);
 
   const updateCondition = () => {
-    if (!checkCondition(condition)) return;
+    if (!checkCondition(condition)) {
+      setShowAlert(true);
+      return;
+    }
     redact.updateCondition(
       index,
       condition,
@@ -50,6 +53,12 @@ function EditConditionForm({
 
   return (
     <Modal show={show}>
+      <DangerAlert
+        show={showAlert}
+        title={'При редактировании условия произошла ошибка'}
+        message={'Возможно не все поля заполнены верно'}
+        onHide={() => setShowAlert(false)}
+      />
       <Form style={{ padding: 30 }}>
         <Modal.Header className='mb-2'>
           <Modal.Title>{'Форма обновления условия'}</Modal.Title>

@@ -4,6 +4,7 @@ import { useRedactSurvey } from './RedactSurveyProvider';
 import Condition from './Condition';
 import { v4 as uuidv4 } from 'uuid';
 import s from './AddConditionForm.module.css';
+import DangerAlert from '../../components/UI/DangerAlert';
 
 const checkCondition = condition => {
   let res = true;
@@ -32,12 +33,16 @@ function AddConditionForm({
   const [condition, setCondition] = useState([
     { Operator: 'and', blockId: '' },
   ]);
+  const [showAlert, setShowAlert] = useState(false);
 
   console.log('survey', survey);
   console.log('[...condition]', [...condition]);
 
   const addCondition = () => {
-    if (!checkCondition(condition)) return;
+    if (!checkCondition(condition)) {
+      setShowAlert(true);
+      return;
+    }
     redact.addCondition(
       condition,
       selectedBlock,
@@ -49,6 +54,12 @@ function AddConditionForm({
 
   return (
     <Modal show={show}>
+      <DangerAlert
+        show={showAlert}
+        title={'При добавлении условия произошла ошибка'}
+        message={'Возможно не все поля заполнены верно'}
+        onHide={() => setShowAlert(false)}
+      />
       <Form style={{ padding: 30 }}>
         <Modal.Header className='mb-2'>
           <Modal.Title>{'Форма добавления условия'}</Modal.Title>

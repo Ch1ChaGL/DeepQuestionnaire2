@@ -69,16 +69,15 @@ function Card({ user, setUsers, users }) {
             </div>
           </div>
           <div className={s.buttons}>
-            <Button
-              className='me-2'
-              variant='success'
+            <div
+              className={s.editBtn}
               onClick={() => setShow(true)}
             >
               Изменить
-            </Button>
-            <Button variant='danger' onClick={() => setShowPromt(true)}>
+            </div>
+            <div className={s.deleteBtn} onClick={() => setShowPromt(true)}>
               Удалить
-            </Button>
+            </div>
           </div>
         </div>
       </div>
